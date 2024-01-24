@@ -32,7 +32,7 @@ const modal = new Modal(
 
     interaction
       .followUp({
-        content: '`✅` L\'incorporation actuelle a été exportée. Vous pouvez l'importer en utilisant `/embed import`.',
+        content: '`✅` L\'incorporation actuelle a été exportée. Vous pouvez l\'importer en utilisant `/embed import`.',
         files: [new AttachmentBuilder(Buffer.from(JSON.stringify(interaction.message.embeds, null, 2)), { name: `${fileName}.json` })],
       })
       .catch(() => {
