@@ -24,10 +24,10 @@ const banLog = new DiscordEventBuilder({
           new EmbedBuilder()
             .setTitle('`🔨` BAN')
             .setDescription([
-              `${formatEmoji(Emojis.Gray.member)} **対象者:** ${auditLog.target} [\`${auditLog.target.id}\`]`,
+              `${formatEmoji(Emojis.Gray.member)} **Cible :** ${auditLog.target} [\`${auditLog.target.id}\`]`,
               '',
-              `${formatEmoji(Emojis.Blurple.member)} **実行者:** ${executor} [\`${executor?.tag}\`]`,
-              `${formatEmoji(Emojis.Blurple.text)} **理由:** ${auditLog.reason ?? '理由が入力されていません'}`,
+              `${formatEmoji(Emojis.Blurple.member)} **Exécutant :** ${executor} [\`${executor?.tag}\`]`,
+              `${formatEmoji(Emojis.Blurple.text)} **Raison :** ${auditLog.reason ?? 'Aucune raison spécifiée'}`,
             ].join('\n'))
             .setColor(Colors.Red)
             .setThumbnail(auditLog.target.displayAvatarURL())
@@ -39,12 +39,12 @@ const banLog = new DiscordEventBuilder({
       channel.send({
         embeds: [
           new EmbedBuilder()
-            .setTitle('`🔨` BAN解除')
+            .setTitle('`🔨` BAN levé')
             .setDescription([
-              `${formatEmoji(Emojis.Gray.member)} **対象者:** ${auditLog.target} [\`${auditLog.target.tag}\`]`,
+              `${formatEmoji(Emojis.Gray.member)} **Cible :** ${auditLog.target} [\`${auditLog.target.tag}\`]`,
               '',
-              `${formatEmoji(Emojis.Blurple.member)} **実行者:** ${executor} [\`${executor?.tag}\`]`,
-              `${formatEmoji(Emojis.Blurple.text)} **理由:** ${auditLog.reason ?? '理由が入力されていません'}`,
+              `${formatEmoji(Emojis.Blurple.member)} **Exécutant :** ${executor} [\`${executor?.tag}\`]`,
+              `${formatEmoji(Emojis.Blurple.text)} **Raison :** ${auditLog.reason ?? 'Aucune raison spécifiée'}`,
             ].join('\n'))
             .setColor(Colors.Blue)
             .setThumbnail(auditLog.target.displayAvatarURL())
