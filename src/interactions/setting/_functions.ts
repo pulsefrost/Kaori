@@ -10,14 +10,14 @@ export async function changeToggleSetting(interaction: ButtonInteraction, update
     updateQuery,
     { upsert: true, new: true },
   );
-  reloadMessage(interaction, res, key);
+  await reloadMessage(interaction, res, key);
 }
 
 export async function changeChannelSetting(interaction: ModalSubmitInteraction, queryKey: string, key: FeatureType) {
   if (!interaction.isFromMessage() || !interaction.inCachedGuild()) return;
 
-  const nameOrId = interaction.fields.getTextInputValue('nomOuId');
-  const channel = interaction.guild.channels.cache.find(v => v.name === nameOrId || v.id === nameOrId);
+  const nameOrId = interaction.fields.getTextInputValue('nameOrId');
+  const channel = interaction.guild?.channels.cache.find(v => v.name === nameOrId || v.id === nameOrId);
 
   if (!channel)
     return interaction.reply({ content: '`❌` Aucun canal correspondant aux critères n\'a été trouvé.', ephemeral: true });
@@ -30,14 +30,14 @@ export async function changeChannelSetting(interaction: ModalSubmitInteraction, 
     { upsert: true, new: true },
   );
 
-  reloadMessage(interaction, res, key);
+  await reloadMessage(interaction, res, key);
 }
 
 export async function changeMentionRoleSetting(interaction: ModalSubmitInteraction, queryKey: string, key: FeatureType) {
   if (!interaction.isFromMessage() || !interaction.inCachedGuild()) return;
 
-  const nameOrId = interaction.fields.getTextInputValue('nomOuId');
-  const role = interaction.guild.roles.cache.find(v => v.name === nameOrId || v.id === nameOrId);
+  const nameOrId = interaction.fields.getTextInputValue('nameOrId');
+  const role = interaction.guild?.roles.cache.find(v => v.name === nameOrId || v.id === nameOrId);
 
   if (!role) return interaction.reply({ content: '`❌` Aucun rôle correspondant aux critères n\'a été trouvé.', ephemeral: true });
 
@@ -47,7 +47,7 @@ export async function changeMentionRoleSetting(interaction: ModalSubmitInteracti
     { upsert: true, new: true },
   );
 
-  reloadMessage(interaction, res, key);
+  await reloadMessage(interaction, res, key);
 }
 
 export async function reloadMessage(interaction: (MessageComponentInteraction | ModalSubmitInteraction), setting: (Document<unknown, unknown, IServerSettings> & IServerSettings), key: FeatureType): Promise<void> {
@@ -64,8 +64,8 @@ export async function reloadMessage(interaction: (MessageComponentInteraction | 
     embeds: pagination.options(setting).embeds,
     components: [
       new ActionRowBuilder<StringSelectMenuBuilder>().setComponents(StringSelectMenuBuilder.from(select)),
-      ...getComponents(setting),
+      ...(getComponents ? getComponents(setting) : []),
     ],
   });
-  setting.save({ wtimeout: 1_500 });
+  await setting.save({ wtimeout: 1_500 });
 }
