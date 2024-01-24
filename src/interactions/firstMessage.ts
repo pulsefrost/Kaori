@@ -4,17 +4,17 @@ import { ChatInput } from '@akki256/discord-interaction';
 const firstMessageCommand = new ChatInput(
   {
     name: 'firstmessage',
-    description: 'チャンネルの最初に投稿されたメッセージのURLボタンを送信',
+    description: 'Envoyer un bouton avec l\'URL du premier message dans le canal',
     options: [
       {
         name: 'content',
-        description: 'メッセージ',
+        description: 'Message',
         maxLength: 200,
         type: ApplicationCommandOptionType.String,
       },
       {
         name: 'label',
-        description: 'ボタンのテキスト',
+        description: 'Texte du bouton',
         maxLength: 80,
         type: ApplicationCommandOptionType.String,
       },
@@ -32,7 +32,7 @@ const firstMessageCommand = new ChatInput(
           components: [
             new ActionRowBuilder<ButtonBuilder>().setComponents(
               new ButtonBuilder()
-                .setLabel(interaction.options.getString('label') ?? '最上部へ移動')
+                .setLabel(interaction.options.getString('label') ?? 'Aller en haut')
                 .setURL(messages.first()?.url || `https://discord.com/channels/${interaction.guildId}/${interaction.channelId}/${messages.first()?.id}`)
                 .setStyle(ButtonStyle.Link),
             ),
@@ -40,7 +40,7 @@ const firstMessageCommand = new ChatInput(
         });
       })
       .catch(() => {
-        interaction.reply({ content: '`❌` メッセージを取得できませんでした', ephemeral: true });
+        interaction.reply({ content: '`❌` Impossible de récupérer le message', ephemeral: true });
       });
   },
 );
