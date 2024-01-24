@@ -11,13 +11,13 @@ const selectEditButton = new Button(
     interaction.showModal(
       new ModalBuilder()
         .setCustomId('nonick-js:emberMaker-selectRole-placeholderModal')
-        .setTitle('セレクトメニューの編集')
+        .setTitle('Édition du menu de sélection')
         .setComponents(
           new ActionRowBuilder<TextInputBuilder>().setComponents(
             new TextInputBuilder()
               .setCustomId('placeholder')
-              .setLabel('セレクトメニューのプレースホルダー')
-              .setPlaceholder('未選択時に表示される文字列')
+              .setLabel('Placeholder du menu de sélection')
+              .setPlaceholder('Texte affiché lorsque rien n\'est sélectionné')
               .setValue(select.placeholder ?? '')
               .setMaxLength(20)
               .setStyle(TextInputStyle.Short)
