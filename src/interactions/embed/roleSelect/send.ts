@@ -8,9 +8,9 @@ const addRoleSelectButton = new Button(
     if (!interaction.inCachedGuild() || !interaction.channel) return;
 
     if (interaction.message.components[0].components[0].type !== ComponentType.StringSelect)
-      return interaction.reply({ content: '`❌` セレクトメニューを作成していません！', ephemeral: true });
+      return interaction.reply({ content: '`❌` Aucun menu déroulant n\'a été créé !', ephemeral: true });
     if (!interaction.guild.members.me?.permissions.has(PermissionFlagsBits.ManageWebhooks))
-      return interaction.reply({ content: '`❌` この機能を使用するにはBOTに`ウェブフックの管理`権限を付与する必要があります。', ephemeral: true });
+      return interaction.reply({ content: '`❌` Pour utiliser cette fonctionnalité, le BOT doit avoir la permission `Gérer les webhooks`.', ephemeral: true });
 
     const roleSelect = interaction.message.components[0].components[0];
     const selectStatusButton = interaction.message.components[1].components[3];
@@ -18,21 +18,21 @@ const addRoleSelectButton = new Button(
     const targetMessage = await (await interaction.channel.fetch()).messages.fetch(targetId || '').catch(() => undefined);
 
     if (!targetMessage)
-      return interaction.reply({ content: '`❌` メッセージの取得中に問題が発生しました。', ephemeral: true });
+      return interaction.reply({ content: '`❌` Un problème est survenu lors de la récupération du message.', ephemeral: true });
 
     const webhook = await targetMessage.fetchWebhook().catch(() => null);
     console.log(webhook);
 
     if (!webhook || interaction.client.user.id !== webhook.owner?.id)
-      return interaction.reply({ content: '`❌` このメッセージは更新できません。', ephemeral: true });
+      return interaction.reply({ content: '`❌` Ce message ne peut pas être mis à jour.', ephemeral: true });
     if (targetMessage.components.length === 5)
-      return interaction.reply({ content: '`❌` これ以上コンポーネントを追加できません！', ephemeral: true });
+      return interaction.reply({ content: '`❌` Aucun composant supplémentaire ne peut être ajouté !', ephemeral: true });
     if (targetMessage.components[0]?.components[0]?.type === ComponentType.Button)
-      return interaction.reply({ content: '`❌` セレクトメニューとボタンは同じメッセージに追加できません。', ephemeral: true });
+      return interaction.reply({ content: '`❌` Le menu déroulant et les boutons ne peuvent pas être ajoutés dans le même message.', ephemeral: true });
 
     const embeds = interaction.message.embeds;
     const components = interaction.message.components;
-    await interaction.update({ content: '`⌛` コンポーネントを追加中...', embeds: [], components: [] });
+    await interaction.update({ content: '`⌛` Ajout des composants en cours...', embeds: [], components: [] });
 
     webhook
       .editMessage(targetMessage, {
@@ -46,8 +46,8 @@ const addRoleSelectButton = new Button(
           ),
         ],
       })
-      .then(() => interaction.editReply({ content: '`✅` コンポーネントを追加しました！', embeds, components: [getRoleSelectMakerButtons()] }))
-      .catch(() => interaction.editReply({ content: '`❌` コンポーネントの更新中に問題が発生しました。', embeds, components }));
+      .then(() => interaction.editReply({ content: '`✅` Composants ajoutés avec succès !', embeds, components: [getRoleSelectMakerButtons()] }))
+      .catch(() => interaction.editReply({ content: '`❌` Un problème est survenu lors de la mise à jour des composants.', embeds, components }));
   },
 );
 
