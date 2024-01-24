@@ -12,22 +12,22 @@ export function getBaseEmbedMakerButtons(embed: APIEmbed | Embed) {
       .setComponents(
         new ButtonBuilder()
           .setCustomId('nonick-js:embedMaker-base')
-          .setLabel('基本')
+          .setLabel('Base')
           .setEmoji(Emojis.White.message)
           .setStyle(ButtonStyle.Success),
         new ButtonBuilder()
           .setCustomId('nonick-js:embedMaker-image')
-          .setLabel('画像')
+          .setLabel('Image')
           .setEmoji(Emojis.White.image)
           .setStyle(ButtonStyle.Secondary),
         new ButtonBuilder()
           .setCustomId('nonick-js:embedMaker-author')
-          .setLabel('ヘッダー')
+          .setLabel('Auteur')
           .setEmoji(Emojis.White.nickName)
           .setStyle(ButtonStyle.Secondary),
         new ButtonBuilder()
           .setCustomId('nonick-js:embedMaker-footer')
-          .setLabel('フッター')
+          .setLabel('Pied de page')
           .setEmoji(Emojis.White.nickName)
           .setStyle(ButtonStyle.Secondary),
         new ButtonBuilder()
@@ -40,13 +40,13 @@ export function getBaseEmbedMakerButtons(embed: APIEmbed | Embed) {
       .setComponents(
         new ButtonBuilder()
           .setCustomId('nonick-js:embedMaker-addField')
-          .setLabel('フィールド')
+          .setLabel('Champ')
           .setEmoji(Emojis.White.addMark)
           .setStyle(ButtonStyle.Secondary)
           .setDisabled(embed.fields?.length === 25),
         new ButtonBuilder()
           .setCustomId('nonick-js:embedMaker-removeField')
-          .setLabel('フィールド')
+          .setLabel('Champ')
           .setEmoji(Emojis.White.removeMark)
           .setStyle(ButtonStyle.Secondary)
           .setDisabled(!embed.fields?.length),
@@ -66,7 +66,7 @@ export function getEmbedMakerButtons(embed: APIEmbed | Embed, type: embedMakerTy
       actionRows[1].addComponents(
         new ButtonBuilder()
           .setCustomId('nonick-js:embedMaker-send')
-          .setLabel('送信')
+          .setLabel('Envoyer')
           .setStyle(ButtonStyle.Primary),
       );
       break;
@@ -75,7 +75,7 @@ export function getEmbedMakerButtons(embed: APIEmbed | Embed, type: embedMakerTy
       actionRows[1].addComponents(
         new ButtonBuilder()
           .setCustomId('nonick-js:embedMaker-edit')
-          .setLabel('編集')
+          .setLabel('Modifier')
           .setStyle(ButtonStyle.Primary),
       );
       break;
@@ -95,5 +95,5 @@ export function reloadEmbedMaker(interaction: MessageComponentInteraction | Moda
 
   interaction
     .update({ embeds: [embed], components })
-    .catch((e) => interaction.reply({ content: `\`❌\` 埋め込みの更新に失敗しました。\n\`${e}\`` }));
+    .catch((e) => interaction.reply({ content: `\`❌\` Échec de la mise à jour de l'incrustation.\n\`${e}\`` }));
 }
