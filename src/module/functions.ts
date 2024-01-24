@@ -37,5 +37,5 @@ export function checkAndFormatDangerPermission(permissions: Readonly<Permissions
 }
 
 export async function checkPermission(interaction: ChatInputCommandInteraction): Promise<void> {
-  if (!Config.admin.users.includes(interaction.user.id)) await interaction.reply({ content: '`❌` Vous n'avez pas la permission d'exécuter cette commande', ephemeral: true });
+  if (!Config.admin.users.includes(interaction.user.id)) await interaction.reply({ content: '`❌` Vous n\'avez pas la permission d\'exécuter cette commande', ephemeral: true });
 }
