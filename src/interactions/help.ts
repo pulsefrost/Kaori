@@ -2,15 +2,15 @@ import { ChatInput } from '@akki256/discord-interaction';
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors, EmbedBuilder, inlineCode } from 'discord.js';
 
 const feature = [
-  '入退室メッセージ', 'サーバー内通報',
-  'モデレートログ', '認証レベル自動変更',
-  'ロールパネル作成コマンド', '埋め込み作成コマンド',
+  'Messages d\'entrée/sortie', 'Signalements internes du serveur',
+  'Journal de modération', 'Changement automatique du niveau de vérification',
+  'Commande de création de panneau de rôles', 'Commande de création d\'incorporation',
 ];
 
 const helpCommand = new ChatInput(
   {
     name: 'help',
-    description: 'このBOTについて',
+    description: 'À propos de ce BOT',
     dmPermission: true,
   },
   (interaction) => {
@@ -20,22 +20,22 @@ const helpCommand = new ChatInput(
         new EmbedBuilder()
           .setTitle(interaction.client.user.username)
           .setDescription([
-            'サーバーの運営・成長に役立つ機能を搭載！',
-            '「完全無料で使いやすい多機能BOT」を目指して日々開発しています',
+            'Équipé de fonctionnalités utiles pour la gestion et la croissance des serveurs !',
+            'Nous travaillons chaque jour pour développer un "BOT multifonction facile à utiliser et complètement gratuit".',
           ].join('\n'))
           .setColor(Colors.Blurple)
           .setImage('https://media.discordapp.net/attachments/958791423161954445/989779285852168242/3e9aba98d28eaa52.png?width=1178&height=662')
-          .setFooter({ text: '開発者・nonick-mc#1017', iconURL: 'https://media.discordapp.net/attachments/958791423161954445/975266759529623652/-3.png?width=663&height=663' })
-          .setFields({ name: '搭載している機能の一部', value: feature.map(v => inlineCode(v)).join(' ') }),
+          .setFooter({ text: 'Développeur : nonick-mc#1017', iconURL: 'https://media.discordapp.net/attachments/958791423161954445/975266759529623652/-3.png?width=663&height=663' })
+          .setFields({ name: 'Quelques fonctionnalités incluses', value: feature.map(v => inlineCode(v)).join(' ') }),
       ],
       components: [
         new ActionRowBuilder<ButtonBuilder>().setComponents(
           new ButtonBuilder()
-            .setLabel('サポートサーバー')
+            .setLabel('Serveur de support')
             .setStyle(ButtonStyle.Link)
-            .setURL('https://discord.gg/fVcjCNn733'),
+            .setURL('https://discord.gg/amies'),
           new ButtonBuilder()
-            .setLabel('使い方ガイド')
+            .setLabel('Guide d\'utilisation')
             .setStyle(ButtonStyle.Link)
             .setURL('https://docs.nonick-js.com'),
         ),
