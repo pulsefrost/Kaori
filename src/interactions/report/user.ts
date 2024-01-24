@@ -5,7 +5,7 @@ import { getServerSetting } from '../../module/mongo/middleware';
 
 const reportContext = new UserContext(
   {
-    name: 'ユーザーを報告',
+    name: 'Signaler l\'utilisateur',
     dmPermission: false,
   },
   async (interaction) => {
@@ -16,26 +16,25 @@ const reportContext = new UserContext(
 
     if (!setting?.channel)
       if (interaction.member.permissions.has(PermissionFlagsBits.ManageGuild))
-        return interaction.reply({ content: '`❌` この機能を使用するには追加で設定が必要です。`/setting`で報告を受け取るチャンネルを設定してください。', ephemeral: true });
+        return interaction.reply({ content: '`❌` Cette fonctionnalité nécessite une configuration supplémentaire. Veuillez définir le canal pour recevoir les rapports avec `/setting`. ', ephemeral: true });
       else
-        return interaction.reply({ content: '`❌` 現在この機能を利用できません。サーバーの管理者に連絡してください。', ephemeral: true });
-
+        return interaction.reply({ content: '`❌` Cette fonctionnalité n\'est pas actuellement disponible. Veuillez contacter l\'administrateur du serveur. ', ephemeral: true });
 
     if (user.system || user.id === interaction.client.user.id)
-      return interaction.reply({ content: '`❌` このユーザーを通報することはできません。', ephemeral: true });
+      return interaction.reply({ content: '`❌` Vous ne pouvez pas signaler cet utilisateur. ', ephemeral: true });
     if (user.id === interaction.user.id)
-      return interaction.reply({ content: '`❌` 自分自身を報告しようとしています。', ephemeral: true });
+      return interaction.reply({ content: '`❌` Vous essayez de vous signaler vous-même. ', ephemeral: true });
 
     interaction.showModal(
       new ModalBuilder()
         .setCustomId('nonick-js:userReportModal')
-        .setTitle('ユーザーを報告')
+        .setTitle('Signaler l\'utilisateur')
         .setComponents(
           new ActionRowBuilder<TextInputBuilder>().setComponents(
             new TextInputBuilder()
               .setCustomId(interaction.targetId)
-              .setLabel('詳細')
-              .setPlaceholder('送信した報告はサーバーの運営のみ公開され、DiscordのTrust&Safetyには報告されません。')
+              .setLabel('Détails')
+              .setPlaceholder('Les rapports soumis seront visibles uniquement par les administrateurs du serveur et ne seront pas signalés à Discord Trust & Safety.')
               .setMaxLength(1500)
               .setStyle(TextInputStyle.Paragraph),
           ),
@@ -50,46 +49,46 @@ const reportContextModal = new Modal(
     if (!interaction.inCachedGuild() || !interaction.channel || interaction.components[0].components[0].type !== ComponentType.TextInput) return;
 
     const setting = await getServerSetting(interaction.guildId, 'report');
-    if (!setting?.channel) return interaction.reply({ content: '`❌` 報告の送信中にエラーが発生しました', ephemeral: true });
+    if (!setting?.channel) return interaction.reply({ content: '`❌` Une erreur s\'est produite lors de l\'envoi du rapport. ', ephemeral: true });
 
     const user = await interaction.client.users.fetch(interaction.components[0].components[0].customId).catch(() => undefined);
     const channel = await interaction.guild.channels.fetch(setting.channel).catch(() => undefined);
 
     if (!(user instanceof User) || !channel?.isTextBased())
-      return interaction.reply({ content: '`❌` 報告の送信中にエラーが発生しました', ephemeral: true });
+      return interaction.reply({ content: '`❌` Une erreur s\'est produite lors de l\'envoi du rapport. ', ephemeral: true });
 
     channel
       .send({
         content: setting.mention?.enable ? roleMention(setting.mention.role || '0') : undefined,
         embeds: [
           new EmbedBuilder()
-            .setTitle('`📢` ユーザーの通報')
+            .setTitle('`📢` Signalement de l\'utilisateur')
             .setDescription([
-              `${formatEmoji(Emojis.Gray.edit)} **送信者:** ${user} [${user.tag}]`,
-              `${formatEmoji(Emojis.Gray.schedule)} **アカウント作成日:** ${time(Math.floor(user.createdTimestamp / 1000), 'D')}`,
+              `${formatEmoji(Emojis.Gray.edit)} **Auteur :** ${user} [${user.tag}]`,
+              `${formatEmoji(Emojis.Gray.schedule)} **Date de création du compte :** ${time(Math.floor(user.createdTimestamp / 1000), 'D')}`,
               '',
-              `${formatEmoji(Emojis.Blurple.member)} **報告者:** ${interaction.user} [${interaction.user.tag}]`,
+              `${formatEmoji(Emojis.Blurple.member)} **Rapporteur :** ${interaction.user} [${interaction.user.tag}]`,
             ].join('\n'))
             .setColor(Colors.DarkButNotBlack)
             .setThumbnail(user.displayAvatarURL())
             .setFields(
-              { name: '理由', value: interaction.components[0].components[0].value },
+              { name: 'Raison', value: interaction.components[0].components[0].value },
             ),
         ],
         components: [
           new ActionRowBuilder<ButtonBuilder>().setComponents(
             new ButtonBuilder()
               .setCustomId('nonick-js:report-consider')
-              .setLabel('対処する')
+              .setLabel('Traiter')
               .setStyle(ButtonStyle.Primary),
           ),
         ],
       })
       .then(message => {
-        interaction.reply({ content: '`✅` **報告ありがとうございます！** サーバー運営に報告を送信しました', ephemeral: true });
-        message.startThread({ name: `${user.username}への通報` }).catch(() => { });
+        interaction.reply({ content: '`✅` **Merci pour le signalement !** Votre rapport a été envoyé aux administrateurs du serveur. ', ephemeral: true });
+        message.startThread({ name: `Signalement pour ${user.username}` }).catch(() => { });
       })
-      .catch(() => interaction.reply({ content: '`❌` 報告の送信中にエラーが発生しました', ephemeral: true }));
+      .catch(() => interaction.reply({ content: '`❌` Une erreur s\'est produite lors de l\'envoi du rapport. ', ephemeral: true }));
   },
 );
 
