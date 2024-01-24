@@ -14,20 +14,20 @@ const addRole = [
       interaction.showModal(
         new ModalBuilder()
           .setCustomId('nonick-js:embedMaker-selectRole-addRoleModal')
-          .setTitle('ロールを追加')
+          .setTitle('Ajouter un rôle')
           .setComponents(
             new ActionRowBuilder<TextInputBuilder>().setComponents(
               new TextInputBuilder()
                 .setCustomId('roleNameOrId')
-                .setLabel('ロールの名前またはID')
+                .setLabel('Nom ou ID du rôle')
                 .setMaxLength(100)
                 .setStyle(TextInputStyle.Short),
             ),
             new ActionRowBuilder<TextInputBuilder>().setComponents(
               new TextInputBuilder()
                 .setCustomId('displayName')
-                .setLabel('セレクトメニュー上での表示名')
-                .setPlaceholder('例: マイクラ勢')
+                .setLabel('Nom affiché dans le menu déroulant')
+                .setPlaceholder('Exemple : Fans de Minecraft')
                 .setMaxLength(100)
                 .setStyle(TextInputStyle.Short)
                 .setRequired(false),
@@ -35,8 +35,8 @@ const addRole = [
             new ActionRowBuilder<TextInputBuilder>().setComponents(
               new TextInputBuilder()
                 .setCustomId('description')
-                .setLabel('ロールについての説明')
-                .setPlaceholder('例: minecraftを遊んでいるユーザーにおすすめ！')
+                .setLabel('Description du rôle')
+                .setPlaceholder('Exemple : Recommandé pour les utilisateurs qui jouent à Minecraft!')
                 .setMaxLength(100)
                 .setStyle(TextInputStyle.Short)
                 .setRequired(false),
@@ -44,8 +44,8 @@ const addRole = [
             new ActionRowBuilder<TextInputBuilder>().setComponents(
               new TextInputBuilder()
                 .setCustomId('emojiNameOrId')
-                .setLabel('Unicode絵文字 または カスタム絵文字')
-                .setPlaceholder('一文字のみ・カスタム絵文字は名前かIDを入力')
+                .setLabel('Nom ou ID d\'emoji Unicode ou emoji personnalisé')
+                .setPlaceholder('Un seul caractère • Entrez le nom ou l\'ID de l\'emoji personnalisé')
                 .setMaxLength(32)
                 .setStyle(TextInputStyle.Short)
                 .setRequired(false),
@@ -68,11 +68,11 @@ const addRole = [
       const emoji = interaction.guild?.emojis.cache.find(v => v.name === emojiNameOrId) || emojiNameOrId.match(emojiRegex)?.[0];
 
       if (!(role instanceof Role))
-        return interaction.reply({ content: '`❌` 入力された値に一致するロールが見つかりませんでした。', ephemeral: true });
+        return interaction.reply({ content: '`❌` Aucun rôle trouvé correspondant à la valeur saisie.', ephemeral: true });
       if (role?.managed)
-        return interaction.reply({ content: '`❌` そのロールは外部サービスによって管理されているため、セレクトメニューに追加できません。', ephemeral: true });
+        return interaction.reply({ content: '`❌` Ce rôle est géré par un service externe et ne peut pas être ajouté au menu déroulant.', ephemeral: true });
       if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator) && interaction.member.roles.highest.position < role.position)
-        return interaction.reply({ content: '`❌` 自分の持つロールより上のロールを追加することはできません。' });
+        return interaction.reply({ content: '`❌` Vous ne pouvez pas ajouter un rôle dont la position est supérieure à votre rôle actuel.' });
 
       const newOption: APISelectMenuOption = {
         label: interaction.fields.getTextInputValue('displayName') || role.name,
@@ -116,8 +116,8 @@ const addRole = [
         interaction.followUp({
           embeds: [
             new EmbedBuilder()
-              .setTitle('`⚠️` 注意！')
-              .setDescription(`${role}には潜在的に危険な権限があります。\n> ${dangerPermissions.map(v => `\`${v}\``).join(' ')}`)
+              .setTitle('`⚠️` Attention !')
+              .setDescription(`Le rôle ${role} a des autorisations potentiellement dangereuses.\n> ${dangerPermissions.map(v => `\`${v}\``).join(' ')}`)
               .setColor(Colors.Yellow),
           ],
           ephemeral: true,
@@ -144,13 +144,13 @@ const removeRole = [
           new ActionRowBuilder<StringSelectMenuBuilder>().setComponents(
             new StringSelectMenuBuilder()
               .setCustomId(indexSelectCustomId)
-              .setPlaceholder('削除する項目を選択')
+              .setPlaceholder('Sélectionnez l\'élément à supprimer')
               .setOptions(...select.options.map((v, index) => ({ ...v, value: String(index) }))),
           ),
           new ActionRowBuilder<ButtonBuilder>().setComponents(
             new ButtonBuilder()
               .setCustomId(backButtonCustomId)
-              .setLabel('削除せず戻る')
+              .setLabel('Revenir sans supprimer')
               .setEmoji(Emojis.White.reply)
               .setStyle(ButtonStyle.Danger),
           ),
