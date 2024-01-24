@@ -20,12 +20,12 @@ export function getRoleSelectMakerButtons(selectMenu?: Partial<APIStringSelectCo
       .setDisabled(!selectMenu),
     new ButtonBuilder()
       .setCustomId((selectMenu?.max_values || 0) <= 1 ? 'nonick-js:embedMaker-selectRole-selectMode-single' : 'nonick-js:embedMaker-selectRole-selectMode-multi')
-      .setLabel((selectMenu?.max_values || 0) <= 1 ? '選択モード：単一' : '選択モード：複数')
+      .setLabel((selectMenu?.max_values || 0) <= 1 ? 'Mode de sélection : Unique' : 'Mode de sélection : Multiple')
       .setStyle(ButtonStyle.Success)
       .setDisabled(!selectMenu),
     new ButtonBuilder()
       .setCustomId('nonick-js:embedMaker-selectRole-sendComponent')
-      .setLabel('追加')
+      .setLabel('Ajouter')
       .setStyle(ButtonStyle.Primary)
       .setDisabled(!selectMenu),
   );
