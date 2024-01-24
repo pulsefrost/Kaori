@@ -4,11 +4,11 @@ import { ApplicationCommandOptionType, codeBlock, Colors, EmbedBuilder, Permissi
 const setRateLimitCommand = new ChatInput(
   {
     name: 'ratelimit',
-    description: 'このチャンネルの低速モードを設定',
+    description: 'Définit le mode lent de ce canal',
     options: [
       {
         name: 'duration',
-        description: '秒数',
+        description: 'Durée en secondes',
         minValue: 0,
         maxValue: 21600,
         type: ApplicationCommandOptionType.Integer,
@@ -25,13 +25,13 @@ const setRateLimitCommand = new ChatInput(
     const duration = interaction.options.getInteger('duration', true);
 
     if (!interaction.appPermissions?.has(PermissionFlagsBits.ManageChannels))
-      return interaction.reply({ content: '`❌` BOTの権限が不足しているため、低速モードを変更できませんでした。', ephemeral: true });
+      return interaction.reply({ content: '`❌` Insuffisance de permissions du bot, impossible de modifier le mode lent.', ephemeral: true });
 
-    interaction.channel.setRateLimitPerUser(duration, `/ratelimit by ${interaction.user.tag}`)
+    interaction.channel.setRateLimitPerUser(duration, `/ratelimit par ${interaction.user.tag}`)
       .then(() => interaction.reply({
         embeds: [
           new EmbedBuilder()
-            .setDescription(`\`✅\` チャンネルの低速モードを\`${duration}秒\`に設定しました。`)
+            .setDescription(`\`✅\` Mode lent du canal défini à \`${duration} secondes\`.`)
             .setColor(Colors.Green),
         ],
         ephemeral: true,
@@ -39,7 +39,7 @@ const setRateLimitCommand = new ChatInput(
       .catch((err) => interaction.reply({
         embeds: [
           new EmbedBuilder()
-            .setDescription(`\`❌\` 低速モードの設定に失敗しました。\n${codeBlock(err)}`)
+            .setDescription(`\`❌\` Échec de la configuration du mode lent.\n${codeBlock(err)}`)
             .setColor(Colors.Red),
         ],
         ephemeral: true,
