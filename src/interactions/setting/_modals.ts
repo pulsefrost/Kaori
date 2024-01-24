@@ -1,24 +1,24 @@
 import { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } from 'discord.js';
 
 export const channelModal = new ModalBuilder()
-  .setTitle('チャンネル')
+  .setTitle('Chaîne')
   .setComponents(
     new ActionRowBuilder<TextInputBuilder>().setComponents(
       new TextInputBuilder()
         .setCustomId('nameOrId')
-        .setLabel('チャンネル名 またはID')
+        .setLabel('Nom de la chaîne ou ID')
         .setMaxLength(100)
         .setStyle(TextInputStyle.Short),
     ),
   );
 
 export const roleModal = new ModalBuilder()
-  .setTitle('ロール')
+  .setTitle('Rôle')
   .setComponents(
     new ActionRowBuilder<TextInputBuilder>().setComponents(
       new TextInputBuilder()
         .setCustomId('nameOrId')
-        .setLabel('ロール名 またはID')
+        .setLabel('Nom du rôle ou ID')
         .setMaxLength(100)
         .setStyle(TextInputStyle.Short),
     ),
