@@ -5,7 +5,7 @@ import { Duration } from '../module/format';
 const timeoutCommand = new ChatInput(
   {
     name: 'timeout',
-    description: 'Met un utilisateur en mode hors ligne (avec des paramètres plus flexibles que la fonction officielle)',
+    description: 'Met un utilisateur en mode hors ligne',
     options: [
       {
         name: 'user',
