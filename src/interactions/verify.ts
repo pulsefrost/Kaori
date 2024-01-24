@@ -8,7 +8,7 @@ const duringAuthentication = new Set();
 const verifyCommand = new ChatInput(
   {
     name: 'verify',
-    description: 'Crée un panneau d\'authentification utilisant des rôles',
+    description: 'Créer un panneau d\'authentification utilisant des rôles',
     options: [
       {
         name: 'type',
@@ -18,23 +18,23 @@ const verifyCommand = new ChatInput(
           { name: 'Image', value: 'image' },
         ],
         type: ApplicationCommandOptionType.String,
-        requis: true,
+        required: true,
       },
       {
         name: 'role',
-        description: 'Rôle à attribuer lors d\'une authentification réussie',
+        description: 'Rôle à attribuer en cas de succès de l\'authentification',
         type: ApplicationCommandOptionType.Role,
-        requis: true,
+        required: true,
       },
       {
         name: 'description',
-        description: 'Description intégrée (saut de ligne avec deux espaces)',
+        description: 'Description de l\'incorporation (saut de ligne avec deux espaces)',
         type: ApplicationCommandOptionType.String,
         maxLength: 4096,
       },
       {
-        name: 'couleur',
-        description: 'Couleur de l\'intégration',
+        name: 'color',
+        description: 'Couleur de l\'incorporation',
         type: ApplicationCommandOptionType.Number,
         choices: [
           { name: '🔴 Rouge', value: Colors.Red },
@@ -61,32 +61,32 @@ const verifyCommand = new ChatInput(
 
     if (!interaction.inCachedGuild()) return;
 
-    const typesAuthentification = new Map([['button', 'Bouton'], ['image', 'Image']]);
-    const typeAuthentification = interaction.options.getString('type', true);
+    const verifyTypeName = new Map([['button', 'Bouton'], ['image', 'Image']]);
+    const verifyType = interaction.options.getString('type', true);
     const role = interaction.options.getRole('role', true);
 
     if (!interaction.guild.members.me?.permissions.has(PermissionFlagsBits.ManageRoles))
-      return interaction.reply({ content: `\`❌\` Veuillez accorder la permission \`Gérer les rôles\` à **${interaction.user.username}** !`, ephemeral: true });
+      return interaction.reply({ content: `\`❌\` Veuillez accorder à **${interaction.user.username}** la permission de gérer les rôles !`, ephemeral: true });
     if (role.managed || role.id === interaction.guild.roles.everyone.id)
       return interaction.reply({ content: '`❌` Ce rôle ne peut pas être utilisé pour l\'authentification.', ephemeral: true });
     if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator) && interaction.member.roles.highest.position < role.position)
-      return interaction.reply({ content: '`❌` Vous ne pouvez pas utiliser un rôle supérieur au vôtre pour l\'authentification.', ephemeral: true });
+      return interaction.reply({ content: '`❌` Vous ne pouvez pas utiliser un rôle qui est au-dessus de votre plus haut rôle pour l\'authentification.', ephemeral: true });
     if (!role.editable)
-      return interaction.reply({ content: '`❌` Ce rôle est positionné plus haut que le bot et ne peut pas être utilisé pour l\'authentification.', ephemeral: true });
+      return interaction.reply({ content: '`❌` Ce rôle est positionné plus haut que le BOT, il ne peut pas être utilisé pour l\'authentification.', ephemeral: true });
 
     interaction.reply({
       embeds: [
         new EmbedBuilder()
-          .setTitle(`\`✅\` Authentification : ${typesAuthentification.get(typeAuthentification)!}`)
+          .setTitle(`\`✅\` Authentification : ${verifyTypeName.get(verifyType)!}`)
           .setDescription(interaction.options.getString('description')?.replace('  ', '\n') || null)
           .setColor(interaction.options.getNumber('color') ?? Colors.Green)
           .setImage(interaction.options.getAttachment('image')?.url || null)
-          .setFields({ name: 'Rôle à attribuer', value: role.toString() }),
+          .setFields({ name: 'Rôle attribué', value: role.toString() }),
       ],
       components: [
         new ActionRowBuilder<ButtonBuilder>().setComponents(
           new ButtonBuilder()
-            .setCustomId(`nonick-js:verify-${typeAuthentification}`)
+            .setCustomId(`nonick-js:verify-${verifyType}`)
             .setLabel('Authentifier')
             .setStyle(ButtonStyle.Success),
         ),
@@ -105,16 +105,16 @@ const verifyButton = new Button(
     const roles = interaction.member.roles;
 
     if (duringAuthentication.has(interaction.user.id))
-      return interaction.reply({ content: '`❌` Vous effectuez actuellement une autre authentification. Vous ne pouvez pas lancer une nouvelle authentification tant que la précédente n\'est pas terminée.', ephemeral: true });
+      return interaction.reply({ content: '`❌` Vous êtes actuellement en train de vous authentifier. Veuillez attendre la fin de l\'authentification en cours avant de commencer une nouvelle tentative.', ephemeral: true });
     if (!roleId || !(roles instanceof GuildMemberRoleManager))
       return interaction.reply({ content: '`❌` Un problème est survenu pendant l\'authentification.', ephemeral: true });
     if (roles.cache.has(roleId))
-      return interaction.reply({ content: '`✅` Déjà authentifié.', ephemeral: true });
+      return interaction.reply({ content: '`✅` Vous êtes déjà authentifié.', ephemeral: true });
 
     if (interaction.customId === 'nonick-js:verify-button')
       roles.add(roleId, 'Authentification')
         .then(() => interaction.reply({ content: '`✅` Authentification réussie !', ephemeral: true }))
-        .catch(() => interaction.reply({ content: '`❌` Impossible d\'attribuer le rôle. Veuillez contacter l\'administrateur du serveur.', ephemeral: true }));
+        .catch(() => interaction.reply({ content: '`❌` Impossible d\'ajouter le rôle. Veuillez contacter l\'administrateur du serveur.', ephemeral: true }));
 
     if (interaction.customId === 'nonick-js:verify-image') {
       await interaction.deferReply({ ephemeral: true });
@@ -127,18 +127,18 @@ const verifyButton = new Button(
             new EmbedBuilder()
               .setAuthor({ name: `${interaction.guild.name}: Authentification par image`, iconURL: interaction.guild.iconURL() ?? undefined })
               .setDescription([
-                'Veuillez envoyer le texte vert affiché dans l\'image ci-dessous à ce DM.',
-                '> ⚠️ Si un certain temps s\'écoule ou si vous faites plusieurs erreurs, vous devrez générer une nouvelle authentification.',
+                'Veuillez envoyer dans ce DM la chaîne de caractères verte affichée dans l\'image ci-dessous.',
+                '> ⚠️Si le temps imparti est dépassé ou si vous échouez plusieurs fois, vous devrez recommencer une nouvelle authentification.',
               ].join('\n'))
               .setColor(Colors.Blurple)
               .setImage('attachment://nonick-js-captcha.jpeg')
-              .setFooter({ text: 'NoNICK.js ne demandera jamais la saisie de mot de passe ni la numérisation de code QR.' }),
+              .setFooter({ text: 'NoNICK.js ne demandera jamais de saisir un mot de passe ni de lire un code QR.' }),
           ],
           files: [new AttachmentBuilder(image, { name: 'nonick-js-captcha.jpeg' })],
         })
         .then(() => {
           duringAuthentication.add(interaction.user.id);
-          interaction.followUp({ content: '`📨` Continuez l\'authentification en DM.' });
+          interaction.followUp({ content: '`📨` Veuillez poursuivre l\'authentification dans vos messages privés.' });
 
           const collector = interaction.user.dmChannel!.createMessageCollector({ filter: v => v.author.id === interaction.user.id, time: 60_000, max: 3 });
 
@@ -147,13 +147,13 @@ const verifyButton = new Button(
 
             roles.add(roleId)
               .then(() => interaction.user.send('`✅` Authentification réussie !'))
-              .catch(() => interaction.user.send('`❌` Authentification réussie, mais impossible d\'attribuer le rôle. Veuillez contacter l\'administrateur du serveur.'))
+              .catch(() => interaction.user.send('`❌` Authentification réussie, mais impossible d\'ajouter le rôle. Veuillez contacter l\'administrateur du serveur.'))
               .finally(() => collector.stop());
           });
 
           collector.on('end', (collection) => {
             if (collection.size === 3) {
-              interaction.user.send({ content: '`❌` L\'authentification a échoué en dépassant la limite d\'essais. La prochaine authentification sera possible dans `5 minutes`.' });
+              interaction.user.send({ content: '`❌` Échec de l\'authentification après plusieurs tentatives. La prochaine authentification sera possible dans `5 minutes`.' });
               setTimeout(() => duringAuthentication.delete(interaction.user.id), 300_000);
             } else
               duringAuthentication.delete(interaction.user.id);
@@ -161,10 +161,9 @@ const verifyButton = new Button(
           });
         })
         .catch(() => {
-          interaction.followUp({ content: '`❌` Pour effectuer cette authentification, vous devez autoriser la réception de DMs de la part du bot.', ephemeral: true });
+          interaction.followUp({ content: '`❌` Pour effectuer cette authentification, vous devez autoriser la réception de messages privés de la part du BOT.', ephemeral: true });
         });
     }
-
   },
 );
 
