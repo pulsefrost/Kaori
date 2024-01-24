@@ -24,13 +24,13 @@ const timeoutLog = new DiscordEventBuilder({
       channel.send({
         embeds: [
           new EmbedBuilder()
-            .setTitle('`🛑` タイムアウト')
+            .setTitle('`🛑` Timeout')
             .setDescription([
-              `${formatEmoji(Emojis.Gray.member)} **対象者:** ${auditLog.target} [\`${auditLog.target.tag}\`]`,
-              `${formatEmoji(Emojis.Gray.schedule)} **解除される時間:** ${time(Math.floor((member.communicationDisabledUntilTimestamp ?? 0) / 1000), 'f')}`,
+              `${formatEmoji(Emojis.Gray.member)} **Membre ciblé :** ${auditLog.target} [\`${auditLog.target.tag}\`]`,
+              `${formatEmoji(Emojis.Gray.schedule)} **Temps de levée du timeout :** ${time(Math.floor((member.communicationDisabledUntilTimestamp ?? 0) / 1000), 'f')}`,
               '',
-              `${formatEmoji(Emojis.Blurple.member)} **実行者:** ${executor} [\`${executor?.tag}\`]`,
-              `${formatEmoji(Emojis.Blurple.text)} **理由:** ${auditLog.reason ?? '理由が入力されていません'}`,
+              `${formatEmoji(Emojis.Blurple.member)} **Exécutant :** ${executor} [\`${executor?.tag}\`]`,
+              `${formatEmoji(Emojis.Blurple.text)} **Raison :** ${auditLog.reason ?? 'Aucune raison spécifiée'}`,
             ].join('\n'))
             .setColor(Colors.Red)
             .setThumbnail(auditLog.target.displayAvatarURL())
@@ -42,12 +42,12 @@ const timeoutLog = new DiscordEventBuilder({
       channel.send({
         embeds: [
           new EmbedBuilder()
-            .setTitle('`🛑` タイムアウト手動解除')
+            .setTitle('`🛑` Levée manuelle du timeout')
             .setDescription([
-              `${formatEmoji(Emojis.Gray.member)} **対象者:** ${auditLog.target} [\`${auditLog.target.tag}\`]`,
+              `${formatEmoji(Emojis.Gray.member)} **Membre ciblé :** ${auditLog.target} [\`${auditLog.target.tag}\`]`,
               '',
-              `${formatEmoji(Emojis.Blurple.member)} **実行者:** ${executor} [\`${executor?.tag}\`]`,
-              `${formatEmoji(Emojis.Blurple.text)} **理由:** ${auditLog.reason ?? '理由が入力されていません'}`,
+              `${formatEmoji(Emojis.Blurple.member)} **Exécutant :** ${executor} [\`${executor?.tag}\`]`,
+              `${formatEmoji(Emojis.Blurple.text)} **Raison :** ${auditLog.reason ?? 'Aucune raison spécifiée'}`,
             ].join('\n'))
             .setColor(Colors.Blue)
             .setThumbnail(auditLog.target.displayAvatarURL())
