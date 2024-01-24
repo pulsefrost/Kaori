@@ -17,12 +17,12 @@ const roleSelect = new SelectMenu(
 
     if (error)
       return interaction.followUp({
-        embeds: [new EmbedBuilder().setDescription('`❌` 一部ロールが付与/解除できませんでした。').setColor(Colors.Red)],
+        embeds: [new EmbedBuilder().setDescription('`❌` Certains rôles n\'ont pas pu être ajoutés ou supprimés.').setColor(Colors.Red)],
         ephemeral: true,
       });
 
     await interaction.followUp({
-      embeds: [new EmbedBuilder().setDescription('`✅` ロールを更新しました！').setColor(Colors.Green)],
+      embeds: [new EmbedBuilder().setDescription('`✅` Les rôles ont été mis à jour !').setColor(Colors.Green)],
       ephemeral: true,
     });
 
