@@ -2,59 +2,59 @@ import { Client, Colors, EmbedBuilder, Guild, inlineCode } from 'discord.js';
 import { Document } from 'mongoose';
 import ServerSettings, { IServerSettings } from '../schemas/ServerSettings';
 
-const donnéesNiveauVérification = [
-  { name: 'Non défini', description: 'Illimité' },
-  { name: 'Faible', description: 'Comptes avec vérification par e-mail uniquement' },
-  { name: 'Moyen', description: 'Comptes inscrits sur Discord depuis plus de 5 minutes uniquement' },
-  { name: 'Élevé', description: 'Membres du serveur depuis plus de 10 minutes uniquement' },
-  { name: 'Extrême', description: 'Comptes avec vérification par téléphone uniquement' },
+const verificationLevelData = [
+  { name: 'Ne pas défini', description: 'Illimité' },
+  { name: 'Faible', description: 'Uniquement les comptes avec une vérification par e-mail' },
+  { name: 'Moyen', description: 'Comptes enregistrés sur Discord depuis plus de 5 minutes uniquement' },
+  { name: 'Élevé', description: 'Membres de ce serveur depuis plus de 10 minutes uniquement' },
+  { name: 'Maximum', description: 'Uniquement les comptes avec une vérification téléphonique' },
 ];
 
-const démarrer = async (client: Client, heure: number) => {
-  const paramètres = await ServerSettings.find({ 'changeVerificationLevel.enable': true, 'changeVerificationLevel.time.start': heure });
+const start = async (client: Client, hour: number) => {
+  const Settings = await ServerSettings.find({ 'changeVerificationLevel.enable': true, 'changeVerificationLevel.time.start': hour });
 
-  for await (const paramètre of paramètres) {
-    const serveur = await client.guilds.fetch(paramètre.serverId).catch(() => null);
-    const niveau = paramètre.changeVerificationLevel.level.new;
-    if (!serveur || niveau == null) return;
+  for await (const Setting of Settings) {
+    const guild = await client.guilds.fetch(Setting.serverId).catch(() => null);
+    const level = Setting.changeVerificationLevel.level.new;
+    if (!guild || level == null) return;
 
-    paramètre.changeVerificationLevel.level.old = serveur.verificationLevel;
-    await paramètre.save({ wtimeout: 1_500 });
+    Setting.changeVerificationLevel.level.old = guild.verificationLevel;
+    await Setting.save({ wtimeout: 1_500 });
 
-    serveur.setVerificationLevel(niveau)
-      .then(() => envoyerJournal(serveur, paramètre, niveau, 'Démarrage'))
+    guild.setVerificationLevel(level)
+      .then(() => sendLog(guild, Setting, level, 'Début'))
       .catch(() => { });
   }
 };
 
-const fin = async (client: Client, heure: number) => {
-  const paramètres = await ServerSettings.find({ 'changeVerificationLevel.enable': true, 'changeVerificationLevel.time.end': heure });
+const end = async (client: Client, hour: number) => {
+  const Settings = await ServerSettings.find({ 'changeVerificationLevel.enable': true, 'changeVerificationLevel.time.end': hour });
 
-  for await (const paramètre of paramètres) {
-    const serveur = await client.guilds.fetch(paramètre.serverId).catch(() => null);
-    const niveau = paramètre.changeVerificationLevel.level.old;
-    if (!serveur || niveau == null) return;
+  for await (const Setting of Settings) {
+    const guild = await client.guilds.fetch(Setting.serverId).catch(() => null);
+    const level = Setting.changeVerificationLevel.level.old;
+    if (!guild || level == null) return;
 
-    serveur.setVerificationLevel(niveau)
-      .then(() => envoyerJournal(serveur, paramètre, niveau, 'Fin'))
+    guild.setVerificationLevel(level)
+      .then(() => sendLog(guild, Setting, level, 'Fin'))
       .catch(() => { });
   }
 };
 
-async function envoyerJournal(serveur: Guild, paramètre: (Document<unknown, unknown, IServerSettings> & IServerSettings), niveau: number, libellé: string) {
-  if (!paramètre.changeVerificationLevel.log.enable || !paramètre.changeVerificationLevel.log.channel) return;
+async function sendLog(guild: Guild, setting: (Document<unknown, unknown, IServerSettings> & IServerSettings), level: number, label: string) {
+  if (!setting.changeVerificationLevel.log.enable || !setting.changeVerificationLevel.log.channel) return;
 
-  const canal = await serveur.channels.fetch(paramètre.changeVerificationLevel.log.channel).catch(() => null);
-  if (!canal?.isTextBased()) return;
+  const channel = await guild.channels.fetch(setting.changeVerificationLevel.log.channel).catch(() => null);
+  if (!channel?.isTextBased()) return;
 
-  canal
+  channel
     .send({
       embeds: [
         new EmbedBuilder()
-          .setTitle(`\`✅\` Modification automatique du niveau de vérification - ${libellé}`)
+          .setTitle(`\`✅\` Modification automatique du niveau de vérification - ${label}`)
           .setDescription([
-            `Le niveau de vérification du serveur a été changé en **${donneesNiveauVérification[niveau].name}**`,
-            inlineCode(donneesNiveauVérification[niveau].description),
+            `Le niveau de vérification du serveur a été changé en **${verificationLevelData[level].name}**`,
+            inlineCode(verificationLevelData[level].description),
           ].join('\n'))
           .setColor(Colors.Green),
       ],
@@ -62,4 +62,4 @@ async function envoyerJournal(serveur: Guild, paramètre: (Document<unknown, unk
     .catch(() => { });
 }
 
-export default (client: Client) => [démarrer, fin].forEach(v => v(client, (new Date(Date.now() + ((new Date().getTimezoneOffset() + (9 * 60)) * 60 * 1000))).getHours()));
+export default (client: Client) => [start, end].forEach(v => v(client, (new Date(Date.now() + ((new Date().getTimezoneOffset() + (9 * 60)) * 60 * 1000))).getHours()));
