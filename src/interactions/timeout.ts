@@ -5,32 +5,32 @@ import { Duration } from '../module/format';
 const timeoutCommand = new ChatInput(
   {
     name: 'timeout',
-    description: 'ユーザーをタイムアウト (公式の機能より柔軟な設定が可能)',
+    description: 'Met un utilisateur en mode hors ligne (avec des paramètres plus flexibles que la fonction officielle)',
     options: [
       {
         name: 'user',
-        description: 'ユーザー',
+        description: 'Utilisateur',
         type: ApplicationCommandOptionType.User,
         required: true,
       },
       {
         name: 'day',
-        description: '日',
+        description: 'Jours',
         type: ApplicationCommandOptionType.Number,
       },
       {
         name: 'hour',
-        description: '時',
+        description: 'Heures',
         type: ApplicationCommandOptionType.Number,
       },
       {
         name: 'minute',
-        description: '分',
+        description: 'Minutes',
         type: ApplicationCommandOptionType.Number,
       },
       {
         name: 'reason',
-        description: '理由',
+        description: 'Raison',
         type: ApplicationCommandOptionType.String,
       },
     ],
@@ -50,24 +50,24 @@ const timeoutCommand = new ChatInput(
     ].join(''));
 
     if (duration === 0)
-      return interaction.reply({ content: '`❌` 合計時間は1分以上から設定できます。', ephemeral: true });
+      return interaction.reply({ content: '`❌` La durée totale doit être d\'au moins 1 minute.', ephemeral: true });
     if (Duration.toMS('28d') < duration)
-      return interaction.reply({ content: '`❌` 28日以上のタイムアウトはできません。', ephemeral: true });
+      return interaction.reply({ content: '`❌` La durée maximale pour un timeout est de 28 jours.', ephemeral: true });
     if (!(member instanceof GuildMember))
-      return interaction.reply({ content: '`❌` このユーザーはサーバーにいません。', ephemeral: true });
+      return interaction.reply({ content: '`❌` Cet utilisateur n\'est pas présent sur le serveur.', ephemeral: true });
     if (member.id === interaction.user.id)
-      return interaction.reply({ content: '`❌` 自分自身にコマンドを使用しています', ephemeral: true });
+      return interaction.reply({ content: '`❌` Vous ne pouvez pas utiliser cette commande sur vous-même.', ephemeral: true });
     if (!member.moderatable)
-      return interaction.reply({ content: '`❌` 権限不足によりタイムアウトに失敗しました', ephemeral: true });
+      return interaction.reply({ content: '`❌` Échec du timeout en raison de permissions insuffisantes.', ephemeral: true });
     if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator) && interaction.member.roles.highest.position < member.roles.highest.position)
-      return interaction.reply({ content: '`❌` あなたの権限ではこのユーザーをタイムアウトできません', ephemeral: true });
+      return interaction.reply({ content: '`❌` Vous n\'avez pas les permissions nécessaires pour mettre cet utilisateur en timeout.', ephemeral: true });
 
-    member.timeout(duration, `${interaction.options.getString('reason') ?? '理由が入力されていません'} - ${interaction.user.tag}`)
+    member.timeout(duration, `${interaction.options.getString('reason') ?? 'Aucune raison fournie'} - ${interaction.user.tag}`)
       .then(() => {
         interaction.reply({
           embeds: [
             new EmbedBuilder()
-              .setDescription(Duration.format(duration, `\`✅\` ${member}を **%{d}**日**%{h}**時間**%{m}**分 タイムアウトしました`))
+              .setDescription(Duration.format(duration, `\`✅\` ${member} a été mis en timeout pendant **%{d}** jours **%{h}** heures et **%{m}** minutes`))
               .setColor(Colors.Green),
           ],
           ephemeral: true,
@@ -77,7 +77,7 @@ const timeoutCommand = new ChatInput(
         interaction.reply({
           embeds: [
             new EmbedBuilder()
-              .setDescription(`\`❌\` タイムアウトに失敗しました。\n${codeBlock(err)}`)
+              .setDescription(`\`❌\` Échec du timeout.\n${codeBlock(err)}`)
               .setColor(Colors.Red),
           ],
           ephemeral: true,
@@ -86,6 +86,5 @@ const timeoutCommand = new ChatInput(
 
   },
 );
-
 
 module.exports = [timeoutCommand];
