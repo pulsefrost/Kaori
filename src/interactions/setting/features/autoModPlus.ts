@@ -5,7 +5,7 @@ import { FeatureType } from '../_messages';
 import { channelModal } from '../_modals';
 
 const generalSetting = [
-  // 有効・無効化
+  // Activation/Désactivation
   new Button(
     { customId: 'nonick-js:setting-automod-enable' },
     async (interaction) => {
@@ -14,7 +14,7 @@ const generalSetting = [
     },
   ),
 
-  // フィルター
+  // Filtre
   new SelectMenu(
     { customId: 'nonick-js:setting-automod-filter', type: SelectMenuType.String },
     async (interaction) => {
@@ -37,7 +37,7 @@ const generalSetting = [
 ];
 
 const logSetting = [
-  // 有効・無効化
+  // Activation/Désactivation
   new Button(
     { customId: 'nonick-js:setting-automod-log-enable' },
     async (interaction) => {
@@ -46,7 +46,7 @@ const logSetting = [
     },
   ),
 
-  // 送信先
+  // Destination
   new Button(
     { customId: 'nonick-js:setting-automod-log-channel' },
     (interaction) => interaction.showModal(channelModal.setCustomId('nonick-js:setting-automod-log-channel-modal')),
@@ -58,7 +58,7 @@ const logSetting = [
 ];
 
 const ignoreSetting = [
-  // チャンネル
+  // Canal
   new SelectMenu(
     { customId: 'nonick-js:setting-automod-ignore-channels', type: SelectMenuType.Channel },
     async (interaction) => {
@@ -72,7 +72,7 @@ const ignoreSetting = [
     },
   ),
 
-  // ロール
+  // Rôle
   new SelectMenu(
     { customId: 'nonick-js:setting-automod-ignore-roles', type: SelectMenuType.Role },
     async (interaction) => {
@@ -86,7 +86,7 @@ const ignoreSetting = [
     },
   ),
 
-  // 全て削除
+  // Supprimer tout
   new Button(
     { customId: 'nonick-js:setting-automod-ignore-deleteAll' },
     async (interaction) => {
