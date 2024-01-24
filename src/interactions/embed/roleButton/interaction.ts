@@ -13,14 +13,14 @@ const button = new Button(
       roles.remove(roleId)
         .then(async () => {
           await interaction.reply({
-            embeds: [new EmbedBuilder().setDescription(`\`✅\` ${roleMention(roleId)}の付与を解除しました。`).setColor(Colors.Green)],
+            embeds: [new EmbedBuilder().setDescription(`\`✅\` Suppression du rôle réussie : ${roleMention(roleId)}.`).setColor(Colors.Green)],
             ephemeral: true,
           });
           setTimeout(() => interaction.deleteReply(), 3_000);
         })
         .catch((e) => {
           interaction.reply({
-            embeds: [new EmbedBuilder().setDescription(`\`❌\` ロールの付与の解除に失敗しました。\n${codeBlock(e)}`).setColor(Colors.Red)],
+            embeds: [new EmbedBuilder().setDescription(`\`❌\` Échec de la suppression du rôle.\n${codeBlock(e)}`).setColor(Colors.Red)],
             ephemeral: true,
           });
         });
@@ -29,14 +29,14 @@ const button = new Button(
       roles.add(roleId)
         .then(async () => {
           await interaction.reply({
-            embeds: [new EmbedBuilder().setDescription(`\`✅\` ${roleMention(roleId)}を付与しました。`).setColor(Colors.Green)],
+            embeds: [new EmbedBuilder().setDescription(`\`✅\` Ajout du rôle réussi : ${roleMention(roleId)}.`).setColor(Colors.Green)],
             ephemeral: true,
           });
           setTimeout(() => interaction.deleteReply(), 3_000);
         })
         .catch((e) => {
           interaction.reply({
-            embeds: [new EmbedBuilder().setDescription(`\`❌\` ロール付与に失敗しました。\n${codeBlock(e)}`).setColor(Colors.Red)],
+            embeds: [new EmbedBuilder().setDescription(`\`❌\` Échec de l'ajout du rôle.\n${codeBlock(e)}`).setColor(Colors.Red)],
             ephemeral: true,
           });
         });
