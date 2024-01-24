@@ -8,19 +8,19 @@ const StatusEmoji = {
 };
 
 export function booleanStatus(boolean?: boolean): string {
-  return boolean ? `${formatEmoji(StatusEmoji.enable)} **状態:** 有効` : `${formatEmoji(StatusEmoji.disable)} **状態:** 無効`;
+  return boolean ? `${formatEmoji(StatusEmoji.enable)} **État:** Activé` : `${formatEmoji(StatusEmoji.disable)} **État:** Désactivé`;
 }
 
 export function channelStatus(channel?: (string | null)): string {
-  return `${formatEmoji(Emojis.Gray.channel)} **チャンネル:** ${channel ? channelMention(channel) : '未設定'}`;
+  return `${formatEmoji(Emojis.Gray.channel)} **Canal:** ${channel ? channelMention(channel) : 'Non défini'}`;
 }
 
 export function roleStatus(role?: (string | null)): string {
-  return `${formatEmoji(Emojis.Gray.member)} **ロール:** ${role ? roleMention(role) : '未設定'}`;
+  return `${formatEmoji(Emojis.Gray.member)} **Rôle:** ${role ? roleMention(role) : 'Non défini'}`;
 }
 
 export function buttonLabelStatus(enable?: boolean): string {
-  return enable ? '無効化' : '有効化';
+  return enable ? 'Désactiver' : 'Activer';
 }
 
 export function buttonStyleStatus(enable?: boolean): number {
