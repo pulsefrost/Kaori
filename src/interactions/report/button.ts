@@ -9,7 +9,7 @@ const considerButton = new Button({ customId: 'nonick-js:report-consider' }, int
       EmbedBuilder.from(embed)
         .setDescription([
           `${embed.description}`,
-          `${formatEmoji(Emojis.Blurple.member)} **対処者:** ${interaction.user} [${interaction.user.tag}]`,
+          `${formatEmoji(Emojis.Blurple.member)} **Intervenant :** ${interaction.user} [${interaction.user.tag}]`,
         ].join('\n'))
         .setColor('Yellow'),
     ],
@@ -17,11 +17,11 @@ const considerButton = new Button({ customId: 'nonick-js:report-consider' }, int
       new ActionRowBuilder<ButtonBuilder>().setComponents(
         new ButtonBuilder()
           .setCustomId('nonick-js:report-completed')
-          .setLabel('対処済み')
+          .setLabel('Traité')
           .setStyle(ButtonStyle.Success),
         new ButtonBuilder()
           .setCustomId('nonick-js:report-ignore')
-          .setLabel('無視')
+          .setLabel('Ignorer')
           .setStyle(ButtonStyle.Danger),
       ),
     ],
@@ -36,12 +36,12 @@ const actionButton = new Button(
     interaction.showModal(
       new ModalBuilder()
         .setCustomId('nonick-js:report-actionModal')
-        .setTitle(`${isCompleteButton ? '対処済み' : '対処無し'}としてマーク`)
+        .setTitle(`${isCompleteButton ? 'Traité' : 'Non traité'}`)
         .setComponents(
           new ActionRowBuilder<TextInputBuilder>().addComponents(
             new TextInputBuilder()
               .setCustomId(isCompleteButton ? 'action' : 'reason')
-              .setLabel(isCompleteButton ? '行った対処・処罰' : '対処なしの理由')
+              .setLabel(isCompleteButton ? 'Action effectuée' : 'Raison de l\'absence d\'action')
               .setMaxLength(100)
               .setStyle(TextInputStyle.Short),
           ),
@@ -63,10 +63,10 @@ const actionModal = new Modal(
       embeds: [
         EmbedBuilder
           .from(interaction.message.embeds[0])
-          .setTitle(`${embed.title} ` + (isAction ? '[対応済み]' : '[対応なし]'))
+          .setTitle(`${embed.title} ` + (isAction ? '[Traité]' : '[Non traité]'))
           .setDescription([
             `${embed.description}`,
-            `${formatEmoji(Emojis.Blurple.admin)} **${isAction ? '行った処罰' : '対応なしの理由'}:** ${categoryValue}`,
+            `${formatEmoji(Emojis.Blurple.admin)} **${isAction ? 'Action effectuée' : 'Raison de l\'absence d\'action'} :** ${categoryValue}`,
           ].join('\n'))
           .setColor(isAction ? Colors.Green : Colors.Red),
       ],
