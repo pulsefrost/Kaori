@@ -11,12 +11,12 @@ const button = new Button(
     interaction.showModal(
       new ModalBuilder()
         .setCustomId('nonick-js:embedMaker-baseModal')
-        .setTitle('タイトル・説明・色')
+        .setTitle('Titre, Description, Couleur')
         .setComponents(
           new ActionRowBuilder<TextInputBuilder>().setComponents(
             new TextInputBuilder()
               .setCustomId('title')
-              .setLabel('タイトル')
+              .setLabel('Titre')
               .setValue(embed.title || '')
               .setMaxLength(256)
               .setStyle(TextInputStyle.Short)
@@ -25,16 +25,16 @@ const button = new Button(
           new ActionRowBuilder<TextInputBuilder>().setComponents(
             new TextInputBuilder()
               .setCustomId('url')
-              .setLabel('タイトルURL')
+              .setLabel('URL du Titre')
               .setValue(embed.url || '')
-              .setPlaceholder('例）https://docs.nonick-js.com')
+              .setPlaceholder('Exemple : https://docs.nonick-js.com')
               .setStyle(TextInputStyle.Short)
               .setRequired(false),
           ),
           new ActionRowBuilder<TextInputBuilder>().setComponents(
             new TextInputBuilder()
               .setCustomId('description')
-              .setLabel('説明')
+              .setLabel('Description')
               .setValue(embed.description || '')
               .setMaxLength(3999)
               .setStyle(TextInputStyle.Paragraph)
@@ -43,9 +43,9 @@ const button = new Button(
           new ActionRowBuilder<TextInputBuilder>().setComponents(
             new TextInputBuilder()
               .setCustomId('color')
-              .setLabel('カラーコード (または色の名前)')
+              .setLabel('Code Couleur (ou nom de couleur)')
               .setValue(embed.hexColor || '')
-              .setPlaceholder('例）#ffffff, Red')
+              .setPlaceholder('Exemple : #ffffff, Rouge')
               .setStyle(TextInputStyle.Short),
           ),
         ),
@@ -64,12 +64,12 @@ const modal = new Modal(
     let color: (string | number) = interaction.fields.getTextInputValue('color');
 
     if (url && !isURL(url))
-      return interaction.reply({ content: '`❌` `http://`または`https://`から始まるURLを入力してください。', ephemeral: true });
+      return interaction.reply({ content: '`❌` Veuillez saisir une URL commençant par `http://` ou `https://`.', ephemeral: true });
 
     try {
       color = resolveColor(color as ColorResolvable);
     } catch {
-      return interaction.reply({ content: '`❌` 無効なカラーコード、または色の名前が入力されました。[このページ](https://docs.nonick-js.com/nonick.js/features/embed/)を参考に正しい値を入力してください。', ephemeral: true });
+      return interaction.reply({ content: '`❌` Code couleur invalide ou nom de couleur saisi. Veuillez consulter [cette page](https://docs.nonick-js.com/nonick.js/features/embed/) pour saisir une valeur correcte.', ephemeral: true });
     }
 
     const embed = EmbedBuilder
