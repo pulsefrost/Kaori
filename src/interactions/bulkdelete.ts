@@ -4,11 +4,11 @@ import { ApplicationCommandOptionType, codeBlock, Colors, EmbedBuilder, Permissi
 const bulkDeleteMessagesCommand = new ChatInput(
   {
     name: 'bulkdelete',
-    description: 'このチャンネルに送信されたメッセージを最新順に一括削除 (2週間前まで)',
+    description: 'Supprime en bloc les messages envoyés dans ce canal, du plus récent au plus ancien (jusqu\'à 2 semaines)',
     options: [
       {
         name: 'messages',
-        description: '削除するメッセージの数',
+        description: 'Nombre de messages à supprimer',
         maxValue: 100,
         minValue: 2,
         type: ApplicationCommandOptionType.Integer,
@@ -24,7 +24,7 @@ const bulkDeleteMessagesCommand = new ChatInput(
     if (!interaction.inCachedGuild() || !interaction.channel) return;
 
     if (!interaction.appPermissions?.has(PermissionFlagsBits.ManageMessages))
-      return interaction.reply({ content: '`❌` BOTの権限が不足しているため、メッセージを削除できませんでした。', ephemeral: true });
+      return interaction.reply({ content: '`❌` Permissions insuffisantes pour le BOT. Impossible de supprimer les messages.', ephemeral: true });
 
     const bulkCount = interaction.options.getInteger('messages', true);
 
@@ -32,7 +32,7 @@ const bulkDeleteMessagesCommand = new ChatInput(
       .then((msgs) => interaction.reply({
         embeds: [
           new EmbedBuilder()
-            .setDescription(`\`✅\` メッセージを\`${msgs.size}件\`削除しました`)
+            .setDescription(`\`✅\` ${msgs.size} messages ont été supprimés.`)
             .setColor(Colors.Green),
         ],
         ephemeral: true,
@@ -40,7 +40,7 @@ const bulkDeleteMessagesCommand = new ChatInput(
       .catch((err) => interaction.reply({
         embeds: [
           new EmbedBuilder()
-            .setDescription(`\`❌\` メッセージの削除に失敗しました。\n${codeBlock(err)}`)
+            .setDescription(`\`❌\` Échec de la suppression des messages.\n${codeBlock(err)}`)
             .setColor(Colors.Red),
         ],
         ephemeral: true,
