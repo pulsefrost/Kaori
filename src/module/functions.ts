@@ -2,18 +2,18 @@ import { ChatInputCommandInteraction, Guild, PermissionsBitField } from 'discord
 import Config from '../../config.json';
 
 const dangerPermissions = new Map([
-  [ 'Administrator', '管理者' ],
-  [ 'KickMembers', 'メンバーをKick' ],
-  [ 'BanMembers', 'メンバーをBan' ],
-  [ 'ManageChannels', 'チャンネルを管理' ],
-  [ 'ManageGuild', 'サーバーを管理' ],
-  [ 'ManageMessages', 'メッセージを管理' ],
-  [ 'ManageRoles', 'ロールを管理' ],
-  [ 'ManageWebhooks', 'ウェブフックの管理' ],
-  [ 'ManageEmojisAndStickers', '絵文字・スタンプの管理' ],
-  [ 'ManageEvents', 'イベントの管理' ],
-  [ 'ManageThreads', 'スレッドの管理' ],
-  [ 'ModerateMembers', 'メンバーの管理' ],
+  [ 'Administrator', 'Administrateur' ],
+  [ 'KickMembers', 'Expulser des membres' ],
+  [ 'BanMembers', 'Bannir des membres' ],
+  [ 'ManageChannels', 'Gérer les canaux' ],
+  [ 'ManageGuild', 'Gérer le serveur' ],
+  [ 'ManageMessages', 'Gérer les messages' ],
+  [ 'ManageRoles', 'Gérer les rôles' ],
+  [ 'ManageWebhooks', 'Gérer les webhooks' ],
+  [ 'ManageEmojisAndStickers', 'Gérer les emojis et stickers' ],
+  [ 'ManageEvents', 'Gérer les événements' ],
+  [ 'ManageThreads', 'Gérer les threads' ],
+  [ 'ModerateMembers', 'Modérer les membres' ],
 ]);
 
 export function isBlocked(guild: Guild | null): boolean {
@@ -37,5 +37,5 @@ export function checkAndFormatDangerPermission(permissions: Readonly<Permissions
 }
 
 export async function checkPermission(interaction: ChatInputCommandInteraction): Promise<void> {
-  if (!Config.admin.users.includes(interaction.user.id)) await interaction.reply({ content: '`❌` コマンドの実行権限がありません', ephemeral: true });
+  if (!Config.admin.users.includes(interaction.user.id)) await interaction.reply({ content: '`❌` Vous n'avez pas la permission d'exécuter cette commande', ephemeral: true });
 }
