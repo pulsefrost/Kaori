@@ -8,7 +8,7 @@ import { channelModal } from '../_modals';
 import ServerSettings from '../../../schemas/ServerSettings';
 
 const joinMessageSetting = [
-  // 有効・無効化
+  // Activation/Désactivation
   new Button(
     { customId: 'nonick-js:setting-message-join-enable' },
     async (interaction) => {
@@ -17,7 +17,7 @@ const joinMessageSetting = [
     },
   ),
 
-  // 送信先
+  // Destination
   new Button(
     { customId: 'nonick-js:setting-message-join-channel' },
     (interaction) => interaction.showModal(channelModal.setCustomId('nonick-js:setting-message-join-channel-modal')),
@@ -27,7 +27,7 @@ const joinMessageSetting = [
     async (interaction) => changeChannelSetting(interaction, 'message.join.channel', FeatureType.JoinAndLeaveMessage),
   ),
 
-  // メッセージ
+  // Message
   new Button(
     { customId: 'nonick-js:setting-message-join-message' },
     async (interaction) => {
@@ -37,12 +37,12 @@ const joinMessageSetting = [
       interaction.showModal(
         new ModalBuilder()
           .setCustomId('nonick-js:setting-message-join-message-modal')
-          .setTitle('メッセージ')
+          .setTitle('Message')
           .setComponents(
             new ActionRowBuilder<TextInputBuilder>().setComponents(
               new TextInputBuilder()
                 .setCustomId('title')
-                .setLabel('タイトル')
+                .setLabel('Titre')
                 .setValue(embed.data.title || '')
                 .setMaxLength(256)
                 .setStyle(TextInputStyle.Short)
@@ -51,20 +51,20 @@ const joinMessageSetting = [
             new ActionRowBuilder<TextInputBuilder>().setComponents(
               new TextInputBuilder()
                 .setCustomId('url')
-                .setLabel('タイトルURL')
+                .setLabel('URL du Titre')
                 .setValue(embed.data.url || '')
-                .setPlaceholder('例）https://docs.nonick-js.com')
+                .setPlaceholder('Exemple : https://docs.nonick-js.com')
                 .setStyle(TextInputStyle.Short)
                 .setRequired(false),
             ),
             new ActionRowBuilder<TextInputBuilder>().setComponents(
               new TextInputBuilder()
                 .setCustomId('description')
-                .setLabel('説明')
+                .setLabel('Description')
                 .setValue(embed.data.description || '')
                 .setMaxLength(3999)
                 .setStyle(TextInputStyle.Paragraph)
-                .setPlaceholder('Tips: 公式ドキュメントに特殊な構文の使用方法が載っています。')
+                .setPlaceholder('Conseil : La documentation officielle explique l\'utilisation de syntaxes spéciales.')
                 .setRequired(false),
             ),
           ),
@@ -81,9 +81,9 @@ const joinMessageSetting = [
       const description = interaction.fields.getTextInputValue('description');
 
       if (!title && !description)
-        return interaction.reply({ content: '`❌` タイトルと説明はどちらかは必ず入力する必要があります。', ephemeral: true });
+        return interaction.reply({ content: '`❌` Le titre et la description doivent être saisis.', ephemeral: true });
       if (url && !isURL(url))
-        return interaction.reply({ content: '`❌` `http://`または`https://`から始まるURLを入力してください。', ephemeral: true });
+        return interaction.reply({ content: '`❌` Veuillez saisir une URL commençant par `http://` ou `https://`.', ephemeral: true });
 
       const embed = new EmbedBuilder()
         .setTitle(title || null)
@@ -102,7 +102,7 @@ const joinMessageSetting = [
     },
   ),
 
-  // プレビュー
+  // Aperçu
   new Button(
     { customId: 'nonick-js:setting-message-join-preview' },
     async (interaction) => {
@@ -110,7 +110,7 @@ const joinMessageSetting = [
       const Setting = await ServerSettings.findOne({ serverId: interaction.guildId });
 
       const option = Setting?.message.join.messageOptions;
-      if (!option) return interaction.reply({ content: '`❌` メッセージが設定されていません', ephemeral: true });
+      if (!option) return interaction.reply({ content: '`❌` Aucun message configuré.', ephemeral: true });
 
       const guild = interaction.guild;
       const user = interaction.user;
@@ -130,7 +130,7 @@ const joinMessageSetting = [
 ];
 
 const leaveMessageSetting = [
-  // 有効・無効化
+  // Activation/Désactivation
   new Button(
     { customId: 'nonick-js:setting-message-leave-enable' },
     async (interaction) => {
@@ -139,7 +139,7 @@ const leaveMessageSetting = [
     },
   ),
 
-  // 送信先
+  // Destination
   new Button(
     { customId: 'nonick-js:setting-message-leave-channel' },
     (interaction) => interaction.showModal(channelModal.setCustomId('nonick-js:setting-message-leave-channel-modal')),
@@ -149,7 +149,7 @@ const leaveMessageSetting = [
     (interaction) => changeChannelSetting(interaction, 'message.leave.channel', FeatureType.JoinAndLeaveMessage),
   ),
 
-  // メッセージ
+  // Message
   new Button(
     { customId: 'nonick-js:setting-message-leave-message' },
     async (interaction) => {
@@ -158,13 +158,13 @@ const leaveMessageSetting = [
       interaction.showModal(
         new ModalBuilder()
           .setCustomId('nonick-js:setting-message-leave-message-modal')
-          .setTitle('メッセージ')
+          .setTitle('Message')
           .setComponents(
             new ActionRowBuilder<TextInputBuilder>().setComponents(
               new TextInputBuilder()
                 .setCustomId('content')
-                .setLabel('メッセージ')
-                .setPlaceholder('Tips: 公式ドキュメントに特殊な構文の使用方法が載っています。')
+                .setLabel('Message')
+                .setPlaceholder('Conseil : La documentation officielle explique l\'utilisation de syntaxes spéciales.')
                 .setMaxLength(2000)
                 .setValue(Setting?.message.leave.messageOptions.content || '')
                 .setStyle(TextInputStyle.Paragraph),
@@ -189,7 +189,7 @@ const leaveMessageSetting = [
     },
   ),
 
-  // プレビュー
+  // Aperçu
   new Button(
     { customId: 'nonick-js:setting-message-leave-preview' },
     async (interaction) => {
@@ -197,7 +197,7 @@ const leaveMessageSetting = [
       const Setting = await ServerSettings.findOne({ serverId: interaction.guildId });
 
       const option = Setting?.message.leave.messageOptions;
-      if (!option) return interaction.reply({ content: '`❌` メッセージが設定されていません', ephemeral: true });
+      if (!option) return interaction.reply({ content: '`❌` Aucun message configuré.', ephemeral: true });
 
       const guild = interaction.guild;
       const user = interaction.user;
