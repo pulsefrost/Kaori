@@ -43,13 +43,13 @@ async function checkMessage(message: Message<boolean>) {
 
 	if (setting.filter.inviteUrl) {
 		const invites = await message.guild.invites.fetch();
-		if (new RegExp(`(https?:\\/\\/)?(.*\\.)?discord(app)?\\.(com\\/invite|gg)\\/(?!${invites.map(invite => invite.code).join('|')})`).test(message.content)) deleteMessage(message, logCh, 'サーバー招待リンク');
+		if (new RegExp(`(https?:\\/\\/)?(.*\\.)?discord(app)?\\.(com\\/invite|gg)\\/(?!${invites.map(invite => invite.code).join('|')})`).test(message.content)) deleteMessage(message, logCh, 'Lien d\'invitation au serveur');
 	}
 	if (setting.filter.token && (
 		/mfa\.[a-z0-9_-]{20,}/i.test(message.content) ||
 		/[a-z0-9_-]{23,28}\.[a-z0-9_-]{6,7}\.[a-z0-9_-]{27}/i.test(message.content)
-	)) deleteMessage(message, logCh, 'Discordアカウントのトークン');
-	if (setting.filter.shortUrl && shortUrlDomain.some(domain => message.content.includes(domain))) deleteMessage(message, logCh, '短縮URL');
+	)) deleteMessage(message, logCh, 'Token de compte Discord');
+	if (setting.filter.shortUrl && shortUrlDomain.some(domain => message.content.includes(domain))) deleteMessage(message, logCh, 'URL raccourcie');
 }
 
 function deleteMessage(message: Message<true>, channel: GuildBasedChannel | null, rule?: string) {
@@ -58,16 +58,16 @@ function deleteMessage(message: Message<true>, channel: GuildBasedChannel | null
 			channel.send({
 				embeds: [
 					new EmbedBuilder()
-						.setTitle('`✋` メッセージブロック')
+						.setTitle('`✋` Blocage du message')
 						.setDescription([
-							`${formatEmoji(Emojis.Gray.channel)} **チャンネル:** ${message.channel} [\`${message.channel.name}\`]`,
-							`${formatEmoji(Emojis.Gray.member)} **送信者:** ${message.author} [\`${message.author.tag}\`]`,
-							`${formatEmoji(Emojis.Gray.schedule)} ${message.editedAt ? `**編集時刻:** ${time(message.createdAt)}` : `**送信時刻:** ${time(message.createdAt)}`}`,
+							`${formatEmoji(Emojis.Gray.channel)} **Canal :** ${message.channel} [\`${message.channel.name}\`]`,
+							`${formatEmoji(Emojis.Gray.member)} **Expéditeur :** ${message.author} [\`${message.author.tag}\`]`,
+							`${formatEmoji(Emojis.Gray.schedule)} ${message.editedAt ? `**Heure d'édition :** ${time(message.createdAt)}` : `**Heure d'envoi :** ${time(message.createdAt)}`}`,
 						].join('\n'))
 						.setColor(resolveColor('#2b2d31'))
 						.setThumbnail(message.author.displayAvatarURL())
-						.setFields({ name: 'メッセージ', value: escapeSpoiler(message.content) })
-						.setFooter({ text: `ルール: ${rule}` }),
+						.setFields({ name: 'Message', value: escapeSpoiler(message.content) })
+						.setFooter({ text: `Règle : ${rule}` }),
 				],
 			});
 	});
