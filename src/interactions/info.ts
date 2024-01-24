@@ -18,23 +18,23 @@ const flagEmojis = new Map([
 ]);
 
 const featureTexts = new Map<string, string>([
-  [GuildFeature.Partnered, `${formatEmoji('982512900432351262')}Discordパートナー`],
-  [GuildFeature.Verified, `${formatEmoji('982512902042955806')}認証済み`],
-  [GuildFeature.Discoverable, `${formatEmoji('1087358252691496960')}公開サーバー`],
+  [GuildFeature.Partnered, `${formatEmoji('982512900432351262')} Discord Partner`],
+  [GuildFeature.Verified, `${formatEmoji('982512902042955806')} Vérifié`],
+  [GuildFeature.Discoverable, `${formatEmoji('1087358252691496960')} Serveur public`],
 ]);
 
 const Command = new ChatInput(
   {
     name: 'info',
-    description: 'ユーザー/サーバー の情報を表示',
+    description: 'Afficher les informations d\'un utilisateur/serveur',
     options: [
       {
         name: 'user',
-        description: 'ユーザーの情報を表示',
+        description: 'Afficher les informations d\'un utilisateur',
         options: [
           {
             name: 'user',
-            description: 'ユーザー',
+            description: 'Utilisateur',
             type: ApplicationCommandOptionType.User,
             required: true,
           },
@@ -43,7 +43,7 @@ const Command = new ChatInput(
       },
       {
         name: 'server',
-        description: 'サーバーの情報を表示',
+        description: 'Afficher les informations du serveur',
         type: ApplicationCommandOptionType.Subcommand,
       },
     ],
@@ -62,25 +62,25 @@ const Command = new ChatInput(
           new EmbedBuilder()
             .setTitle(interaction.guild.name)
             .setDescription([
-              `${formatEmoji(Emojis.White.id)} サーバーID: \`${interaction.guildId}\``,
-              `${formatEmoji(Emojis.White.nickName)} オーナー: ${await interaction.guild.fetchOwner()}`,
-              `${formatEmoji(Emojis.White.nickName)} メンバー数: \`${interaction.guild.memberCount}\`人`,
-              `${formatEmoji(Emojis.White.channel)} チャンネル数: \`${interaction.guild.channels.channelCountWithoutThreads}\``,
-              `${formatEmoji(Emojis.White.schedule)} 作成日: ${time(interaction.guild.createdAt, 'D')}`,
-              `${formatEmoji(Emojis.White.boost)} ブースト数: \`${interaction.guild.premiumSubscriptionCount}\``,
+              `${formatEmoji(Emojis.White.id)} ID du serveur: \`${interaction.guildId}\``,
+              `${formatEmoji(Emojis.White.nickName)} Propriétaire: ${await interaction.guild.fetchOwner()}`,
+              `${formatEmoji(Emojis.White.nickName)} Nombre de membres: \`${interaction.guild.memberCount}\` personnes`,
+              `${formatEmoji(Emojis.White.channel)} Nombre de canaux: \`${interaction.guild.channels.channelCountWithoutThreads}\``,
+              `${formatEmoji(Emojis.White.schedule)} Date de création: ${time(interaction.guild.createdAt, 'D')}`,
+              `${formatEmoji(Emojis.White.boost)} Nombre de boosts: \`${interaction.guild.premiumSubscriptionCount}\``,
             ].join('\n'))
             .setColor(Colors.White)
             .setThumbnail(interaction.guild.iconURL())
             .setFields(
-              { name: 'ステータス', value: interaction.guild.features.map(v => featureTexts.get(v)).filter(Boolean).join('\n') || 'なし' },
+              { name: 'Statut', value: interaction.guild.features.map(v => featureTexts.get(v)).filter(Boolean).join('\n') || 'Aucun' },
               {
-                name: `ロール (${interaction.guild.roles.cache.size})`,
+                name: `Rôles (${interaction.guild.roles.cache.size})`,
                 value: interaction.member.permissions.has(PermissionFlagsBits.ManageRoles)
                   ? interaction.guild.roles.cache
                     .filter(role => role.name !== '@everyone')
                     .sort((before, after) => before.position > after.position ? -1 : 1)
-                    ?.map(role => role?.toString())?.join(' ') || 'なし'
-                  : '🔒`ロールを管理`権限を持っている必要があります',
+                    ?.map(role => role?.toString())?.join(' ') || 'Aucun'
+                  : '🔒 Vous devez avoir la permission `Gérer les rôles`',
               },
             ),
         ],
@@ -91,7 +91,7 @@ const Command = new ChatInput(
 
 const Context = new UserContext(
   {
-    name: 'ユーザーの情報',
+    name: 'Informations utilisateur',
     dmPermission: false,
   },
   async (interaction) => {
@@ -110,46 +110,46 @@ async function createUserInfoEmbed(interaction: Interaction, user: User) {
   if (!(member instanceof GuildMember))
     return new EmbedBuilder()
       .setAuthor({ name: (!user.bot && user.discriminator === '0') ? `@${user.username}` : `${user.tag}` })
-      .setTitle('このユーザーはこのサーバーにいません')
-      .setDescription(`${formatEmoji(Emojis.White.id)} ユーザーID: ${inlineCode(user.id)}`)
+      .setTitle('Cet utilisateur n\'est pas sur ce serveur')
+      .setDescription(`${formatEmoji(Emojis.White.id)} ID de l'utilisateur: ${inlineCode(user.id)}`)
       .setColor(Colors.DarkerGrey)
       .setThumbnail(user.displayAvatarURL())
       .setFields(
-        { name: 'アカウント作成日', value: time(user.createdAt, 'D'), inline: true },
-        { name: 'バッジ', value: userFlagsEmojis ? userFlagsEmojis.map(v => formatEmoji(v || '0')).join('') : 'なし', inline: true },
+        { name: 'Date de création du compte', value: time(user.createdAt, 'D'), inline: true },
+        { name: 'Badge', value: userFlagsEmojis ? userFlagsEmojis.map(v => formatEmoji(v || '0')).join('') : 'Aucun', inline: true },
       );
 
-  const nickName = member.nickname ?? 'なし';
-  const joinTime = member.joinedAt ? time(member.joinedAt, 'D') : 'エラー';
+  const nickName = member.nickname ?? 'Aucun';
+  const joinTime = member.joinedAt ? time(member.joinedAt, 'D') : 'Erreur';
   const roles = member.roles.cache
     .filter(role => role.name !== '@everyone')
     .sort((before, after) => before.position > after.position ? -1 : 1)
-    ?.map(role => role?.toString())?.join(' ') || 'なし';
+    ?.map(role => role?.toString())?.join(' ') || 'Aucun';
 
   const embed = new EmbedBuilder()
     .setAuthor({ name: (!user.bot && user.discriminator === '0') ? `@${user.username}` : `${user.tag}` })
     .setDescription([
-      `${formatEmoji(Emojis.White.nickName)} ニックネーム ${bold(nickName)}`,
-      `${formatEmoji(Emojis.White.id)} ユーザーID ${inlineCode(user.id)}`,
+      `${formatEmoji(Emojis.White.nickName)} Pseudo ${bold(nickName)}`,
+      `${formatEmoji(Emojis.White.id)} ID de l'utilisateur ${inlineCode(user.id)}`,
     ].join('\n'))
     .setColor(member.roles.highest.color || Colors.White)
     .setThumbnail(user.displayAvatarURL())
     .setFields(
-      { name: 'アカウント作成日', value: time(user.createdAt, 'D'), inline: true },
-      { name: 'サーバー参加日', value: joinTime, inline: true },
-      { name: 'バッジ', value: userFlagsEmojis?.length ? userFlagsEmojis.map(v => formatEmoji(v || '0')).join('') : 'なし', inline: true },
-      { name: 'ロール', value: roles },
+      { name: 'Date de création du compte', value: time(user.createdAt, 'D'), inline: true },
+      { name: 'Date d\'arrivée sur le serveur', value: joinTime, inline: true },
+      { name: 'Badge', value: userFlagsEmojis?.length ? userFlagsEmojis.map(v => formatEmoji(v || '0')).join('') : 'Aucun', inline: true },
+      { name: 'Rôles', value: roles },
     );
 
   if (member.premiumSince)
     embed.addFields({
-      name: `${formatEmoji(Emojis.White.boost)} SERVER BOOST`,
-      value: `ブーストを開始した日: ${time(member.premiumSince, 'D')} (${time(member.premiumSince, 'R')})`,
+      name: `${formatEmoji(Emojis.White.boost)} BOOST SERVEUR`,
+      value: `Date de début du boost: ${time(member.premiumSince, 'D')} (${time(member.premiumSince, 'R')})`,
     });
 
   if (member.isCommunicationDisabled() && interaction.inCachedGuild() && interaction.member.permissions.has(PermissionFlagsBits.ModerateMembers))
     embed.addFields({
-      name: `${formatEmoji(Emojis.White.timeOut)} タイムアウトが解除される時間`,
+      name: `${formatEmoji(Emojis.White.timeOut)} Heure de levée du timeout`,
       value: `${time(member.communicationDisabledUntil, 'D')} (${time(member.communicationDisabledUntil, 'R')})`,
     });
 
