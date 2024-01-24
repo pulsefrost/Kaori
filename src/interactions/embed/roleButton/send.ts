@@ -8,20 +8,20 @@ const sendRoleButton = new Button(
     interaction.showModal(
       new ModalBuilder()
         .setCustomId('nonick-js:embedMaker-roleButton-sendModal')
-        .setTitle('ボタンを作成')
+        .setTitle('Créer un bouton')
         .setComponents(
           new ActionRowBuilder<TextInputBuilder>().setComponents(
             new TextInputBuilder()
               .setCustomId('roleNameOrId')
-              .setLabel('ロールの名前またはID')
+              .setLabel('Nom ou ID du rôle')
               .setMaxLength(100)
               .setStyle(TextInputStyle.Short),
           ),
           new ActionRowBuilder<TextInputBuilder>().setComponents(
             new TextInputBuilder()
               .setCustomId('displayName')
-              .setLabel('ボタン上での表示名')
-              .setPlaceholder('例: マイクラ勢')
+              .setLabel('Nom affiché sur le bouton')
+              .setPlaceholder('Exemple : Minecraft')
               .setMaxLength(80)
               .setStyle(TextInputStyle.Short)
               .setRequired(false),
@@ -29,8 +29,8 @@ const sendRoleButton = new Button(
           new ActionRowBuilder<TextInputBuilder>().setComponents(
             new TextInputBuilder()
               .setCustomId('emojiNameOrId')
-              .setLabel('Unicode絵文字 または カスタム絵文字')
-              .setPlaceholder('一文字のみ・カスタム絵文字は名前かIDを入力')
+              .setLabel('Emoji Unicode ou Emoji personnalisé')
+              .setPlaceholder('Un seul caractère ou entrez le nom ou l\'ID de l\'emoji personnalisé')
               .setMaxLength(32)
               .setStyle(TextInputStyle.Short)
               .setRequired(false),
@@ -43,7 +43,7 @@ const sendRoleButton = new Button(
 const sendRoleButtonModal = new Modal(
   { customId: 'nonick-js:embedMaker-roleButton-sendModal' },
   async (interaction) => {
-    // Create Button
+    // Création du bouton
     if (!interaction.isFromMessage() || !interaction.inCachedGuild() || interaction.message.components[0].components[1].type !== ComponentType.Button || !interaction.channel) return;
 
     const emojiRegex = new RegExp(/\p{Emoji_Modifier_Base}\p{Emoji_Modifier}?|\p{Emoji_Presentation}|\p{Emoji}\uFE0F/gu);
@@ -55,11 +55,11 @@ const sendRoleButtonModal = new Modal(
     const emoji = interaction.guild.emojis.cache.find(v => v.name === emojiNameOrId || v.id === emojiNameOrId)?.id || emojiNameOrId.match(emojiRegex)?.[0];
 
     if (!(role instanceof Role))
-      return interaction.reply({ content: '`❌` 入力された値に一致するロールが見つかりませんでした。', ephemeral: true });
+      return interaction.reply({ content: '`❌` Aucun rôle trouvé correspondant aux valeurs saisies.', ephemeral: true });
     if (role?.managed)
-      return interaction.reply({ content: '`❌` そのロールは外部サービスによって管理されているため、セレクトメニューに追加できません。', ephemeral: true });
+      return interaction.reply({ content: '`❌` Ce rôle est géré par un service externe et ne peut pas être ajouté au menu déroulant.', ephemeral: true });
     if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator) && interaction.member.roles.highest.position < role.position)
-      return interaction.reply({ content: '`❌` 自分の持つロールより上のロールを追加することはできません。' });
+      return interaction.reply({ content: '`❌` Vous ne pouvez pas ajouter un rôle supérieur à votre rôle actuel.', ephemeral: true });
 
     const button = new ButtonBuilder()
       .setCustomId(`nonick-js:roleButton-${role.id}`)
@@ -72,25 +72,25 @@ const sendRoleButtonModal = new Modal(
     else
       button.setLabel(displayName || role.name);
 
-    // Edit Message
+    // Modifier le message
     if (!interaction.guild.members.me?.permissions.has(PermissionFlagsBits.ManageWebhooks))
-      return interaction.reply({ content: '`❌` この機能を使用するにはBOTに`ウェブフックの管理`権限を付与する必要があります。', ephemeral: true });
+      return interaction.reply({ content: '`❌` Pour utiliser cette fonctionnalité, le BOT doit avoir la permission `Gérer les webhooks`.', ephemeral: true });
 
     const targetId = interaction.message.embeds[0].footer?.text.match(/[0-9]{18,19}/)?.[0];
     const targetMessage = await (await interaction.channel.fetch()).messages.fetch(targetId!).catch(() => undefined);
 
     if (!targetMessage)
-      return interaction.reply({ content: '`❌` メッセージの取得中に問題が発生しました。', ephemeral: true });
+      return interaction.reply({ content: '`❌` Un problème est survenu lors de la récupération du message.', ephemeral: true });
 
     const webhook = await targetMessage.fetchWebhook().catch(() => null);
     if (!webhook || interaction.client.user.id !== webhook.owner?.id)
-      return interaction.reply({ content: '`❌` このメッセージは更新できません。', ephemeral: true });
+      return interaction.reply({ content: '`❌` Ce message ne peut pas être mis à jour.', ephemeral: true });
     if (targetMessage.components[4]?.components?.length === 5)
-      return interaction.reply({ content: '`❌` これ以上コンポーネントを追加できません！', ephemeral: true });
+      return interaction.reply({ content: '`❌` Aucun composant supplémentaire ne peut être ajouté !', ephemeral: true });
     if (targetMessage.components[0]?.components[0]?.type === ComponentType.StringSelect)
-      return interaction.reply({ content: '`❌` セレクトメニューとボタンは同じメッセージに追加できません。', ephemeral: true });
+      return interaction.reply({ content: '`❌` Le menu déroulant et les boutons ne peuvent pas être ajoutés dans le même message.', ephemeral: true });
     if (targetMessage.components.some(v => v.components.map(i => i.customId).includes(`nonick-js:roleButton-${role.id}`)))
-      return interaction.reply({ content: '`❌` そのロールのボタンは既に追加されています。', ephemeral: true });
+      return interaction.reply({ content: '`❌` Ce bouton pour ce rôle a déjà été ajouté.', ephemeral: true });
 
     const updatedComponents = targetMessage.components.map(v => ActionRowBuilder.from<ButtonBuilder>(v as ActionRow<ButtonComponent>));
     const lastActionRow = updatedComponents.slice(-1)[0];
@@ -103,7 +103,7 @@ const sendRoleButtonModal = new Modal(
     const embeds = interaction.message.embeds;
     const components = interaction.message.components;
 
-    // Check Permission
+    // Vérifier les permissions
     const dangerPermissions = checkAndFormatDangerPermission(role.permissions);
 
     if (dangerPermissions.length) {
@@ -112,10 +112,10 @@ const sendRoleButtonModal = new Modal(
         embeds: [
           EmbedBuilder
             .from(interaction.message.embeds[0])
-            .setTitle('`⚠️` 注意！')
+            .setTitle('`⚠️` Attention !')
             .setDescription([
-              `${role}には潜在的に危険な権限があります。`,
-              '**本当にこのロールを追加しますか？**',
+              `Ce rôle a des permissions potentiellement dangereuses.`,
+              '**Voulez-vous vraiment ajouter ce rôle ?**',
               '',
               `> ${dangerPermissions.map(v => `\`${v}\``).join(' ')}`,
             ].join('\n'))
@@ -125,11 +125,11 @@ const sendRoleButtonModal = new Modal(
           new ActionRowBuilder<ButtonBuilder>().setComponents(
             new ButtonBuilder()
               .setCustomId('nonick-js:embedMaker-roleButton-send-agree')
-              .setLabel('はい')
+              .setLabel('Oui')
               .setStyle(ButtonStyle.Success),
             new ButtonBuilder()
               .setCustomId('nonick-js:embedMaker-roleButton-send-disagree')
-              .setLabel('いいえ')
+              .setLabel('Non')
               .setStyle(ButtonStyle.Danger),
           ),
         ],
@@ -145,21 +145,21 @@ const sendRoleButtonModal = new Modal(
           if (i.customId === 'nonick-js:embedMaker-roleButton-send-disagree')
             return i.update({ embeds, components });
 
-          await i.update({ content: '`⌛` コンポーネントを追加中...', embeds: [], components: [] });
+          await i.update({ content: '`⌛` Ajout du composant en cours...', embeds: [], components: [] });
           await webhook.edit({ channel: i.channelId });
           webhook.editMessage(targetMessage, { components: updatedComponents })
-            .then(() => i.editReply({ content: '`✅` コンポーネントを追加しました！', embeds, components }))
-            .catch(() => i.editReply({ content: '`❌` コンポーネントの更新中に問題が発生しました。', embeds, components }));
+            .then(() => i.editReply({ content: '`✅` Composant ajouté avec succès !', embeds, components }))
+            .catch(() => i.editReply({ content: '`❌` Un problème est survenu lors de la mise à jour du composant.', embeds, components }));
         })
         .catch(() => {});
     }
 
     else {
-      await interaction.update({ content: '`⌛` コンポーネントを追加中...', embeds: [], components: [] });
+      await interaction.update({ content: '`⌛` Ajout du composant en cours...', embeds: [], components: [] });
       await webhook.edit({ channel: interaction.channelId });
       webhook.editMessage(targetMessage, { components: updatedComponents })
-        .then(() => interaction.editReply({ content: '`✅` コンポーネントを追加しました！', embeds, components }))
-        .catch(() => interaction.editReply({ content: '`❌` コンポーネントの更新中に問題が発生しました。', embeds, components }));
+        .then(() => interaction.editReply({ content: '`✅` Composant ajouté avec succès !', embeds, components }))
+        .catch(() => interaction.editReply({ content: '`❌` Un problème est survenu lors de la mise à jour du composant.', embeds, components }));
     }
   },
 );
