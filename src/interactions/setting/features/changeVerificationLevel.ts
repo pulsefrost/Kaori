@@ -6,7 +6,7 @@ import { FeatureType } from '../_messages';
 import { channelModal } from '../_modals';
 
 const generalSetting = [
-  // 有効・無効化
+  // Activation/Désactivation
   new Button(
     { customId: 'nonick-js:setting-changeVerificationLevel-enable' },
     async (interaction) => {
@@ -15,7 +15,7 @@ const generalSetting = [
     },
   ),
 
-  // 開始・終了時刻
+  // Heure de début/fin
   new Button(
     { customId: 'nonick-js:setting-changeVerificationLevel-time' },
     async (interaction) => {
@@ -24,12 +24,12 @@ const generalSetting = [
       interaction.showModal(
         new ModalBuilder()
           .setCustomId('nonick-js:setting-changeVerificationLevel-time-modal')
-          .setTitle('開始・終了時間')
+          .setTitle('Heure de début/fin')
           .setComponents(
             new ActionRowBuilder<TextInputBuilder>().setComponents(
               new TextInputBuilder()
                 .setCustomId('start')
-                .setLabel('開始時間 (0~23)')
+                .setLabel('Heure de début (0~23)')
                 .setMaxLength(2)
                 .setStyle(TextInputStyle.Short)
                 .setValue(Setting?.changeVerificationLevel.time.start == null ? '' : String(Setting?.changeVerificationLevel.time.start)),
@@ -37,7 +37,7 @@ const generalSetting = [
             new ActionRowBuilder<TextInputBuilder>().setComponents(
               new TextInputBuilder()
                 .setCustomId('end')
-                .setLabel('終了時間 (0~23)')
+                .setLabel('Heure de fin (0~23)')
                 .setMaxLength(2)
                 .setStyle(TextInputStyle.Short)
                 .setValue(Setting?.changeVerificationLevel.time.end == null ? '' : String(Setting?.changeVerificationLevel.time.end)),
@@ -55,11 +55,11 @@ const generalSetting = [
       const end = parseInt(interaction.fields.getTextInputValue('end'), 10);
 
       if (isNaN(start) || start > 23 || start < 0)
-        return interaction.reply({ content: '`❌` 開始時間に無効な値が入力されました。', ephemeral: true });
+        return interaction.reply({ content: '`❌` Valeur invalide pour l\'heure de début.', ephemeral: true });
       if (isNaN(end) || end > 23 || end < 0)
-        return interaction.reply({ content: '`❌` 終了時間に無効な値が入力されました。', ephemeral: true });
+        return interaction.reply({ content: '`❌` Valeur invalide pour l\'heure de fin.', ephemeral: true });
       if (start === end)
-        return interaction.reply({ content: '`❌` 開始時間と終了時間を同じ値に設定することはできません。', ephemeral: true });
+        return interaction.reply({ content: '`❌` L\'heure de début et l\'heure de fin ne peuvent pas être définies à la même valeur.', ephemeral: true });
 
       const res = await ServerSettings.findOneAndUpdate(
         { serverId: interaction.guildId },
@@ -76,7 +76,7 @@ const generalSetting = [
     },
   ),
 
-  // 認証レベル
+  // Niveau de vérification
   new SelectMenu(
     { customId: 'nonick-js:setting-changeVerificationLevel-level', type: SelectMenuType.String },
     async (interaction) => {
@@ -91,7 +91,7 @@ const generalSetting = [
 ];
 
 const logSetting = [
-  // 有効・無効化
+  // Activation/Désactivation
   new Button(
     { customId: 'nonick-js:setting-changeVerificationLevel-log-enable' },
     async (interaction) => {
@@ -100,7 +100,7 @@ const logSetting = [
     },
   ),
 
-  // 送信先
+  // Destination
   new Button(
     { customId: 'nonick-js:setting-changeVerificationLevel-log-channel' },
     (interaction) => interaction.showModal(channelModal.setCustomId('nonick-js:setting-changeVerificationLevel-log-channel-modal')),
