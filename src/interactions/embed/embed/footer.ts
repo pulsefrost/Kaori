@@ -11,12 +11,12 @@ const button = new Button(
     interaction.showModal(
       new ModalBuilder()
         .setCustomId('nonick-js:embedMaker-footerModal')
-        .setTitle('フッター')
+        .setTitle('Pied de page')
         .setComponents(
           new ActionRowBuilder<TextInputBuilder>().setComponents(
             new TextInputBuilder()
               .setCustomId('text')
-              .setLabel('テキスト')
+              .setLabel('Texte')
               .setMaxLength(2048)
               .setValue(embed.footer?.text || '')
               .setStyle(TextInputStyle.Short)
@@ -25,7 +25,7 @@ const button = new Button(
           new ActionRowBuilder<TextInputBuilder>().setComponents(
             new TextInputBuilder()
               .setCustomId('iconURL')
-              .setLabel('アイコンのURL')
+              .setLabel('URL de l\'icône')
               .setMaxLength(1000)
               .setValue(embed.footer?.iconURL || '')
               .setStyle(TextInputStyle.Short)
@@ -46,9 +46,9 @@ const modal = new Modal(
     const option = text ? { text, iconURL } : null;
 
     if (!text && iconURL)
-      return interaction.reply({ content: '`❌` アイコンのURLを設定する場合は、テキストも入力する必要があります。', ephemeral: true });
+      return interaction.reply({ content: '`❌` Si vous configurez l\'URL de l\'icône, vous devez également saisir le texte.', ephemeral: true });
     if (iconURL && !isURL(iconURL))
-      return interaction.reply({ content: '`❌` `http://`または`https://`から始まるURLを入力してください。', ephemeral: true });
+      return interaction.reply({ content: '`❌` Veuillez saisir une URL commençant par `http://` ou `https://`.', ephemeral: true });
 
     const embed = EmbedBuilder.from(interaction.message.embeds[0]).setFooter(option);
 
