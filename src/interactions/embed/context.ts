@@ -41,7 +41,7 @@ const context = new MessageContext(
         ],
         ephemeral: true,
     });
-},
+};
 
 const select = new SelectMenu(
     { customId: 'nonick-js:embedMaker-editEmbedPanel', type: SelectMenuType.String },
