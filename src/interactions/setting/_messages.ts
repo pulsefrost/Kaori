@@ -16,43 +16,43 @@ export enum FeatureType {
 }
 
 const ChannelTypeMap = new Map([
-  [ChannelType.GuildAnnouncement, 'Announcement'],
-  [ChannelType.PublicThread, 'Thread(公開)'],
-  [ChannelType.PrivateThread, 'Thread(プライベート)'],
-  [ChannelType.GuildVoice, 'Voice'],
-  [ChannelType.GuildStageVoice, 'Stage'],
+  [ChannelType.GuildAnnouncement, 'Annonce'],
+  [ChannelType.PublicThread, 'Thread (Public)'],
+  [ChannelType.PrivateThread, 'Thread (Privé)'],
+  [ChannelType.GuildVoice, 'Vocal'],
+  [ChannelType.GuildStageVoice, 'Scène'],
 ]);
 
 const verificationLevel = [
-  '`❌` これが見えるのはおかしいよ',
-  '`🟢` **低:** メール認証がされているアカウントのみ',
-  '`🟡` **中:** Discordに登録してから5分以上経過したアカウントのみ',
-  '`🟠` **高:** このサーバーのメンバーとなってから10分以上経過したメンバーのみ',
-  '`🔴` **最高:** 電話認証がされているアカウントのみ',
+  '`❌` Cela ne devrait pas être visible',
+  '`🟢` **Bas:** Comptes avec vérification par e-mail seulement',
+  '`🟡` **Moyen:** Comptes enregistrés sur Discord depuis plus de 5 minutes',
+  '`🟠` **Élevé:** Membres du serveur depuis plus de 10 minutes',
+  '`🔴` **Maximum:** Comptes avec vérification téléphonique seulement',
 ];
 
 const autoModFilter = new Map([
-  ['inviteUrl', '招待URL'],
-  ['token', 'Discordトークン'],
-  ['shortUrl', '短縮URL'],
+  ['inviteUrl', 'URL d\'invitation'],
+  ['token', 'Token Discord'],
+  ['shortUrl', 'URL raccourcie'],
 ]);
 
-// 入退室メッセージ
+// Messages d'entrée et de sortie
 ControlPanelMessages.set(FeatureType.JoinAndLeaveMessage, new ControlPanelComponentPagination()
   .setMessageOptions((setting) => ({
     embeds: [
       new EmbedBuilder()
-        .setTitle('`🔧` 設定: 入退室メッセージ')
-        .setDescription('```メンバーがサーバーに参加したり脱退したりした際にメッセージを送信します。(メッセージは各設定の「プレビュー」ボタンで確認できます。)```')
+        .setTitle('`🔧` Paramètres : Messages d\'entrée et de sortie')
+        .setDescription('```Envoie des messages lorsque des membres rejoignent ou quittent le serveur. (Les messages peuvent être prévisualisés avec le bouton "Aperçu" de chaque paramètre.)```')
         .setColor(Colors.Blurple)
         .setFields(
           {
-            name: '入室時',
+            name: 'À l\'entrée',
             value: `${booleanStatus(setting?.message.join.enable)}\n${channelStatus(setting?.message.join.channel)}`,
             inline: true,
           },
           {
-            name: '退室時',
+            name: 'À la sortie',
             value: `${booleanStatus(setting?.message.leave.enable)}\n${channelStatus(setting?.message.leave.channel)}`,
             inline: true,
           },
@@ -68,20 +68,20 @@ ControlPanelMessages.set(FeatureType.JoinAndLeaveMessage, new ControlPanelCompon
         .setDisabled(!setting?.message.join.channel),
       new ButtonBuilder()
         .setCustomId('nonick-js:setting-message-join-channel')
-        .setLabel('送信先')
+        .setLabel('Destinataire')
         .setEmoji(Emojis.White.channel)
         .setStyle(ButtonStyle.Secondary),
       new ButtonBuilder()
         .setCustomId('nonick-js:setting-message-join-message')
-        .setLabel('メッセージ')
+        .setLabel('Message')
         .setEmoji(Emojis.White.message)
         .setStyle(ButtonStyle.Secondary),
       new ButtonBuilder()
         .setCustomId('nonick-js:setting-message-join-preview')
-        .setLabel('プレビュー')
+        .setLabel('Aperçu')
         .setStyle(ButtonStyle.Primary),
     ),
-  ], { name: '入室メッセージ', description: 'メンバー参加時にメッセージを送信', emoji: Emojis.White.setting })
+  ], { name: 'Message d\'entrée', description: 'Envoie un message lorsque qu\'un membre rejoint', emoji: Emojis.White.setting })
   .addActionRows((setting) => [
     new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
@@ -91,38 +91,38 @@ ControlPanelMessages.set(FeatureType.JoinAndLeaveMessage, new ControlPanelCompon
         .setDisabled(!setting?.message.leave.channel),
       new ButtonBuilder()
         .setCustomId('nonick-js:setting-message-leave-channel')
-        .setLabel('送信先')
+        .setLabel('Destinataire')
         .setEmoji(Emojis.White.channel)
         .setStyle(ButtonStyle.Secondary),
       new ButtonBuilder()
         .setCustomId('nonick-js:setting-message-leave-message')
-        .setLabel('メッセージ')
+        .setLabel('Message')
         .setEmoji(Emojis.White.message)
         .setStyle(ButtonStyle.Secondary),
       new ButtonBuilder()
         .setCustomId('nonick-js:setting-message-leave-preview')
-        .setLabel('プレビュー')
+        .setLabel('Aperçu')
         .setStyle(ButtonStyle.Primary),
     ),
-  ], { name: '退室メッセージ', description: 'メンバー退室時にメッセージを送信', emoji: Emojis.White.setting }),
+  ], { name: 'Message de sortie', description: 'Envoie un message lorsque qu\'un membre quitte', emoji: Emojis.White.setting }),
 );
 
-// サーバー内通報
+// Signalement interne dans le serveur
 ControlPanelMessages.set(FeatureType.ReportToAdmin, new ControlPanelComponentPagination()
   .setMessageOptions((setting) => ({
     embeds: [
       new EmbedBuilder()
-        .setTitle('`🔧` 設定: サーバー内通報')
-        .setDescription('```メンバーがルールに違反したメッセージやユーザーをモデレーターに通報できるようになります。```')
+        .setTitle('`🔧` Paramètres : Signalement interne dans le serveur')
+        .setDescription('```Les membres peuvent signaler des messages ou des utilisateurs en violation des règles aux modérateurs.```')
         .setColor(Colors.Blurple)
         .setFields(
           {
-            name: '一般設定',
+            name: 'Paramètres généraux',
             value: channelStatus(setting?.report.channel),
             inline: true,
           },
           {
-            name: '通知設定',
+            name: 'Paramètres de notification',
             value: `${booleanStatus(setting?.report.mention.enable)}\n${roleStatus(setting?.report.mention.role)}`,
             inline: true,
           },
@@ -133,11 +133,11 @@ ControlPanelMessages.set(FeatureType.ReportToAdmin, new ControlPanelComponentPag
     new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
         .setCustomId('nonick-js:setting-report-channel')
-        .setLabel('送信先')
+        .setLabel('Destinataire')
         .setEmoji(Emojis.White.channel)
         .setStyle(ButtonStyle.Secondary),
     ),
-  ], { name: '基本設定', emoji: Emojis.White.setting })
+  ], { name: 'Paramètres de base', emoji: Emojis.White.setting })
   .addActionRows((setting) => [
     new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
@@ -147,34 +147,34 @@ ControlPanelMessages.set(FeatureType.ReportToAdmin, new ControlPanelComponentPag
         .setDisabled(!setting?.report.mention.role),
       new ButtonBuilder()
         .setCustomId('nonick-js:setting-report-mention-role')
-        .setLabel('ロール')
+        .setLabel('Rôle')
         .setEmoji(Emojis.White.role)
         .setStyle(ButtonStyle.Secondary),
     ),
-  ], { name: '通知設定', description: '通報受信時にロールをメンション', emoji: Emojis.White.role }),
+  ], { name: 'Paramètres de notification', description: 'Mentionner un rôle lors de la réception d\'un signalement', emoji: Emojis.White.role }),
 );
 
-// メッセージURL展開
+// Expansion des URL de message
 ControlPanelMessages.set(FeatureType.MessageExpansion, new ControlPanelComponentPagination()
   .setMessageOptions((setting) => ({
     embeds: [
       new EmbedBuilder()
-        .setTitle('`🔧` 設定: メッセージURL展開')
-        .setDescription('```DiscordのメッセージURLが送信された際に、そのメッセージの内容や送信者の情報を送信します。```')
+        .setTitle('`🔧` Paramètres : Expansion des URL de message')
+        .setDescription('```Lorsqu\'une URL de message Discord est envoyée, envoie le contenu du message ainsi que les informations sur l\'expéditeur.```')
         .setColor(Colors.Blurple)
         .setFields(
           {
-            name: '基本設定',
+            name: 'Paramètres de base',
             value: booleanStatus(setting?.message.expansion.enable),
           },
           {
-            name: '例外 (タイプ)',
-            value: setting?.message.expansion.ignore.types?.map(v => ChannelTypeMap.get(v)).filter(Boolean).map(v => `\`${v}\``).join(' ') || 'なし',
+            name: 'Exceptions (Types)',
+            value: setting?.message.expansion.ignore.types?.map(v => ChannelTypeMap.get(v)).filter(Boolean).map(v => `\`${v}\``).join(' ') || 'Aucune',
             inline: true,
           },
           {
-            name: '例外 (チャンネル)',
-            value: setting?.message.expansion.ignore.channels?.map(v => channelMention(v)).join(' ') || 'なし',
+            name: 'Exceptions (Canaux)',
+            value: setting?.message.expansion.ignore.channels?.map(v => channelMention(v)).join(' ') || 'Aucune',
             inline: true,
           },
         ),
@@ -187,38 +187,38 @@ ControlPanelMessages.set(FeatureType.MessageExpansion, new ControlPanelComponent
         .setLabel(buttonLabelStatus(setting?.message.expansion.enable))
         .setStyle(buttonStyleStatus(setting?.message.expansion.enable)),
     ),
-  ], { name: '基本設定', emoji: Emojis.White.setting })
+  ], { name: 'Paramètres de base', emoji: Emojis.White.setting })
   .addActionRows((setting) => [
     new ActionRowBuilder<StringSelectMenuBuilder>().setComponents(
       new StringSelectMenuBuilder()
         .setCustomId('nonick-js:setting-message-expansion-ignore-types')
         .setMinValues(0)
         .setMaxValues(4)
-        .setPlaceholder('例外設定 (タイプ)')
+        .setPlaceholder('Exceptions (Types)')
         .setOptions(
           [
             {
-              label: 'アナウンス',
+              label: 'Annonce',
               value: String(ChannelType.GuildAnnouncement),
               emoji: '966773928787836958',
             },
             {
-              label: 'ボイス',
+              label: 'Vocal',
               value: String(ChannelType.GuildVoice),
               emoji: '966773928733315142',
             },
             // {
-            //   label: 'ステージ',
+            //   label: 'Scène',
             //   value: String(ChannelType.GuildStageVoice),
             //   emoji: '966773928645255178',
             // },
             {
-              label: 'スレッド(公開)',
+              label: 'Thread (Public)',
               value: String(ChannelType.PublicThread),
               emoji: '966773928712359946',
             },
             {
-              label: 'スレッド(プライベート)',
+              label: 'Thread (Privé)',
               value: String(ChannelType.PrivateThread),
               emoji: '966773928712359946',
             },
@@ -228,21 +228,21 @@ ControlPanelMessages.set(FeatureType.MessageExpansion, new ControlPanelComponent
     new ActionRowBuilder<ChannelSelectMenuBuilder>().setComponents(
       new ChannelSelectMenuBuilder()
         .setCustomId('nonick-js:setting-message-expansion-ignore-channels')
-        .setPlaceholder('例外設定 (チャンネル)')
+        .setPlaceholder('Exceptions (Canaux)')
         .setChannelTypes([ChannelType.GuildText, ChannelType.GuildForum, ChannelType.GuildVoice, ChannelType.GuildStageVoice])
         .setMinValues(0)
         .setMaxValues(25),
     ),
-  ], { name: '例外設定', description: 'URL展開を行わないチャンネルを設定', emoji: Emojis.White.setting }),
+  ], { name: 'Exceptions', description: 'Configurer les canaux où l\'expansion d\'URL ne doit pas avoir lieu', emoji: Emojis.White.setting }),
 );
 
-// イベントログ
+// Journal des événements
 ControlPanelMessages.set(FeatureType.EventLog, new ControlPanelComponentPagination()
   .setMessageOptions((setting) => ({
     embeds: [
       new EmbedBuilder()
-        .setTitle('`🔧`設定: イベントログ')
-        .setDescription('```サーバー内で起こったイベントのログを送信します。```')
+        .setTitle('`🔧` Paramètres : Journal des événements')
+        .setDescription('```Envoie des journaux des événements survenus dans le serveur.```')
         .setColor(Colors.Blurple)
         .setFields(
           {
@@ -266,7 +266,7 @@ ControlPanelMessages.set(FeatureType.EventLog, new ControlPanelComponentPaginati
             inline: true,
           },
           {
-            name: '削除',
+            name: 'Suppression',
             value: `${booleanStatus(setting?.log.delete.enable)}\n${channelStatus(setting?.log.delete.channel)}`,
             inline: true,
           },
@@ -282,11 +282,11 @@ ControlPanelMessages.set(FeatureType.EventLog, new ControlPanelComponentPaginati
         .setDisabled(!setting?.log?.timeout?.channel),
       new ButtonBuilder()
         .setCustomId('nonick-js:setting-log-timeout-channel')
-        .setLabel('送信先')
+        .setLabel('Destinataire')
         .setEmoji(Emojis.White.channel)
         .setStyle(ButtonStyle.Secondary),
     ),
-  ], { name: 'Timeoutログ', emoji: Emojis.White.setting })
+  ], { name: 'Journal des timeouts', emoji: Emojis.White.setting })
   .addActionRows((setting) => [
     new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
@@ -296,11 +296,11 @@ ControlPanelMessages.set(FeatureType.EventLog, new ControlPanelComponentPaginati
         .setDisabled(!setting?.log.kick.channel),
       new ButtonBuilder()
         .setCustomId('nonick-js:setting-log-kick-channel')
-        .setLabel('送信先')
+        .setLabel('Destinataire')
         .setEmoji(Emojis.White.channel)
         .setStyle(ButtonStyle.Secondary),
     ),
-  ], { name: 'Kickログ', emoji: Emojis.White.setting })
+  ], { name: 'Journal des kicks', emoji: Emojis.White.setting })
   .addActionRows((setting) => [
     new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
@@ -310,11 +310,11 @@ ControlPanelMessages.set(FeatureType.EventLog, new ControlPanelComponentPaginati
         .setDisabled(!setting?.log.ban.channel),
       new ButtonBuilder()
         .setCustomId('nonick-js:setting-log-ban-channel')
-        .setLabel('送信先')
+        .setLabel('Destinataire')
         .setEmoji(Emojis.White.channel)
         .setStyle(ButtonStyle.Secondary),
     ),
-  ], { name: 'BANログ', emoji: Emojis.White.setting })
+  ], { name: 'Journal des bans', emoji: Emojis.White.setting })
   .addActionRows((setting) => [
     new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
@@ -324,11 +324,11 @@ ControlPanelMessages.set(FeatureType.EventLog, new ControlPanelComponentPaginati
         .setDisabled(!setting?.log.voice.channel),
       new ButtonBuilder()
         .setCustomId('nonick-js:setting-log-voice-channel')
-        .setLabel('送信先')
+        .setLabel('Destinataire')
         .setEmoji(Emojis.White.channel)
         .setStyle(ButtonStyle.Secondary),
     ),
-  ], { name: 'VCログ', emoji: Emojis.White.setting })
+  ], { name: 'Journal des canaux vocaux', emoji: Emojis.White.setting })
   .addActionRows((setting) => [
     new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
@@ -338,39 +338,39 @@ ControlPanelMessages.set(FeatureType.EventLog, new ControlPanelComponentPaginati
         .setDisabled(!setting?.log.delete.channel),
       new ButtonBuilder()
         .setCustomId('nonick-js:setting-log-delete-channel')
-        .setLabel('送信先')
+        .setLabel('Destinataire')
         .setEmoji(Emojis.White.channel)
         .setStyle(ButtonStyle.Secondary),
     ),
-  ], { name: '削除ログ', emoji: Emojis.White.setting }),
+  ], { name: 'Journal des suppressions', emoji: Emojis.White.setting }),
 );
 
-// 自動認証レベル変更
+// Changement automatique du niveau de vérification
 ControlPanelMessages.set(FeatureType.ChangeVerificationLevel, new ControlPanelComponentPagination()
   .setMessageOptions((setting) => ({
     embeds: [
       new EmbedBuilder()
-        .setTitle('`🔧` 設定: 自動認証レベル変更')
-        .setDescription('```決まった時間の間、サーバーの認証レベルを自動で変更します。```')
+        .setTitle('`🔧` Paramètres : Changement automatique du niveau de vérification')
+        .setDescription('```Change automatiquement le niveau de vérification du serveur pendant une certaine période.```')
         .setColor(Colors.Blurple)
         .setFields(
           {
-            name: '一般設定',
+            name: 'Paramètres généraux',
             value: [
               booleanStatus(setting?.changeVerificationLevel.enable),
-              `${formatEmoji(Emojis.Gray.schedule)} **開始時刻: **${setting?.changeVerificationLevel.time.start == null ? '未設定' : `${setting?.changeVerificationLevel.time.start}:00`}`,
-              `${formatEmoji(Emojis.Gray.schedule)} **終了時刻: **${setting?.changeVerificationLevel.time.end == null ? '未設定' : `${setting?.changeVerificationLevel.time.end}:00`}`,
+              `${formatEmoji(Emojis.Gray.schedule)} **Heure de début : **${setting?.changeVerificationLevel.time.start == null ? 'Non défini' : `${setting?.changeVerificationLevel.time.start}:00`}`,
+              `${formatEmoji(Emojis.Gray.schedule)} **Heure de fin : **${setting?.changeVerificationLevel.time.end == null ? 'Non défini' : `${setting?.changeVerificationLevel.time.end}:00`}`,
             ].join('\n'),
             inline: true,
           },
           {
-            name: 'ログ設定',
+            name: 'Paramètres de journal',
             value: `${booleanStatus(setting?.changeVerificationLevel.log.enable)}\n${channelStatus(setting?.changeVerificationLevel.log.channel)}`,
             inline: true,
           },
           {
-            name: '期間中に変更するレベル',
-            value: `${setting?.changeVerificationLevel.level.new == null ? '未設定' : verificationLevel[setting?.changeVerificationLevel.level.new]}`,
+            name: 'Niveau à changer pendant la période',
+            value: `${setting?.changeVerificationLevel.level.new == null ? 'Non défini' : verificationLevel[setting?.changeVerificationLevel.level.new]}`,
           },
         ),
     ],
@@ -379,12 +379,12 @@ ControlPanelMessages.set(FeatureType.ChangeVerificationLevel, new ControlPanelCo
     new ActionRowBuilder<StringSelectMenuBuilder>().setComponents(
       new StringSelectMenuBuilder()
         .setCustomId('nonick-js:setting-changeVerificationLevel-level')
-        .setPlaceholder('期間中に変更する認証レベルを設定')
+        .setPlaceholder('Configurer le niveau de vérification à changer pendant la période')
         .setOptions([
-          { label: '低', value: '1', description: 'メール認証がされているアカウントのみ', emoji: '🟢' },
-          { label: '中', value: '2', description: 'Discordに登録してから5分以上経過したアカウントのみ', emoji: '🟡' },
-          { label: '高', value: '3', description: 'このサーバーのメンバーとなってから10分以上経過したメンバーのみ', emoji: '🟠' },
-          { label: '最高', value: '4', description: '電話認証がされているアカウントのみ', emoji: '🔴' },
+          { label: 'Bas', value: '1', description: 'Seuls les comptes avec une vérification par e-mail', emoji: '🟢' },
+          { label: 'Moyen', value: '2', description: 'Comptes inscrits sur Discord depuis plus de 5 minutes', emoji: '🟡' },
+          { label: 'Élevé', value: '3', description: 'Membres du serveur depuis plus de 10 minutes', emoji: '🟠' },
+          { label: 'Très élevé', value: '4', description: 'Comptes avec vérification par téléphone uniquement', emoji: '🔴' },
         ].map(option => ({ ...option, default: setting?.changeVerificationLevel.level.new === Number(option.value) }))),
     ),
     new ActionRowBuilder<ButtonBuilder>().setComponents(
@@ -395,11 +395,11 @@ ControlPanelMessages.set(FeatureType.ChangeVerificationLevel, new ControlPanelCo
         .setDisabled(!(setting?.changeVerificationLevel.level.new && setting?.changeVerificationLevel.time.start !== null && setting?.changeVerificationLevel.time.end !== null)),
       new ButtonBuilder()
         .setCustomId('nonick-js:setting-changeVerificationLevel-time')
-        .setLabel('開始・終了時間')
+        .setLabel('Heure de début et de fin')
         .setEmoji(Emojis.White.schedule)
         .setStyle(ButtonStyle.Secondary),
     ),
-  ], { name: '一般設定', emoji: Emojis.White.setting })
+  ], { name: 'Paramètres généraux', emoji: Emojis.White.setting })
   .addActionRows((setting) => [
     new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
@@ -409,29 +409,29 @@ ControlPanelMessages.set(FeatureType.ChangeVerificationLevel, new ControlPanelCo
         .setDisabled(!setting?.changeVerificationLevel.log.channel),
       new ButtonBuilder()
         .setCustomId('nonick-js:setting-changeVerificationLevel-log-channel')
-        .setLabel('送信先')
+        .setLabel('Destinataire')
         .setStyle(ButtonStyle.Secondary),
     ),
-  ], { name: 'ログ設定', description: '認証レベルを変更した際にログを送信する', emoji: Emojis.White.setting }),
+  ], { name: 'Paramètres de journal', description: 'Envoyer un journal lors du changement de niveau de vérification', emoji: Emojis.White.setting }),
 );
 
-// 自動アナウンス公開
+// Annonce automatique
 ControlPanelMessages.set(FeatureType.AutoPublic, new ControlPanelComponentPagination()
   .setMessageOptions((setting) => ({
     embeds: [
       new EmbedBuilder()
-        .setTitle('`🔧` 設定: 自動アナウンス公開')
-        .setDescription('```設定したアナウンスチャンネルに投稿されたメッセージを自動で公開します。(BOTが投稿したメッセージは公開されません)```')
+        .setTitle('`🔧` Paramètres : Annonce automatique')
+        .setDescription('```Publie automatiquement les messages envoyés dans le canal d\'annonce spécifié. (Les messages envoyés par le BOT ne seront pas publiés)```')
         .setColor(Colors.Blurple)
         .setFields(
           {
-            name: '一般設定',
+            name: 'Paramètres généraux',
             value: booleanStatus(setting?.autoPublic.enable),
             inline: true,
           },
           {
-            name: 'チャンネル',
-            value: setting?.autoPublic.channels.map(v => channelMention(v)).join(' ') || 'なし',
+            name: 'Canal',
+            value: setting?.autoPublic.channels.map(v => channelMention(v)).join(' ') || 'Aucun',
             inline: true,
           },
         ),
@@ -441,7 +441,7 @@ ControlPanelMessages.set(FeatureType.AutoPublic, new ControlPanelComponentPagina
     new ActionRowBuilder<ChannelSelectMenuBuilder>().setComponents(
       new ChannelSelectMenuBuilder()
         .setCustomId('nonick-js:setting-autoPublic-channels')
-        .setPlaceholder('チャンネルを選択')
+        .setPlaceholder('Sélectionner les canaux')
         .setChannelTypes(ChannelType.GuildAnnouncement)
         .setMinValues(0)
         .setMaxValues(5),
@@ -452,7 +452,7 @@ ControlPanelMessages.set(FeatureType.AutoPublic, new ControlPanelComponentPagina
         .setLabel(buttonLabelStatus(setting?.autoPublic.enable))
         .setStyle(buttonStyleStatus(setting?.autoPublic.enable)),
     ),
-  ], { name: '一般設定', emoji: Emojis.White.setting }),
+  ], { name: 'Paramètres généraux', emoji: Emojis.White.setting }),
 );
 
 // AutoMod Plus
@@ -460,46 +460,46 @@ ControlPanelMessages.set(FeatureType.AutoModPlus, new ControlPanelComponentPagin
   .setMessageOptions((setting) => ({
     embeds: [
       new EmbedBuilder()
-        .setTitle('`🔧` 設定: AutoMod Plus')
-        .setDescription('```標準のAutoModでは設定が難しい、高度なメッセージフィルターを有効にします。フィルターに検知されたメッセージは自動的に削除されます。```')
+        .setTitle('`🔧` Paramètres : AutoMod Plus')
+        .setDescription('```Active des filtres de messages avancés difficiles à configurer avec AutoMod standard. Les messages détectés par les filtres seront automatiquement supprimés.```')
         .setColor(Colors.Blurple)
         .setFields(
           {
-            name: '一般設定',
+            name: 'Paramètres généraux',
             value: [
               booleanStatus(setting?.autoMod.enable),
-              `${formatEmoji(Emojis.Gray.text)} **フィルタ:** ${Object.entries(setting?.autoMod.filter || {}).filter(v => v[1]).map(v => inlineCode(autoModFilter.get(v[0])!)).join(' ') || 'なし'}`,
+              `${formatEmoji(Emojis.Gray.text)} **Filtre :** ${Object.entries(setting?.autoMod.filter || {}).filter(v => v[1]).map(v => inlineCode(autoModFilter.get(v[0])!)).join(' ') || 'Aucun'}`,
             ].join('\n'),
             inline: true,
           },
           {
-            name: 'ログ設定',
+            name: 'Paramètres de journal',
             value: `${booleanStatus(setting?.autoMod.log.enable)}\n${channelStatus(setting?.autoMod.log.channel)}`,
             inline: true,
           },
           {
-            name: '例外設定',
+            name: 'Paramètres d\'exception',
             value: [
-              `${formatEmoji(Emojis.Gray.channel)} **チャンネル:** ${setting?.autoMod.ignore.channels.map(v => channelMention(v)).join(' ') || 'なし'}`,
-              `${formatEmoji(Emojis.Gray.member)} **ロール:** ${setting?.autoMod.ignore.roles.map(v => roleMention(v)).join(' ') || 'なし'}`,
+              `${formatEmoji(Emojis.Gray.channel)} **Canaux :** ${setting?.autoMod.ignore.channels.map(v => channelMention(v)).join(' ') || 'Aucun'}`,
+              `${formatEmoji(Emojis.Gray.member)} **Rôles :** ${setting?.autoMod.ignore.roles.map(v => roleMention(v)).join(' ') || 'Aucun'}`,
             ].join('\n'),
           },
         )
-        .setFooter({ text: 'Tips:「サーバー管理」権限を持つユーザーはこのフィルターに検知されなくなります。' }),
+        .setFooter({ text: 'Astuce : Les utilisateurs ayant la permission "Gérer le serveur" ne seront pas détectés par ce filtre.' }),
     ],
   }))
   .addActionRows((setting) => [
     new ActionRowBuilder<StringSelectMenuBuilder>().setComponents(
       new StringSelectMenuBuilder()
         .setCustomId('nonick-js:setting-automod-filter')
-        .setPlaceholder('有効にするフィルタを選択')
+        .setPlaceholder('Sélectionner le filtre à activer')
         .setMinValues(0)
         .setMaxValues(3)
         .setOptions(
           [
-            { label: 'このサーバー以外の招待リンク', value: 'inviteUrl', emoji: Emojis.White.message },
-            { label: 'Discordトークン', value: 'token', emoji: Emojis.White.message },
-            { label: '短縮URL', value: 'shortUrl', emoji: Emojis.White.message },
+            { label: 'Liens d\'invitation en dehors de ce serveur', value: 'inviteUrl', emoji: Emojis.White.message },
+            { label: 'Jetons Discord', value: 'token', emoji: Emojis.White.message },
+            { label: 'URL raccourcies', value: 'shortUrl', emoji: Emojis.White.message },
           ].map(options => ({ ...options, default: Object.entries(setting?.autoMod.filter || {}).filter(v => v[1]).map(v => v[0]).includes(options.value) })),
         ),
     ),
@@ -509,7 +509,7 @@ ControlPanelMessages.set(FeatureType.AutoModPlus, new ControlPanelComponentPagin
         .setLabel(buttonLabelStatus(setting?.autoMod.enable))
         .setStyle(buttonStyleStatus(setting?.autoMod.enable)),
     ),
-  ], { name: '一般設定', emoji: Emojis.White.setting })
+  ], { name: 'Paramètres généraux', emoji: Emojis.White.setting })
   .addActionRows((setting) => [
     new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
@@ -519,16 +519,16 @@ ControlPanelMessages.set(FeatureType.AutoModPlus, new ControlPanelComponentPagin
         .setDisabled(!setting?.autoMod.log.channel),
       new ButtonBuilder()
         .setCustomId('nonick-js:setting-automod-log-channel')
-        .setLabel('送信先')
+        .setLabel('Destinataire')
         .setEmoji(Emojis.White.channel)
         .setStyle(ButtonStyle.Secondary),
     ),
-  ], { name: 'ログ設定', description: 'メッセージがブロックされた際にログを送信', emoji: Emojis.White.setting })
+  ], { name: 'Paramètres de journal', description: 'Envoyer un journal lorsque des messages sont bloqués', emoji: Emojis.White.setting })
   .addActionRows((setting) => [
     new ActionRowBuilder<ChannelSelectMenuBuilder>().setComponents(
       new ChannelSelectMenuBuilder()
         .setCustomId('nonick-js:setting-automod-ignore-channels')
-        .setPlaceholder('例外設定 (チャンネル)')
+        .setPlaceholder('Paramètres d\'exception (Canaux)')
         .setChannelTypes([ChannelType.GuildText, ChannelType.GuildForum, ChannelType.GuildVoice, ChannelType.GuildStageVoice])
         .setMinValues(0)
         .setMaxValues(25),
@@ -536,16 +536,16 @@ ControlPanelMessages.set(FeatureType.AutoModPlus, new ControlPanelComponentPagin
     new ActionRowBuilder<RoleSelectMenuBuilder>().setComponents(
       new RoleSelectMenuBuilder()
         .setCustomId('nonick-js:setting-automod-ignore-roles')
-        .setPlaceholder('例外設定 (ロール)')
+        .setPlaceholder('Paramètres d\'exception (Rôles)')
         .setMinValues(0)
         .setMaxValues(25),
     ),
     new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
         .setCustomId('nonick-js:setting-automod-ignore-deleteAll')
-        .setLabel('全ての例外設定を削除')
+        .setLabel('Supprimer toutes les exceptions')
         .setStyle(ButtonStyle.Danger)
         .setDisabled(!(setting?.autoMod.ignore.channels.length || setting?.autoMod.ignore.roles.length)),
     ),
-  ], { name: '例外設定', description: 'フィルタに影響しないチャンネル/ロールを設定', emoji: Emojis.White.setting }),
+  ], { name: 'Paramètres d\'exception', description: 'Configurer les canaux/rôles qui ne seront pas affectés par le filtre', emoji: Emojis.White.setting }),
 );
