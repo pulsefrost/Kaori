@@ -11,7 +11,7 @@ const autoPublic = new DiscordEventBuilder({
     if (!setting?.enable || !setting.channels.includes(message.channelId)) return;
 
     if (!message.crosspostable) return;
-    message.crosspost().catch(() => message.reply('`❌` メッセージの公開に失敗しました'));
+    message.crosspost().catch(() => message.reply('`❌` Échec de la publication du message'));
   },
 });
 
