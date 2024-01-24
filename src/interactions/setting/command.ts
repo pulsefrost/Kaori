@@ -6,18 +6,18 @@ import { ControlPanelComponentPagination } from './_pagination';
 const command = new ChatInput(
   {
     name: 'setting',
-    description: 'BOTの設定',
+    description: 'Paramètres du BOT',
     options: [
       {
-        name: '機能',
-        description: '設定する機能',
+        name: 'feature',
+        description: 'Fonctionnalité à configurer',
         choices: [
-          { name: '入退室メッセージ', value: FeatureType.JoinAndLeaveMessage },
-          { name: 'サーバー内通報', value: FeatureType.ReportToAdmin },
-          { name: 'メッセージURL展開', value: FeatureType.MessageExpansion },
-          { name: 'イベントログ', value: FeatureType.EventLog },
-          { name: '自動認証レベル変更', value: FeatureType.ChangeVerificationLevel },
-          { name: '自動アナウンス公開', value: FeatureType.AutoPublic },
+          { name: 'Messages d\'arrivée et de départ', value: FeatureType.JoinAndLeaveMessage },
+          { name: 'Signalement interne au serveur', value: FeatureType.ReportToAdmin },
+          { name: 'Expansion d\'URL de message', value: FeatureType.MessageExpansion },
+          { name: 'Journal des événements', value: FeatureType.EventLog },
+          { name: 'Changement automatique du niveau de vérification', value: FeatureType.ChangeVerificationLevel },
+          { name: 'Annonce automatique', value: FeatureType.AutoPublic },
           { name: 'AutoMod Plus', value: FeatureType.AutoModPlus },
         ],
         type: ApplicationCommandOptionType.String,
@@ -28,8 +28,8 @@ const command = new ChatInput(
   },
   { coolTime: 10_000 },
   async (interaction) => {
-    if (interaction.options.getString('機能')) {
-      const pagination = ControlPanelMessages.get(interaction.options.getString('機能') as FeatureType);
+    if (interaction.options.getString('feature')) {
+      const pagination = ControlPanelMessages.get(interaction.options.getString('feature') as FeatureType);
       if (!(pagination instanceof ControlPanelComponentPagination)) return;
       return pagination.replyMessage(interaction, true);
     }
@@ -37,10 +37,10 @@ const command = new ChatInput(
     interaction.reply({
       embeds: [
         new EmbedBuilder()
-          .setTitle('`🔧` 設定')
+          .setTitle('`🔧` Paramètres')
           .setDescription([
-            '設定を変更したい機能を選択してください。',
-            '操作方法や、各機能の詳しい設定の解説は[こちら](https://docs.nonick-js.com/nonick.js/setting/)か、それぞれの機能のドキュメントを参照してください。',
+            'Veuillez choisir la fonctionnalité que vous souhaitez configurer.',
+            'Pour obtenir des instructions détaillées sur la procédure et les paramètres de chaque fonctionnalité, veuillez consulter [ici](https://docs.nonick-js.com/nonick.js/setting/) ou référez-vous à la documentation spécifique de chaque fonctionnalité.',
           ].join('\n'))
           .setColor(Colors.Blurple),
       ],
@@ -50,13 +50,13 @@ const command = new ChatInput(
             .setCustomId('nonick-js:setting-features')
             .setMinValues(0)
             .setOptions(
-              { label: '入退室メッセージ', value: FeatureType.JoinAndLeaveMessage, description: 'メンバーの参加・脱退時にメッセージを送信', emoji: '🚪' },
-              { label: 'サーバー内通報', value: FeatureType.ReportToAdmin, description: 'メンバーがメッセージやユーザーを通報できるように', emoji: '💬' },
-              { label: 'メッセージURL展開', value: FeatureType.MessageExpansion, description: '送信されたDiscordのメッセージURLの内容を送信', emoji: '🔗' },
-              { label: 'イベントログ', value: FeatureType.EventLog, description: 'サーバー内で起こったイベントのログを送信', emoji: '📃' },
-              { label: '自動認証レベル変更', value: FeatureType.ChangeVerificationLevel, description: 'サーバーの認証レベルを自動で変更', emoji: '✅' },
-              { label: '自動アナウンス公開', value: FeatureType.AutoPublic, description: 'アナウンスChに投稿されたメッセージを自動で公開', emoji: '📢' },
-              { label: 'AutoMod Plus', value: FeatureType.AutoModPlus, description: '特定のフィルターに検知された送信をブロック', emoji: '🛡' },
+              { label: 'Messages d\'arrivée et de départ', value: FeatureType.JoinAndLeaveMessage, description: 'Envoyer un message lorsque des membres rejoignent ou quittent le serveur', emoji: '🚪' },
+              { label: 'Signalement interne au serveur', value: FeatureType.ReportToAdmin, description: 'Permettre aux membres de signaler des messages ou des utilisateurs', emoji: '💬' },
+              { label: 'Expansion d\'URL de message', value: FeatureType.MessageExpansion, description: 'Afficher le contenu des URL de messages Discord envoyées', emoji: '🔗' },
+              { label: 'Journal des événements', value: FeatureType.EventLog, description: 'Envoyer des journaux d\'événements survenus dans le serveur', emoji: '📃' },
+              { label: 'Changement automatique du niveau de vérification', value: FeatureType.ChangeVerificationLevel, description: 'Modifier automatiquement le niveau de vérification du serveur', emoji: '✅' },
+              { label: 'Annonce automatique', value: FeatureType.AutoPublic, description: 'Publier automatiquement les messages envoyés dans un salon d\'annonces', emoji: '📢' },
+              { label: 'AutoMod Plus', value: FeatureType.AutoModPlus, description: 'Bloquer l\'envoi de messages détectés par certains filtres', emoji: '🛡' },
             ),
         ),
       ],
