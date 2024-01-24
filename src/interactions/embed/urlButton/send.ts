@@ -8,7 +8,7 @@ const sendLinkButton = new Button(
     interaction.showModal(
       new ModalBuilder()
         .setCustomId('nonick-js:embedMaker-linkButton-sendModal')
-        .setTitle('ボタンを作成')
+        .setTitle('Créer un bouton')
         .setComponents(
           new ActionRowBuilder<TextInputBuilder>().setComponents(
             new TextInputBuilder()
@@ -19,7 +19,7 @@ const sendLinkButton = new Button(
           new ActionRowBuilder<TextInputBuilder>().setComponents(
             new TextInputBuilder()
               .setCustomId('label')
-              .setLabel('ボタンのテキスト')
+              .setLabel('Texte du bouton')
               .setMaxLength(80)
               .setStyle(TextInputStyle.Short)
               .setRequired(false),
@@ -27,8 +27,8 @@ const sendLinkButton = new Button(
           new ActionRowBuilder<TextInputBuilder>().setComponents(
             new TextInputBuilder()
               .setCustomId('emojiNameOrId')
-              .setLabel('Unicode絵文字 または カスタム絵文字')
-              .setPlaceholder('一文字のみ・カスタム絵文字は名前かIDを入力')
+              .setLabel('Emoji Unicode ou Emoji personnalisé')
+              .setPlaceholder('Un seul caractère ou Nom/ID de l\'emoji personnalisé')
               .setMaxLength(32)
               .setStyle(TextInputStyle.Short)
               .setRequired(false),
@@ -41,7 +41,7 @@ const sendLinkButton = new Button(
 const sendLinkButtonModal = new Modal(
   { customId: 'nonick-js:embedMaker-linkButton-sendModal' },
   async (interaction) => {
-    // Create Button
+    // Création du bouton
     if (!interaction.isFromMessage() || !interaction.inCachedGuild() || interaction.message.components[0].components[0].type !== ComponentType.Button || !interaction.channel) return;
 
     const emojiRegex = new RegExp(/\p{Emoji_Modifier_Base}\p{Emoji_Modifier}?|\p{Emoji_Presentation}|\p{Emoji}\uFE0F/gu);
@@ -51,9 +51,9 @@ const sendLinkButtonModal = new Modal(
     const emoji = interaction.guild.emojis.cache.find(v => v.name === emojiNameOrId)?.id || emojiNameOrId.match(emojiRegex)?.[0];
 
     if (!label && !emoji)
-      return interaction.reply({ content: '`❌` ボタンのテキストと絵文字はどちらは必ず入力する必要があります', ephemeral: true });
+      return interaction.reply({ content: '`❌` Vous devez spécifier le texte du bouton ou l\'emoji.', ephemeral: true });
     if (!isURL(url))
-      return interaction.reply({ content: '`❌` `http://`または`https://`から始まるURLを入力してください。', ephemeral: true });
+      return interaction.reply({ content: '`❌` Veuillez saisir une URL commençant par `http://` ou `https://`.', ephemeral: true });
 
     const button = new ButtonBuilder()
       .setStyle(ButtonStyle.Link)
@@ -62,23 +62,23 @@ const sendLinkButtonModal = new Modal(
     if (emoji) button.setEmoji(emoji);
     if (label) button.setLabel(label);
 
-    // Edit Message
+    // Modification du message
     if (!interaction.guild.members.me?.permissions.has(PermissionFlagsBits.ManageWebhooks))
-      return interaction.reply({ content: '`❌` この機能を使用するにはBOTに`ウェブフックの管理`権限を付与する必要があります。', ephemeral: true });
+      return interaction.reply({ content: '`❌` Pour utiliser cette fonctionnalité, vous devez accorder au BOT la permission de `Gérer les webhooks`.', ephemeral: true });
 
     const targetId = interaction.message.embeds[0].footer?.text.match(/[0-9]{18,19}/)?.[0];
     const targetMessage = await (await interaction.channel.fetch()).messages.fetch(targetId!).catch(() => undefined);
 
     if (!targetMessage)
-      return interaction.reply({ content: '`❌` メッセージの取得中に問題が発生しました。', ephemeral: true });
+      return interaction.reply({ content: '`❌` Un problème est survenu lors de la récupération du message.', ephemeral: true });
 
     const webhook = await targetMessage.fetchWebhook().catch(() => null);
     if (!webhook || interaction.client.user.id !== webhook.owner?.id)
-      return interaction.reply({ content: '`❌` このメッセージは更新できません。', ephemeral: true });
+      return interaction.reply({ content: '`❌` Vous ne pouvez pas mettre à jour ce message.', ephemeral: true });
     if (targetMessage.components[4]?.components?.length === 5)
-      return interaction.reply({ content: '`❌` これ以上コンポーネントを追加できません！', ephemeral: true });
+      return interaction.reply({ content: '`❌` Vous ne pouvez pas ajouter plus de composants!', ephemeral: true });
     if (targetMessage.components[0]?.components[0]?.type === ComponentType.StringSelect)
-      return interaction.reply({ content: '`❌` セレクトメニューとボタンは同じメッセージに追加できません。', ephemeral: true });
+      return interaction.reply({ content: '`❌` Vous ne pouvez pas ajouter à la fois un menu de sélection et des boutons dans le même message.', ephemeral: true });
 
     const updatedComponents = targetMessage.components.map(v => ActionRowBuilder.from<ButtonBuilder>(v as ActionRow<ButtonComponent>));
     const lastActionRow = updatedComponents.slice(-1)[0];
@@ -90,12 +90,12 @@ const sendLinkButtonModal = new Modal(
 
     const embeds = interaction.message.embeds;
     const components = interaction.message.components;
-    await interaction.update({ content: '`⌛` コンポーネントを追加中...', embeds: [], components: [] });
+    await interaction.update({ content: '`⌛` Ajout de composants en cours...', embeds: [], components: [] });
 
     await webhook.edit({ channel: interaction.channelId });
     webhook.editMessage(targetMessage, { components: updatedComponents })
-      .then(() => interaction.editReply({ content: '`✅` コンポーネントを追加しました！', embeds, components }))
-      .catch(() => interaction.editReply({ content: '`❌` コンポーネントの更新中に問題が発生しました。', embeds, components }));
+      .then(() => interaction.editReply({ content: '`✅` Composant ajouté avec succès!', embeds, components }))
+      .catch(() => interaction.editReply({ content: '`❌` Un problème est survenu lors de la mise à jour des composants.', embeds, components }));
   },
 );
 
