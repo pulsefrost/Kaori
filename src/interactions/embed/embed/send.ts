@@ -6,21 +6,21 @@ const sendEmbedButton = new Button(
   async (interaction) => {
     if (!interaction.inCachedGuild()) return;
     if (!interaction.guild.members.me?.permissions.has(PermissionFlagsBits.ManageWebhooks))
-      return interaction.reply({ content: '`❌` この機能を使用するにはBOTに`ウェブフックの管理`権限を付与する必要があります。', ephemeral: true });
+      return interaction.reply({ content: '`❌` Pour utiliser cette fonctionnalité, le BOT doit avoir la permission `Gérer les webhooks`.', ephemeral: true });
 
     const embeds = interaction.message.embeds;
     const components = interaction.message.components;
-    await interaction.update({ content: '`⌛` 埋め込みを送信中...', embeds: [], components: [] });
+    await interaction.update({ content: '`⌛` Envoi de l\'incorporation en cours...', embeds: [], components: [] });
 
     const webhook = await (await interaction.guild.fetchWebhooks()).find(v => interaction.client.user.equals(v.owner as User))?.edit({ channel: interaction.channelId })
       || await interaction.guild.channels.createWebhook({ name: 'NoNICK.js', avatar: interaction.client.user.displayAvatarURL(), channel: interaction.channelId });
 
     webhook
       .send({ embeds })
-      .then(() => interaction.editReply('`✅` 埋め込みを送信しました！\n(`アプリ`→`埋め込みを編集`で埋め込みを編集・エクスポート、ロール付与ボタンの作成が可能です！)'))
+      .then(() => interaction.editReply('`✅` L\'incorporation a été envoyée !\n(Vous pouvez modifier ou exporter l\'incorporation, ainsi que créer des boutons de rôle via `Application` → `Modifier l\'incorporation`)'))
       .catch(() => {
         interaction.editReply({ content: null, embeds, components });
-        interaction.followUp({ content: '`❌` 埋め込みの送信に失敗しました。', ephemeral: true });
+        interaction.followUp({ content: '`❌` Échec de l\'envoi de l\'incorporation.', ephemeral: true });
       });
   },
 );
