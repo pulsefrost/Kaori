@@ -27,13 +27,13 @@ export class ControlPanelComponentPagination {
     this.#current = 0;
   }
 
-  // コンポーネントを追加する
+  // Ajouter des lignes d'action
   addActionRows(component: (setting: IServerSettings | null) => ActionRowBuilders[], option: indexPageSelectOptions) {
     const index = this.pageSelect.options?.length || 0;
 
     this.components.push(component);
     this.pageSelect.addOptions({
-      label: option.name || `ページ${index}`,
+      label: option.name || `Page ${index}`,
       value: String(index),
       description: option?.description,
       emoji: option?.emoji,
@@ -42,16 +42,16 @@ export class ControlPanelComponentPagination {
     return this;
   }
 
-  // MessageOptionsを設定する
+  // Définir les options du message
   setMessageOptions(options: (setting: IServerSettings | null) => Omit<BaseMessageOptions, 'components'>) {
     this.options = options;
     return this;
   }
 
-  // メッセージに返信する
+  // Répondre au message
   async replyMessage(interaction: Interaction, ephemeral?: boolean) {
-    if (!interaction.isRepliable()) throw new Error('interaction can\'t reply');
-    if (!this.components.length) throw new Error('components length 0');
+    if (!interaction.isRepliable()) throw new Error('Impossible de répondre à l\'interaction');
+    if (!this.components.length) throw new Error('Longueur des composants égale à 0');
     await interaction.deferReply({ ephemeral: true });
 
     const currentComponents = this.components[this.#current];
