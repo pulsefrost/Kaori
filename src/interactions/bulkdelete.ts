@@ -4,7 +4,7 @@ import { ApplicationCommandOptionType, codeBlock, Colors, EmbedBuilder, Permissi
 const bulkDeleteMessagesCommand = new ChatInput(
   {
     name: 'bulkdelete',
-    description: 'Supprime en bloc les messages envoyés dans ce canal, du plus récent au plus ancien (jusqu\'à 2 semaines)',
+    description: 'Supprime en bloc les messages envoyés dans ce canal',
     options: [
       {
         name: 'messages',
