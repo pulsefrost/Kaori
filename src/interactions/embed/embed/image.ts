@@ -11,14 +11,14 @@ const button = new Button(
     interaction.showModal(
       new ModalBuilder()
         .setCustomId('nonick-js:embedMaker-imageModal')
-        .setTitle('画像')
+        .setTitle('Image')
         .setComponents(
           new ActionRowBuilder<TextInputBuilder>().setComponents(
             new TextInputBuilder()
               .setCustomId('thumbnailUrl')
-              .setLabel('サムネイル (URL)')
+              .setLabel('Miniature (URL)')
               .setMaxLength(1000)
-              .setPlaceholder('指定した画像は右上に表示されます')
+              .setPlaceholder('L\'image spécifiée sera affichée en haut à droite')
               .setValue(embed.thumbnail?.url || '')
               .setStyle(TextInputStyle.Short)
               .setRequired(false),
@@ -26,9 +26,9 @@ const button = new Button(
           new ActionRowBuilder<TextInputBuilder>().setComponents(
             new TextInputBuilder()
               .setCustomId('imageUrl')
-              .setLabel('埋め込み内画像 (URL)')
+              .setLabel('Image dans l\'intégration (URL)')
               .setMaxLength(1000)
-              .setPlaceholder('指定した画像は下部に表示されます')
+              .setPlaceholder('L\'image spécifiée sera affichée en bas')
               .setValue(embed.image?.url || '')
               .setStyle(TextInputStyle.Short)
               .setRequired(false),
@@ -47,7 +47,7 @@ const modal = new Modal(
     const imageUrl = interaction.fields.getTextInputValue('imageUrl');
 
     if ((thumbnailUrl && !isURL(thumbnailUrl)) || (imageUrl && !isURL(imageUrl)))
-      return interaction.reply({ content: '`❌` `http://`または`https://`から始まるURLを入力してください。', ephemeral: true });
+      return interaction.reply({ content: '`❌` Veuillez saisir une URL commençant par `http://` ou `https://`.', ephemeral: true });
 
     const embed = EmbedBuilder
       .from(interaction.message.embeds[0])
