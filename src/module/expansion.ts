@@ -10,16 +10,16 @@ export function urlExpansion(message: Message, guildId?: string) {
 			if (guildId && result.groups.guildId !== guildId) return;
 
 			const guild = await message.client.guilds.fetch(result.groups.guildId!);
-			if (!guild) throw new URIError(`サーバーID:\`${result.groups.guildId}\`に入っていません`);
+			if (!guild) throw new URIError(`Le serveur avec l'ID:\`${result.groups.guildId}\` n'a pas été trouvé`);
 			const channel = await guild.channels.fetch(result.groups.channelId).catch(() => { });
-			if (!(channel && channel.isTextBased())) throw new URIError(`チャンネルID:\`${result.groups.guildId}\`が存在しないもしくはアクセスできません`);
+			if (!(channel && channel.isTextBased())) throw new URIError(`Le canal avec l'ID:\`${result.groups.guildId}\` n'existe pas ou n'est pas accessible`);
 			const msg = await channel.messages.fetch(result.groups.messageId).catch(() => { });
-			if (!msg) throw new URIError(`メッセージID:\`${result.groups.messageId}\`が存在しないもしくはアクセスできません`);
+			if (!msg) throw new URIError(`Le message avec l'ID:\`${result.groups.messageId}\` n'existe pas ou n'est pas accessible`);
 
 			const pagination = new EmbedPagination();
 
 			const infoEmbed = new EmbedBuilder()
-				.setTitle('メッセージ展開')
+				.setTitle('Développement du message')
 				.setColor('White')
 				.setURL(result[0])
 				.setAuthor({
@@ -27,7 +27,7 @@ export function urlExpansion(message: Message, guildId?: string) {
 					iconURL: msg.member?.displayAvatarURL() ?? msg.author.displayAvatarURL(),
 				})
 				.addFields(
-					{ name: '送信時刻', value: time(msg.createdAt), inline: true },
+					{ name: 'Heure d\'envoi', value: time(msg.createdAt), inline: true },
 				);
 			const contentEmbeds = (msg.content.match(/.{1,1024}/gs) ?? []).map(content => new EmbedBuilder(infoEmbed.toJSON())
 				.setDescription(content));
@@ -40,9 +40,9 @@ export function urlExpansion(message: Message, guildId?: string) {
 		catch (err) {
 			console.log(err);
 			const em = new EmbedBuilder()
-				.setTitle('エラー!')
+				.setTitle('Erreur!')
 				.setColor(Colors.White)
-				.setDescription('予期しないエラーが発生しました。');
+				.setDescription('Une erreur inattendue s\'est produite.');
 			message.reply({ embeds: [em], allowedMentions: { parse: [] } });
 		}
 	});
