@@ -11,12 +11,12 @@ const button = new Button(
     interaction.showModal(
       new ModalBuilder()
         .setCustomId('nonick-js:embedMaker-authorModal')
-        .setTitle('ヘッダー')
+        .setTitle('En-tête')
         .setComponents(
           new ActionRowBuilder<TextInputBuilder>().setComponents(
             new TextInputBuilder()
               .setCustomId('name')
-              .setLabel('名前')
+              .setLabel('Nom')
               .setMaxLength(256)
               .setValue(embed.author?.name || '')
               .setStyle(TextInputStyle.Short)
@@ -25,7 +25,7 @@ const button = new Button(
           new ActionRowBuilder<TextInputBuilder>().setComponents(
             new TextInputBuilder()
               .setCustomId('url')
-              .setLabel('名前につけるURL')
+              .setLabel('URL à ajouter au nom')
               .setMaxLength(1000)
               .setValue(embed.author?.url || '')
               .setStyle(TextInputStyle.Short)
@@ -34,7 +34,7 @@ const button = new Button(
           new ActionRowBuilder<TextInputBuilder>().setComponents(
             new TextInputBuilder()
               .setCustomId('iconURL')
-              .setLabel('アイコンのURL')
+              .setLabel('URL de l\'icône')
               .setMaxLength(1000)
               .setValue(embed.author?.iconURL || '')
               .setStyle(TextInputStyle.Short)
@@ -56,9 +56,9 @@ const modal = new Modal(
     const option = name ? { name, url, iconURL } : null;
 
     if (!name && (url || iconURL))
-      return interaction.reply({ content: '`❌` アイコンURLや名前につけるURLを追加する場合は、「名前」オプションも入力する必要があります', ephemeral: true });
+      return interaction.reply({ content: '`❌` Si vous ajoutez une URL d\'icône ou une URL à ajouter au nom, vous devez également saisir l\'option "Nom"', ephemeral: true });
     if ((url && !isURL(url)) || (iconURL && !isURL(iconURL)))
-      return interaction.reply({ content: '`❌` `http://`または`https://`から始まるURLを入力してください。', ephemeral: true });
+      return interaction.reply({ content: '`❌` Veuillez saisir une URL commençant par `http://` ou `https://`.', ephemeral: true });
 
     const embed = EmbedBuilder.from(interaction.message.embeds[0]).setAuthor(option);
 
