@@ -20,11 +20,11 @@ const voiceLog = new DiscordEventBuilder({
 				.send({
 					embeds: [
 						new EmbedBuilder()
-							.setTitle('`🔊` チャンネル移動')
+							.setTitle('`🔊` Déplacement dans le canal vocal')
 							.setDescription([
-								`${formatEmoji(Emojis.Gray.member)} **メンバー:** ${newState.member} [${newState.member.user.tag}]`,
-								`${formatEmoji(Emojis.Gray.channel)} **チャンネル移動元:** ${oldState.channel} [${oldState.channel.name}]`,
-								`${formatEmoji(Emojis.Gray.channel)} **チャンネル移動先:** ${newState.channel} [${newState.channel.name}]`,
+								`${formatEmoji(Emojis.Gray.member)} **Membre :** ${newState.member} [${newState.member.user.tag}]`,
+								`${formatEmoji(Emojis.Gray.channel)} **Origine du déplacement :** ${oldState.channel} [${oldState.channel.name}]`,
+								`${formatEmoji(Emojis.Gray.channel)} **Destination du déplacement :** ${newState.channel} [${newState.channel.name}]`,
 							].join('\n'))
 							.setColor(Colors.Yellow)
 							.setThumbnail(newState.member.displayAvatarURL())
@@ -37,10 +37,10 @@ const voiceLog = new DiscordEventBuilder({
 				.send({
 					embeds: [
 						new EmbedBuilder()
-							.setTitle('`🔊` チャンネル参加')
+							.setTitle('`🔊` Rejoindre le canal vocal')
 							.setDescription([
-								`${formatEmoji(Emojis.Gray.member)} **メンバー:** ${newState.member} [${newState.member.user.tag}]`,
-								`${formatEmoji(Emojis.Gray.channel)} **チャンネル:** ${newState.channel} [${newState.channel.name}]`,
+								`${formatEmoji(Emojis.Gray.member)} **Membre :** ${newState.member} [${newState.member.user.tag}]`,
+								`${formatEmoji(Emojis.Gray.channel)} **Canal :** ${newState.channel} [${newState.channel.name}]`,
 							].join('\n'))
 							.setColor(Colors.Green)
 							.setThumbnail(newState.member.displayAvatarURL())
@@ -53,10 +53,10 @@ const voiceLog = new DiscordEventBuilder({
 				.send({
 					embeds: [
 						new EmbedBuilder()
-							.setTitle('`🔊` チャンネル退出')
+							.setTitle('`🔊` Quitter le canal vocal')
 							.setDescription([
-								`${formatEmoji(Emojis.Gray.member)} **メンバー:** ${newState.member} [${newState.member.user.tag}]`,
-								`${formatEmoji(Emojis.Gray.channel)} **チャンネル:** ${oldState.channel} [${oldState.channel.name}]`,
+								`${formatEmoji(Emojis.Gray.member)} **Membre :** ${newState.member} [${newState.member.user.tag}]`,
+								`${formatEmoji(Emojis.Gray.channel)} **Canal :** ${oldState.channel} [${oldState.channel.name}]`,
 							].join('\n'))
 							.setColor(Colors.Red)
 							.setThumbnail(newState.member.displayAvatarURL())
