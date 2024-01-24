@@ -41,7 +41,7 @@ const context = new MessageContext(
         ],
         ephemeral: true,
     });
-};
+};  // Ajout du point-virgule ici
 
 const select = new SelectMenu(
     { customId: 'nonick-js:embedMaker-editEmbedPanel', type: SelectMenuType.String },
@@ -150,7 +150,7 @@ const select = new SelectMenu(
                 ],
             });
         }
-    },
+    }
 );
 
 module.exports = [context, select];
