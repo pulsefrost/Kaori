@@ -8,13 +8,13 @@ const button = new Button(
     interaction.showModal(
       new ModalBuilder()
         .setCustomId('nonick-js:embedMaker-timeStampModal')
-        .setTitle('タイムスタンプ')
+        .setTitle('Horodatage')
         .setComponents(
           new ActionRowBuilder<TextInputBuilder>().setComponents(
             new TextInputBuilder()
               .setCustomId('timeStamp')
-              .setLabel('YYYY-MM-DDThh:mm:ss+時差 (「now」で現在時刻を代入)')
-              .setPlaceholder('例）2023-10-17T10:17:00+09:00')
+              .setLabel('AAAA-MM-JJThh:mm:ss+Décalage (Remplacez par "now" pour l\'heure actuelle)')
+              .setPlaceholder('Exemple : 2023-10-17T10:17:00+09:00')
               .setValue(interaction.message.embeds[0].timestamp || '')
               .setStyle(TextInputStyle.Short)
               .setRequired(false),
@@ -33,7 +33,7 @@ const modal = new Modal(
     if (timeStamp.toLowerCase() === 'now') timeStamp = new Date().toISOString();
 
     if (timeStamp !== '' && !/^\d{4}-?\d\d-?\d\d(?:T\d\d(?::?\d\d(?::?\d\d(?:\.\d+)?)?)?(?:Z|[+-]\d\d:?\d\d)?)?$/.test(timeStamp))
-      return interaction.reply({ content: '`❌` 有効なタイムスタンプではありません！[ISO8601](https://ja.wikipedia.org/wiki/ISO_8601)に準拠した値を入力してください。', ephemeral: true });
+      return interaction.reply({ content: '`❌` Ce n\'est pas un horodatage valide ! Veuillez saisir une valeur conforme à [ISO8601](https://fr.wikipedia.org/wiki/ISO_8601).', ephemeral: true });
 
     const embed = EmbedBuilder
       .from(interaction.message.embeds[0])
