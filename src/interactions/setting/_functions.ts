@@ -16,13 +16,13 @@ export async function changeToggleSetting(interaction: ButtonInteraction, update
 export async function changeChannelSetting(interaction: ModalSubmitInteraction, queryKey: string, key: FeatureType) {
   if (!interaction.isFromMessage() || !interaction.inCachedGuild()) return;
 
-  const nameOrId = interaction.fields.getTextInputValue('nameOrId');
+  const nameOrId = interaction.fields.getTextInputValue('nomOuId');
   const channel = interaction.guild.channels.cache.find(v => v.name === nameOrId || v.id === nameOrId);
 
   if (!channel)
-    return interaction.reply({ content: '`❌` 条件に一致するチャンネルが見つかりませんでした。', ephemeral: true });
+    return interaction.reply({ content: '`❌` Aucun canal correspondant aux critères n\'a été trouvé.', ephemeral: true });
   if (!(channel instanceof TextChannel))
-    return interaction.reply({ content: '`❌` 設定するチャンネルはテキストチャンネルである必要があります。', ephemeral: true });
+    return interaction.reply({ content: '`❌` Le canal à configurer doit être un canal de texte.', ephemeral: true });
 
   const res = await ServerSettings.findOneAndUpdate(
     { serverId: interaction.guildId },
@@ -36,10 +36,10 @@ export async function changeChannelSetting(interaction: ModalSubmitInteraction, 
 export async function changeMentionRoleSetting(interaction: ModalSubmitInteraction, queryKey: string, key: FeatureType) {
   if (!interaction.isFromMessage() || !interaction.inCachedGuild()) return;
 
-  const nameOrId = interaction.fields.getTextInputValue('nameOrId');
+  const nameOrId = interaction.fields.getTextInputValue('nomOuId');
   const role = interaction.guild.roles.cache.find(v => v.name === nameOrId || v.id === nameOrId);
 
-  if (!role) return interaction.reply({ content: '`❌` 条件に一致するロールが見つかりませんでした。', ephemeral: true });
+  if (!role) return interaction.reply({ content: '`❌` Aucun rôle correspondant aux critères n\'a été trouvé.', ephemeral: true });
 
   const res = await ServerSettings.findOneAndUpdate(
     { serverId: interaction.guildId },
