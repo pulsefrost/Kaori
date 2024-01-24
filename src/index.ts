@@ -35,15 +35,15 @@ const interactions = new DiscordInteractions(client);
 interactions.loadRegistries(path.resolve(__dirname, './interactions'));
 
 client.once(Events.ClientReady, () => {
-  console.log('[INFO] BOT ready!');
+  console.log('[INFO] Le BOT est prêt !');
   console.table({
-    'Bot User': client.user?.tag,
-    'Guild(s)': `${client.guilds.cache.size} Servers`,
-    'Watching': `${client.guilds.cache.reduce((a, b) => a + b.memberCount, 0)} Members`,
+    'Utilisateur du BOT': client.user?.tag,
+    'Serveur(s)': `${client.guilds.cache.size} Serveurs`,
+    'En train d\'observer': `${client.guilds.cache.reduce((a, b) => a + b.memberCount, 0)} Membres`,
     'Discord.js': `v${version}`,
     'Node.js': process.version,
-    'Platform': `${process.platform} | ${process.arch}`,
-    'Memory': `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB | ${(process.memoryUsage().rss / 1024 / 1024).toFixed(2)}MB`,
+    'Plateforme': `${process.platform} | ${process.arch}`,
+    'Mémoire': `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} Mo | ${(process.memoryUsage().rss / 1024 / 1024).toFixed(2)} Mo`,
   });
 
   interactions.registerCommands({ guildId: guildId ?? undefined, deleteNoLoad: true });
@@ -64,14 +64,14 @@ client.on(Events.InteractionCreate, interaction => {
 
   if (isBlocked(interaction.guild))
     interaction.reply({
-      content: `\`🚫\` このサーバーでの${interaction.client.user.username}の使用は禁止されています。異議申し立ては[こちら](https://discord.gg/fVcjCNn733)`,
+      content: `\`🚫\` L'utilisation de ${interaction.client.user.username} sur ce serveur est interdite. Les réclamations peuvent être déposées [ici](https://discord.gg/fVcjCNn733)`,
       ephemeral: true,
     });
 
   interactions.run(interaction)
     .catch((err) => {
       if (err instanceof InteractionsError && err.code === ErrorCodes.CommandHasCoolTime)
-        return interaction.reply({ content: '`⌛` コマンドはクールダウン中です', ephemeral: true });
+        return interaction.reply({ content: '`⌛` La commande est en cooldown', ephemeral: true });
       console.log(err);
     });
 });
@@ -84,7 +84,7 @@ process.on('uncaughtException', (err) => {
     channel.send({
       embeds: [
         new EmbedBuilder()
-          .setTitle('`❌` 例外が発生しました')
+          .setTitle('`❌` Une exception a été levée')
           .setDescription(codeBlock(`${err.stack}`))
           .setColor(Colors.Red)
           .setTimestamp(),
@@ -94,7 +94,7 @@ process.on('uncaughtException', (err) => {
 });
 
 function reloadActivity() {
-  client.user?.setActivity({ name: `${client.guilds.cache.size} サーバー`, type: ActivityType.Competing });
+  client.user?.setActivity({ name: `${client.guilds.cache.size} Serveurs`, type: ActivityType.Competing });
 }
 
 client.login(process.env.BOT_TOKEN);
