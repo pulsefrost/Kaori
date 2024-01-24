@@ -13,28 +13,28 @@ const addField = [
       interaction.showModal(
         new ModalBuilder()
           .setCustomId('nonick-js:embedMaker-addFieldModal')
-          .setTitle('フィールドを追加')
+          .setTitle('Ajouter un Champ')
           .setComponents(
             new ActionRowBuilder<TextInputBuilder>().setComponents(
               new TextInputBuilder()
                 .setCustomId('name')
-                .setLabel('フィールドの名前')
+                .setLabel('Nom du Champ')
                 .setMaxLength(256)
                 .setStyle(TextInputStyle.Short),
             ),
             new ActionRowBuilder<TextInputBuilder>().setComponents(
               new TextInputBuilder()
                 .setCustomId('value')
-                .setLabel('フィールドの値')
+                .setLabel('Valeur du Champ')
                 .setMaxLength(1024)
                 .setStyle(TextInputStyle.Paragraph),
             ),
             new ActionRowBuilder<TextInputBuilder>().setComponents(
               new TextInputBuilder()
                 .setCustomId('inline')
-                .setLabel('インライン表示にするか')
+                .setLabel('Afficher en ligne ?')
                 .setMaxLength(5)
-                .setPlaceholder('trueでON、falseでOFF')
+                .setPlaceholder('true pour Oui, false pour Non')
                 .setStyle(TextInputStyle.Short),
             ),
           ),
@@ -52,7 +52,7 @@ const addField = [
       const inline = interaction.fields.getTextInputValue('inline');
 
       if (!['true', 'false'].includes(inline))
-        return interaction.reply({ content: '`❌` `inline`には`true`または`false`のみ入力できます', ephemeral: true });
+        return interaction.reply({ content: '`❌` Vous pouvez uniquement entrer `true` ou `false` pour le champ "en ligne"', ephemeral: true });
 
       const embed = EmbedBuilder
         .from(interaction.message.embeds[0])
@@ -81,13 +81,13 @@ const removeField = [
           new ActionRowBuilder<StringSelectMenuBuilder>().setComponents(
             new StringSelectMenuBuilder()
               .setCustomId(indexSelectCustomId)
-              .setPlaceholder('削除する項目を選択')
+              .setPlaceholder('Sélectionnez l\'élément à supprimer')
               .setOptions(...embed.fields.map((v, index) => ({ label: omitString(v.name, 100), description: omitString(v.value, 100), value: String(index), emoji: Emojis.White.message }))),
           ),
           new ActionRowBuilder<ButtonBuilder>().setComponents(
             new ButtonBuilder()
               .setCustomId(backButtonCustomId)
-              .setLabel('削除せず戻る')
+              .setLabel('Revenir sans supprimer')
               .setEmoji(Emojis.White.reply)
               .setStyle(ButtonStyle.Danger),
           ),
