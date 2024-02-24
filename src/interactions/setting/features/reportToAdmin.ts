@@ -7,11 +7,11 @@ import { FeatureType } from '../_messages';
 const generalSetting = [
   // 送信先
   new Button(
-    { customId: 'nonick-js:setting-report-channel' },
-    (interaction) => interaction.showModal(channelModal.setCustomId('nonick-js:setting-report-channel-modal')),
+    { customId: 'kaori:setting-report-channel' },
+    (interaction) => interaction.showModal(channelModal.setCustomId('kaori:setting-report-channel-modal')),
   ),
   new Modal(
-    { customId: 'nonick-js:setting-report-channel-modal' },
+    { customId: 'kaori:setting-report-channel-modal' },
     (interaction) => changeChannelSetting(interaction, 'report.channel', FeatureType.ReportToAdmin),
   ),
 ];
@@ -19,7 +19,7 @@ const generalSetting = [
 const mentionSetting = [
   // 有効・無効化
   new Button(
-    { customId: 'nonick-js:setting-report-mention-enable' },
+    { customId: 'kaori:setting-report-mention-enable' },
     async (interaction) => {
       const Setting = await ServerSettings.findOne({ serverId: interaction.guildId });
       changeToggleSetting(interaction, { $set: { 'report.mention.enable': !Setting?.report.mention.enable } }, FeatureType.ReportToAdmin);
@@ -28,11 +28,11 @@ const mentionSetting = [
 
   // ロール
   new Button(
-    { customId: 'nonick-js:setting-report-mention-role' },
-    (interaction) => interaction.showModal(roleModal.setCustomId('nonick-js:setting-report-mention-role-modal')),
+    { customId: 'kaori:setting-report-mention-role' },
+    (interaction) => interaction.showModal(roleModal.setCustomId('kaori:setting-report-mention-role-modal')),
   ),
   new Modal(
-    { customId: 'nonick-js:setting-report-mention-role-modal' },
+    { customId: 'kaori:setting-report-mention-role-modal' },
     async (interaction) => changeMentionRoleSetting(interaction, 'report.mention.role', FeatureType.ReportToAdmin),
   ),
 ];

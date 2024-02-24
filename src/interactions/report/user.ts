@@ -27,7 +27,7 @@ const reportContext = new UserContext(
 
     interaction.showModal(
       new ModalBuilder()
-        .setCustomId('nonick-js:userReportModal')
+        .setCustomId('kaori:userReportModal')
         .setTitle('Signaler l\'utilisateur')
         .setComponents(
           new ActionRowBuilder<TextInputBuilder>().setComponents(
@@ -44,7 +44,7 @@ const reportContext = new UserContext(
 );
 
 const reportContextModal = new Modal(
-  { customId: 'nonick-js:userReportModal' },
+  { customId: 'kaori:userReportModal' },
   async (interaction) => {
     if (!interaction.inCachedGuild() || !interaction.channel || interaction.components[0].components[0].type !== ComponentType.TextInput) return;
 
@@ -78,7 +78,7 @@ const reportContextModal = new Modal(
         components: [
           new ActionRowBuilder<ButtonBuilder>().setComponents(
             new ButtonBuilder()
-              .setCustomId('nonick-js:report-consider')
+              .setCustomId('kaori:report-consider')
               .setLabel('Traiter')
               .setStyle(ButtonStyle.Primary),
           ),

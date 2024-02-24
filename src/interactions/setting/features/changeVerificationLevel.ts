@@ -8,7 +8,7 @@ import { channelModal } from '../_modals';
 const generalSetting = [
   // Activation/Désactivation
   new Button(
-    { customId: 'nonick-js:setting-changeVerificationLevel-enable' },
+    { customId: 'kaori:setting-changeVerificationLevel-enable' },
     async (interaction) => {
       const Setting = await ServerSettings.findOne({ serverId: interaction.guildId });
       changeToggleSetting(interaction, { $set: { 'changeVerificationLevel.enable': !Setting?.changeVerificationLevel.enable } }, FeatureType.ChangeVerificationLevel);
@@ -17,13 +17,13 @@ const generalSetting = [
 
   // Heure de début/fin
   new Button(
-    { customId: 'nonick-js:setting-changeVerificationLevel-time' },
+    { customId: 'kaori:setting-changeVerificationLevel-time' },
     async (interaction) => {
       const Setting = await ServerSettings.findOne({ serverId: interaction.guildId });
 
       interaction.showModal(
         new ModalBuilder()
-          .setCustomId('nonick-js:setting-changeVerificationLevel-time-modal')
+          .setCustomId('kaori:setting-changeVerificationLevel-time-modal')
           .setTitle('Heure de début/fin')
           .setComponents(
             new ActionRowBuilder<TextInputBuilder>().setComponents(
@@ -47,7 +47,7 @@ const generalSetting = [
     },
   ),
   new Modal(
-    { customId: 'nonick-js:setting-changeVerificationLevel-time-modal' },
+    { customId: 'kaori:setting-changeVerificationLevel-time-modal' },
     async (interaction) => {
       if (!interaction.isFromMessage() || !interaction.inCachedGuild()) return;
 
@@ -78,7 +78,7 @@ const generalSetting = [
 
   // Niveau de vérification
   new SelectMenu(
-    { customId: 'nonick-js:setting-changeVerificationLevel-level', type: SelectMenuType.String },
+    { customId: 'kaori:setting-changeVerificationLevel-level', type: SelectMenuType.String },
     async (interaction) => {
       const res = await ServerSettings.findOneAndUpdate(
         { serverId: interaction.guildId },
@@ -93,7 +93,7 @@ const generalSetting = [
 const logSetting = [
   // Activation/Désactivation
   new Button(
-    { customId: 'nonick-js:setting-changeVerificationLevel-log-enable' },
+    { customId: 'kaori:setting-changeVerificationLevel-log-enable' },
     async (interaction) => {
       const Setting = await ServerSettings.findOne({ serverId: interaction.guildId });
       changeToggleSetting(interaction, { $set: { 'changeVerificationLevel.log.enable': !Setting?.changeVerificationLevel.log.enable } }, FeatureType.ChangeVerificationLevel);
@@ -102,11 +102,11 @@ const logSetting = [
 
   // Destination
   new Button(
-    { customId: 'nonick-js:setting-changeVerificationLevel-log-channel' },
-    (interaction) => interaction.showModal(channelModal.setCustomId('nonick-js:setting-changeVerificationLevel-log-channel-modal')),
+    { customId: 'kaori:setting-changeVerificationLevel-log-channel' },
+    (interaction) => interaction.showModal(channelModal.setCustomId('kaori:setting-changeVerificationLevel-log-channel-modal')),
   ),
   new Modal(
-    { customId: 'nonick-js:setting-changeVerificationLevel-log-channel-modal' },
+    { customId: 'kaori:setting-changeVerificationLevel-log-channel-modal' },
     (interaction) => changeChannelSetting(interaction, 'changeVerificationLevel.log.channel', FeatureType.ChangeVerificationLevel),
   ),
 ];

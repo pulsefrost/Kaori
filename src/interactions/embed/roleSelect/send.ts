@@ -3,7 +3,7 @@ import { Button } from '@akki256/discord-interaction';
 import { getRoleSelectMakerButtons } from './_function';
 
 const addRoleSelectButton = new Button(
-  { customId: 'nonick-js:embedMaker-selectRole-sendComponent' },
+  { customId: 'kaori:embedMaker-selectRole-sendComponent' },
   async (interaction) => {
     if (!interaction.inCachedGuild() || !interaction.channel) return;
 
@@ -42,7 +42,7 @@ const addRoleSelectButton = new Button(
             StringSelectMenuBuilder
               .from(roleSelect.toJSON())
               .setCustomId(`${roleSelect.customId}-${targetMessage.components.length + 1}`)
-              .setMaxValues(selectStatusButton.customId === 'nonick-js:embedMaker-selectRole-selectMode-multi' ? roleSelect.options.length : 1),
+              .setMaxValues(selectStatusButton.customId === 'kaori:embedMaker-selectRole-selectMode-multi' ? roleSelect.options.length : 1),
           ),
         ],
       })

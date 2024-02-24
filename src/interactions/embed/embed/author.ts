@@ -4,13 +4,13 @@ import { isURL } from '../../../module/functions';
 import { reloadEmbedMaker } from './_function';
 
 const button = new Button(
-  { customId: 'nonick-js:embedMaker-author' },
+  { customId: 'kaori:embedMaker-author' },
   (interaction) => {
     const embed = interaction.message.embeds[0];
 
     interaction.showModal(
       new ModalBuilder()
-        .setCustomId('nonick-js:embedMaker-authorModal')
+        .setCustomId('kaori:embedMaker-authorModal')
         .setTitle('En-tête')
         .setComponents(
           new ActionRowBuilder<TextInputBuilder>().setComponents(
@@ -46,7 +46,7 @@ const button = new Button(
 );
 
 const modal = new Modal(
-  { customId: 'nonick-js:embedMaker-authorModal' },
+  { customId: 'kaori:embedMaker-authorModal' },
   (interaction) => {
     if (!interaction.isFromMessage()) return;
 

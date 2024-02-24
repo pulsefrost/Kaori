@@ -7,7 +7,7 @@ import { channelModal } from '../_modals';
 const generalSetting = [
   // Activation/Désactivation
   new Button(
-    { customId: 'nonick-js:setting-automod-enable' },
+    { customId: 'kaori:setting-automod-enable' },
     async (interaction) => {
       const Setting = await ServerSettings.findOne({ serverId: interaction.guildId });
       changeToggleSetting(interaction, { $set: { 'autoMod.enable': !Setting?.autoMod.enable } }, FeatureType.AutoModPlus);
@@ -16,7 +16,7 @@ const generalSetting = [
 
   // Filtre
   new SelectMenu(
-    { customId: 'nonick-js:setting-automod-filter', type: SelectMenuType.String },
+    { customId: 'kaori:setting-automod-filter', type: SelectMenuType.String },
     async (interaction) => {
       const values = interaction.values;
       const res = await ServerSettings.findOneAndUpdate(
@@ -39,7 +39,7 @@ const generalSetting = [
 const logSetting = [
   // Activation/Désactivation
   new Button(
-    { customId: 'nonick-js:setting-automod-log-enable' },
+    { customId: 'kaori:setting-automod-log-enable' },
     async (interaction) => {
       const Setting = await ServerSettings.findOne({ serverId: interaction.guildId });
       changeToggleSetting(interaction, { $set: { 'autoMod.log.enable': !Setting?.autoMod.log.enable } }, FeatureType.AutoModPlus);
@@ -48,11 +48,11 @@ const logSetting = [
 
   // Destination
   new Button(
-    { customId: 'nonick-js:setting-automod-log-channel' },
-    (interaction) => interaction.showModal(channelModal.setCustomId('nonick-js:setting-automod-log-channel-modal')),
+    { customId: 'kaori:setting-automod-log-channel' },
+    (interaction) => interaction.showModal(channelModal.setCustomId('kaori:setting-automod-log-channel-modal')),
   ),
   new Modal(
-    { customId: 'nonick-js:setting-automod-log-channel-modal' },
+    { customId: 'kaori:setting-automod-log-channel-modal' },
     (interaction) => changeChannelSetting(interaction, 'autoMod.log.channel', FeatureType.AutoModPlus),
   ),
 ];
@@ -60,7 +60,7 @@ const logSetting = [
 const ignoreSetting = [
   // Canal
   new SelectMenu(
-    { customId: 'nonick-js:setting-automod-ignore-channels', type: SelectMenuType.Channel },
+    { customId: 'kaori:setting-automod-ignore-channels', type: SelectMenuType.Channel },
     async (interaction) => {
       const res = await ServerSettings.findOneAndUpdate(
         { serverId: interaction.guildId },
@@ -74,7 +74,7 @@ const ignoreSetting = [
 
   // Rôle
   new SelectMenu(
-    { customId: 'nonick-js:setting-automod-ignore-roles', type: SelectMenuType.Role },
+    { customId: 'kaori:setting-automod-ignore-roles', type: SelectMenuType.Role },
     async (interaction) => {
       const res = await ServerSettings.findOneAndUpdate(
         { serverId: interaction.guildId },
@@ -88,7 +88,7 @@ const ignoreSetting = [
 
   // Supprimer tout
   new Button(
-    { customId: 'nonick-js:setting-automod-ignore-deleteAll' },
+    { customId: 'kaori:setting-automod-ignore-deleteAll' },
     async (interaction) => {
       const res = await ServerSettings.findOneAndUpdate(
         { serverId: interaction.guildId },

@@ -3,11 +3,11 @@ import { ActionRow, ActionRowBuilder, ButtonBuilder, ButtonComponent, ButtonStyl
 import { isURL } from '../../../module/functions';
 
 const sendLinkButton = new Button(
-  { customId: 'nonick-js:embedMaker-linkButton-send' },
+  { customId: 'kaori:embedMaker-linkButton-send' },
   (interaction) => {
     interaction.showModal(
       new ModalBuilder()
-        .setCustomId('nonick-js:embedMaker-linkButton-sendModal')
+        .setCustomId('kaori:embedMaker-linkButton-sendModal')
         .setTitle('Créer un bouton')
         .setComponents(
           new ActionRowBuilder<TextInputBuilder>().setComponents(
@@ -39,7 +39,7 @@ const sendLinkButton = new Button(
 );
 
 const sendLinkButtonModal = new Modal(
-  { customId: 'nonick-js:embedMaker-linkButton-sendModal' },
+  { customId: 'kaori:embedMaker-linkButton-sendModal' },
   async (interaction) => {
     // Création du bouton
     if (!interaction.isFromMessage() || !interaction.inCachedGuild() || interaction.message.components[0].components[0].type !== ComponentType.Button || !interaction.channel) return;

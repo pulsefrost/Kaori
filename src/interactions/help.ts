@@ -24,8 +24,6 @@ const helpCommand = new ChatInput(
             'Nous travaillons chaque jour pour développer un "BOT multifonction facile à utiliser et complètement gratuit".',
           ].join('\n'))
           .setColor(Colors.Blurple)
-          .setImage('https://media.discordapp.net/attachments/958791423161954445/989779285852168242/3e9aba98d28eaa52.png?width=1178&height=662')
-          .setFooter({ text: 'Développeur : nonick-mc#1017', iconURL: 'https://media.discordapp.net/attachments/958791423161954445/975266759529623652/-3.png?width=663&height=663' })
           .setFields({ name: 'Quelques fonctionnalités incluses', value: feature.map(v => inlineCode(v)).join(' ') }),
       ],
       components: [
@@ -37,7 +35,7 @@ const helpCommand = new ChatInput(
           new ButtonBuilder()
             .setLabel('Guide d\'utilisation')
             .setStyle(ButtonStyle.Link)
-            .setURL('https://docs.nonick-js.com'),
+            .setURL('https://kaoricafe.fr'),
         ),
       ],
       ephemeral: true,

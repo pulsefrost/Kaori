@@ -4,13 +4,13 @@ import { isURL } from '../../../module/functions';
 import { reloadEmbedMaker } from './_function';
 
 const button = new Button(
-  { customId: 'nonick-js:embedMaker-footer' },
+  { customId: 'kaori:embedMaker-footer' },
   (interaction): void => {
     const embed = interaction.message.embeds[0];
 
     interaction.showModal(
       new ModalBuilder()
-        .setCustomId('nonick-js:embedMaker-footerModal')
+        .setCustomId('kaori:embedMaker-footerModal')
         .setTitle('Pied de page')
         .setComponents(
           new ActionRowBuilder<TextInputBuilder>().setComponents(
@@ -37,7 +37,7 @@ const button = new Button(
 );
 
 const modal = new Modal(
-  { customId: 'nonick-js:embedMaker-footerModal' },
+  { customId: 'kaori:embedMaker-footerModal' },
   (interaction) => {
     if (!interaction.isFromMessage()) return;
 

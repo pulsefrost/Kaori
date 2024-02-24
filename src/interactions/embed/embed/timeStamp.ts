@@ -3,11 +3,11 @@ import { Button, Modal } from '@akki256/discord-interaction';
 import { reloadEmbedMaker } from './_function';
 
 const button = new Button(
-  { customId: 'nonick-js:embedMaker-timeStamp' },
+  { customId: 'kaori:embedMaker-timeStamp' },
   (interaction) => {
     interaction.showModal(
       new ModalBuilder()
-        .setCustomId('nonick-js:embedMaker-timeStampModal')
+        .setCustomId('kaori:embedMaker-timeStampModal')
         .setTitle('Horodatage')
         .setComponents(
           new ActionRowBuilder<TextInputBuilder>().setComponents(
@@ -25,7 +25,7 @@ const button = new Button(
 );
 
 const modal = new Modal(
-  { customId: 'nonick-js:embedMaker-timeStampModal' },
+  { customId: 'kaori:embedMaker-timeStampModal' },
   (interaction) => {
     if (!interaction.isFromMessage()) return;
 

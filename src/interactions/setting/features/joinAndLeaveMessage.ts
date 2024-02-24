@@ -10,7 +10,7 @@ import ServerSettings from '../../../schemas/ServerSettings';
 const joinMessageSetting = [
   // Activation/Désactivation
   new Button(
-    { customId: 'nonick-js:setting-message-join-enable' },
+    { customId: 'kaori:setting-message-join-enable' },
     async (interaction) => {
       const Setting = await ServerSettings.findOne({ serverId: interaction.guildId });
       changeToggleSetting(interaction, { $set: { 'message.join.enable': !Setting?.message.join.enable } }, FeatureType.JoinAndLeaveMessage);
@@ -19,24 +19,24 @@ const joinMessageSetting = [
 
   // Destination
   new Button(
-    { customId: 'nonick-js:setting-message-join-channel' },
-    (interaction) => interaction.showModal(channelModal.setCustomId('nonick-js:setting-message-join-channel-modal')),
+    { customId: 'kaori:setting-message-join-channel' },
+    (interaction) => interaction.showModal(channelModal.setCustomId('kaori:setting-message-join-channel-modal')),
   ),
   new Modal(
-    { customId: 'nonick-js:setting-message-join-channel-modal' },
+    { customId: 'kaori:setting-message-join-channel-modal' },
     async (interaction) => changeChannelSetting(interaction, 'message.join.channel', FeatureType.JoinAndLeaveMessage),
   ),
 
   // Message
   new Button(
-    { customId: 'nonick-js:setting-message-join-message' },
+    { customId: 'kaori:setting-message-join-message' },
     async (interaction) => {
       const Setting = await ServerSettings.findOne({ serverId: interaction.guildId });
       const embed = EmbedBuilder.from(Setting?.message.join.messageOptions.embeds?.[0] || {});
 
       interaction.showModal(
         new ModalBuilder()
-          .setCustomId('nonick-js:setting-message-join-message-modal')
+          .setCustomId('kaori:setting-message-join-message-modal')
           .setTitle('Message')
           .setComponents(
             new ActionRowBuilder<TextInputBuilder>().setComponents(
@@ -53,7 +53,7 @@ const joinMessageSetting = [
                 .setCustomId('url')
                 .setLabel('URL du Titre')
                 .setValue(embed.data.url || '')
-                .setPlaceholder('Exemple : https://docs.nonick-js.com')
+                .setPlaceholder('Exemple : https://docs.kaori.com')
                 .setStyle(TextInputStyle.Short)
                 .setRequired(false),
             ),
@@ -72,7 +72,7 @@ const joinMessageSetting = [
     },
   ),
   new Modal(
-    { customId: 'nonick-js:setting-message-join-message-modal' },
+    { customId: 'kaori:setting-message-join-message-modal' },
     async (interaction) => {
       if (!interaction.isFromMessage()) return;
 
@@ -104,7 +104,7 @@ const joinMessageSetting = [
 
   // Aperçu
   new Button(
-    { customId: 'nonick-js:setting-message-join-preview' },
+    { customId: 'kaori:setting-message-join-preview' },
     async (interaction) => {
       if (!interaction.inCachedGuild()) return;
       const Setting = await ServerSettings.findOne({ serverId: interaction.guildId });
@@ -132,7 +132,7 @@ const joinMessageSetting = [
 const leaveMessageSetting = [
   // Activation/Désactivation
   new Button(
-    { customId: 'nonick-js:setting-message-leave-enable' },
+    { customId: 'kaori:setting-message-leave-enable' },
     async (interaction) => {
       const Setting = await ServerSettings.findOne({ serverId: interaction.guildId });
       changeToggleSetting(interaction, { $set: { 'message.leave.enable': !Setting?.message.leave.enable } }, FeatureType.JoinAndLeaveMessage);
@@ -141,23 +141,23 @@ const leaveMessageSetting = [
 
   // Destination
   new Button(
-    { customId: 'nonick-js:setting-message-leave-channel' },
-    (interaction) => interaction.showModal(channelModal.setCustomId('nonick-js:setting-message-leave-channel-modal')),
+    { customId: 'kaori:setting-message-leave-channel' },
+    (interaction) => interaction.showModal(channelModal.setCustomId('kaori:setting-message-leave-channel-modal')),
   ),
   new Modal(
-    { customId: 'nonick-js:setting-message-leave-channel-modal' },
+    { customId: 'kaori:setting-message-leave-channel-modal' },
     (interaction) => changeChannelSetting(interaction, 'message.leave.channel', FeatureType.JoinAndLeaveMessage),
   ),
 
   // Message
   new Button(
-    { customId: 'nonick-js:setting-message-leave-message' },
+    { customId: 'kaori:setting-message-leave-message' },
     async (interaction) => {
       const Setting = await ServerSettings.findOne({ serverId: interaction.guildId });
 
       interaction.showModal(
         new ModalBuilder()
-          .setCustomId('nonick-js:setting-message-leave-message-modal')
+          .setCustomId('kaori:setting-message-leave-message-modal')
           .setTitle('Message')
           .setComponents(
             new ActionRowBuilder<TextInputBuilder>().setComponents(
@@ -174,7 +174,7 @@ const leaveMessageSetting = [
     },
   ),
   new Modal(
-    { customId: 'nonick-js:setting-message-leave-message-modal' },
+    { customId: 'kaori:setting-message-leave-message-modal' },
     async (interaction) => {
       if (!interaction.isFromMessage()) return;
 
@@ -191,7 +191,7 @@ const leaveMessageSetting = [
 
   // Aperçu
   new Button(
-    { customId: 'nonick-js:setting-message-leave-preview' },
+    { customId: 'kaori:setting-message-leave-preview' },
     async (interaction) => {
       if (!interaction.inCachedGuild()) return;
       const Setting = await ServerSettings.findOne({ serverId: interaction.guildId });

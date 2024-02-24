@@ -31,14 +31,14 @@ const reportContext = new MessageContext(
 
     interaction.showModal(
       new ModalBuilder()
-        .setCustomId('nonick-js:messageReportModal')
+        .setCustomId('kaori:messageReportModal')
         .setTitle('Signaler le message')
         .setComponents(
           new ActionRowBuilder<TextInputBuilder>().setComponents(
             new TextInputBuilder()
               .setCustomId(interaction.targetId)
               .setLabel('Détails')
-              .setPlaceholder('Les rapports soumis seront visibles uniquement par les administrateurs du serveur et ne seront pas signalés à Discord Trust & Safety.')
+              .setPlaceholder('Les rapports soumis seront envoyer administrateurs du serveur.')
               .setMaxLength(1500)
               .setStyle(TextInputStyle.Paragraph),
           ),
@@ -48,7 +48,7 @@ const reportContext = new MessageContext(
 );
 
 const reportContextModal = new Modal(
-  { customId: 'nonick-js:messageReportModal' },
+  { customId: 'kaori:messageReportModal' },
   async (interaction) => {
     if (!interaction.inCachedGuild() || !interaction.channel || interaction.components[0].components[0].type !== ComponentType.TextInput) return;
     const setting = await getServerSetting(interaction.guildId, 'report');
@@ -86,7 +86,7 @@ const reportContextModal = new Modal(
         components: [
           new ActionRowBuilder<ButtonBuilder>().setComponents(
             new ButtonBuilder()
-              .setCustomId('nonick-js:report-consider')
+              .setCustomId('kaori:report-consider')
               .setLabel('Traiter')
               .setStyle(ButtonStyle.Primary),
           ),

@@ -6,13 +6,13 @@ import { omitString } from '../../../module/functions';
 
 const addField = [
   new Button(
-    { customId: 'nonick-js:embedMaker-addField' },
+    { customId: 'kaori:embedMaker-addField' },
     async (interaction) => {
       if (interaction.message.embeds[0].fields.length === 25) return;
 
       interaction.showModal(
         new ModalBuilder()
-          .setCustomId('nonick-js:embedMaker-addFieldModal')
+          .setCustomId('kaori:embedMaker-addFieldModal')
           .setTitle('Ajouter un Champ')
           .setComponents(
             new ActionRowBuilder<TextInputBuilder>().setComponents(
@@ -43,7 +43,7 @@ const addField = [
   ),
 
   new Modal(
-    { customId: 'nonick-js:embedMaker-addFieldModal' },
+    { customId: 'kaori:embedMaker-addFieldModal' },
     (interaction) => {
       if (!interaction.isFromMessage()) return;
 
@@ -65,7 +65,7 @@ const addField = [
 
 const removeField = [
   new Button(
-    { customId: 'nonick-js:embedMaker-removeField' },
+    { customId: 'kaori:embedMaker-removeField' },
     async (interaction) => {
       const embed = interaction.message.embeds[0];
       const components = interaction.message.components;
@@ -73,8 +73,8 @@ const removeField = [
       if (embed.fields.length === 0) return;
       if (embed.fields.length === 1) return reloadEmbedMaker(interaction, EmbedBuilder.from(embed).setFields().data);
 
-      const indexSelectCustomId = 'nonick-js:embedMaker-removeFieldSelect';
-      const backButtonCustomId = 'nonick-js:embedMaker-selectRole-removeRoleSelect-back';
+      const indexSelectCustomId = 'kaori:embedMaker-removeFieldSelect';
+      const backButtonCustomId = 'kaori:embedMaker-selectRole-removeRoleSelect-back';
 
       const message = await interaction.update({
         components: [

@@ -4,27 +4,27 @@ import { Emojis } from '../../../module/constant';
 export function getRoleSelectMakerButtons(selectMenu?: Partial<APIStringSelectComponent>) {
   return new ActionRowBuilder<ButtonBuilder>().setComponents(
     new ButtonBuilder()
-      .setCustomId('nonick-js:embedMaker-selectRole-addRole')
+      .setCustomId('kaori:embedMaker-selectRole-addRole')
       .setEmoji(Emojis.White.addMark)
       .setStyle(ButtonStyle.Secondary)
       .setDisabled(selectMenu?.options?.length === 25),
     new ButtonBuilder()
-      .setCustomId('nonick-js:embedMaker-selectRole-removeRole')
+      .setCustomId('kaori:embedMaker-selectRole-removeRole')
       .setEmoji(Emojis.White.removeMark)
       .setStyle(ButtonStyle.Secondary)
       .setDisabled(!selectMenu?.options?.length),
     new ButtonBuilder()
-      .setCustomId('nonick-js:emberMaker-selectRole-placeholder')
+      .setCustomId('kaori:emberMaker-selectRole-placeholder')
       .setEmoji(Emojis.White.message)
       .setStyle(ButtonStyle.Secondary)
       .setDisabled(!selectMenu),
     new ButtonBuilder()
-      .setCustomId((selectMenu?.max_values || 0) <= 1 ? 'nonick-js:embedMaker-selectRole-selectMode-single' : 'nonick-js:embedMaker-selectRole-selectMode-multi')
+      .setCustomId((selectMenu?.max_values || 0) <= 1 ? 'kaori:embedMaker-selectRole-selectMode-single' : 'kaori:embedMaker-selectRole-selectMode-multi')
       .setLabel((selectMenu?.max_values || 0) <= 1 ? 'Mode de sélection : Unique' : 'Mode de sélection : Multiple')
       .setStyle(ButtonStyle.Success)
       .setDisabled(!selectMenu),
     new ButtonBuilder()
-      .setCustomId('nonick-js:embedMaker-selectRole-sendComponent')
+      .setCustomId('kaori:embedMaker-selectRole-sendComponent')
       .setLabel('Ajouter')
       .setStyle(ButtonStyle.Primary)
       .setDisabled(!selectMenu),

@@ -86,7 +86,7 @@ const verifyCommand = new ChatInput(
       components: [
         new ActionRowBuilder<ButtonBuilder>().setComponents(
           new ButtonBuilder()
-            .setCustomId(`nonick-js:verify-${verifyType}`)
+            .setCustomId(`kaori:verify-${verifyType}`)
             .setLabel('Authentifier')
             .setStyle(ButtonStyle.Success),
         ),
@@ -96,7 +96,7 @@ const verifyCommand = new ChatInput(
 );
 
 const verifyButton = new Button(
-  { customId: /^nonick-js:verify-(button|image)/ },
+  { customId: /^kaori:verify-(button|image)/ },
   async (interaction) => {
 
     if (!interaction.inCachedGuild()) return;
@@ -111,12 +111,12 @@ const verifyButton = new Button(
     if (roles.cache.has(roleId))
       return interaction.reply({ content: '`✅` Vous êtes déjà authentifié.', ephemeral: true });
 
-    if (interaction.customId === 'nonick-js:verify-button')
+    if (interaction.customId === 'kaori:verify-button')
       roles.add(roleId, 'Authentification')
         .then(() => interaction.reply({ content: '`✅` Authentification réussie !', ephemeral: true }))
         .catch(() => interaction.reply({ content: '`❌` Impossible d\'ajouter le rôle. Veuillez contacter l\'administrateur du serveur.', ephemeral: true }));
 
-    if (interaction.customId === 'nonick-js:verify-image') {
+    if (interaction.customId === 'kaori:verify-image') {
       await interaction.deferReply({ ephemeral: true });
 
       const { image, text } = Captcha.create({ color: '#4b9d6e' }, {}, { amount: 5, blur: 25 }, { rotate: 15, skew: true });
@@ -131,10 +131,10 @@ const verifyButton = new Button(
                 '> ⚠️Si le temps imparti est dépassé ou si vous échouez plusieurs fois, vous devrez recommencer une nouvelle authentification.',
               ].join('\n'))
               .setColor(Colors.Blurple)
-              .setImage('attachment://nonick-js-captcha.jpeg')
+              .setImage('attachment://kaori-captcha.jpeg')
               .setFooter({ text: 'NoNICK.js ne demandera jamais de saisir un mot de passe ni de lire un code QR.' }),
           ],
-          files: [new AttachmentBuilder(image, { name: 'nonick-js-captcha.jpeg' })],
+          files: [new AttachmentBuilder(image, { name: 'kaori-captcha.jpeg' })],
         })
         .then(() => {
           duringAuthentication.add(interaction.user.id);

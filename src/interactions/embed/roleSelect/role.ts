@@ -6,14 +6,14 @@ import { Emojis } from '../../../module/constant';
 
 const addRole = [
   new Button(
-    { customId: 'nonick-js:embedMaker-selectRole-addRole' },
+    { customId: 'kaori:embedMaker-selectRole-addRole' },
     async (interaction) => {
       const firstComponent = interaction.message.components[0].components[0];
       if (firstComponent.type === ComponentType.StringSelect && firstComponent.options.length === 25) return;
 
       interaction.showModal(
         new ModalBuilder()
-          .setCustomId('nonick-js:embedMaker-selectRole-addRoleModal')
+          .setCustomId('kaori:embedMaker-selectRole-addRoleModal')
           .setTitle('Ajouter un rôle')
           .setComponents(
             new ActionRowBuilder<TextInputBuilder>().setComponents(
@@ -56,9 +56,9 @@ const addRole = [
   ),
 
   new Modal(
-    { customId: 'nonick-js:embedMaker-selectRole-addRoleModal' },
+    { customId: 'kaori:embedMaker-selectRole-addRoleModal' },
     async (interaction) => {
-      if (!interaction.inCachedGuild() || !interaction.isFromMessage() || interaction.message.components[0].components[0].customId === 'nonick-js:embedMaker-selectRole-removeRoleSelect') return;
+      if (!interaction.inCachedGuild() || !interaction.isFromMessage() || interaction.message.components[0].components[0].customId === 'kaori:embedMaker-selectRole-removeRoleSelect') return;
 
       const emojiRegex = new RegExp(/\p{Emoji_Modifier_Base}\p{Emoji_Modifier}?|\p{Emoji_Presentation}|\p{Emoji}\uFE0F/gu);
       const roleNameOrId = interaction.fields.getTextInputValue('roleNameOrId');
@@ -83,7 +83,7 @@ const addRole = [
 
       if (interaction.message.components[0].components[0].type !== ComponentType.StringSelect) {
         const select = new StringSelectMenuBuilder()
-          .setCustomId('nonick-js:roleSelectMenu')
+          .setCustomId('kaori:roleSelectMenu')
           .setMinValues(0)
           .setOptions(newOption);
 
@@ -128,15 +128,15 @@ const addRole = [
 
 const removeRole = [
   new Button(
-    { customId: 'nonick-js:embedMaker-selectRole-removeRole' },
+    { customId: 'kaori:embedMaker-selectRole-removeRole' },
     async (interaction) => {
       const select = interaction.message.components[0].components[0];
 
       if (select.type !== ComponentType.StringSelect) return;
       if (select.options.length === 1) return interaction.update({ components: [getRoleSelectMakerButtons()] });
 
-      const indexSelectCustomId = 'nonick-js:embedMaker-selectRole-removeRoleSelect';
-      const backButtonCustomId = 'nonick-js:embedMaker-selectRole-removeRoleSelect-back';
+      const indexSelectCustomId = 'kaori:embedMaker-selectRole-removeRoleSelect';
+      const backButtonCustomId = 'kaori:embedMaker-selectRole-removeRoleSelect-back';
 
       const message = await interaction.update({
         content: null,

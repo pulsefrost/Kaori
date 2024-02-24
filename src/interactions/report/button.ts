@@ -2,7 +2,7 @@ import { Button, Modal } from '@akki256/discord-interaction';
 import { ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle, ComponentType, EmbedBuilder, formatEmoji, Colors, ButtonBuilder, ButtonStyle } from 'discord.js';
 import { Emojis } from '../../module/constant';
 
-const considerButton = new Button({ customId: 'nonick-js:report-consider' }, interaction => {
+const considerButton = new Button({ customId: 'kaori:report-consider' }, interaction => {
   const embed = interaction.message.embeds[0];
   interaction.update({
     embeds: [
@@ -16,11 +16,11 @@ const considerButton = new Button({ customId: 'nonick-js:report-consider' }, int
     components: [
       new ActionRowBuilder<ButtonBuilder>().setComponents(
         new ButtonBuilder()
-          .setCustomId('nonick-js:report-completed')
+          .setCustomId('kaori:report-completed')
           .setLabel('Traité')
           .setStyle(ButtonStyle.Success),
         new ButtonBuilder()
-          .setCustomId('nonick-js:report-ignore')
+          .setCustomId('kaori:report-ignore')
           .setLabel('Ignorer')
           .setStyle(ButtonStyle.Danger),
       ),
@@ -29,13 +29,13 @@ const considerButton = new Button({ customId: 'nonick-js:report-consider' }, int
 });
 
 const actionButton = new Button(
-  { customId: /^nonick-js:report-(completed|ignore)$/ },
+  { customId: /^kaori:report-(completed|ignore)$/ },
   (interaction): void => {
-    const isCompleteButton = interaction.customId.replace('nonick-js:report-', '') === 'completed';
+    const isCompleteButton = interaction.customId.replace('kaori:report-', '') === 'completed';
 
     interaction.showModal(
       new ModalBuilder()
-        .setCustomId('nonick-js:report-actionModal')
+        .setCustomId('kaori:report-actionModal')
         .setTitle(`${isCompleteButton ? 'Traité' : 'Non traité'}`)
         .setComponents(
           new ActionRowBuilder<TextInputBuilder>().addComponents(
@@ -51,7 +51,7 @@ const actionButton = new Button(
 );
 
 const actionModal = new Modal(
-  { customId: 'nonick-js:report-actionModal' },
+  { customId: 'kaori:report-actionModal' },
   async (interaction) => {
     if (!interaction.isFromMessage() || interaction.components[0].components[0].type !== ComponentType.TextInput) return;
 

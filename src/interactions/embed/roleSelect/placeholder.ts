@@ -3,14 +3,14 @@ import { ActionRowBuilder, ComponentType, ModalBuilder, StringSelectMenuBuilder,
 import { getRoleSelectMakerButtons } from './_function';
 
 const selectEditButton = new Button(
-  { customId: 'nonick-js:emberMaker-selectRole-placeholder' },
+  { customId: 'kaori:emberMaker-selectRole-placeholder' },
   (interaction) => {
     const select = interaction.message.components[0].components[0];
     if (select.type !== ComponentType.StringSelect) return;
 
     interaction.showModal(
       new ModalBuilder()
-        .setCustomId('nonick-js:emberMaker-selectRole-placeholderModal')
+        .setCustomId('kaori:emberMaker-selectRole-placeholderModal')
         .setTitle('Édition du menu de sélection')
         .setComponents(
           new ActionRowBuilder<TextInputBuilder>().setComponents(
@@ -29,12 +29,12 @@ const selectEditButton = new Button(
 );
 
 const selectEditModal = new Modal(
-  { customId: 'nonick-js:emberMaker-selectRole-placeholderModal' },
+  { customId: 'kaori:emberMaker-selectRole-placeholderModal' },
   (interaction) => {
     if (
       !interaction.isFromMessage() ||
       interaction.message.components[0].components[0]?.type !== ComponentType.StringSelect ||
-      interaction.message.components[0].components[0].customId === 'nonick-js:embedMaker-selectRole-removeRoleSelect'
+      interaction.message.components[0].components[0].customId === 'kaori:embedMaker-selectRole-removeRoleSelect'
     ) return;
 
     const select = StringSelectMenuBuilder

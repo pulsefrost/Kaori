@@ -62,22 +62,22 @@ ControlPanelMessages.set(FeatureType.JoinAndLeaveMessage, new ControlPanelCompon
   .addActionRows((setting) => [
     new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-message-join-enable')
+        .setCustomId('kaori:setting-message-join-enable')
         .setLabel(buttonLabelStatus(setting?.message.join.enable))
         .setStyle(buttonStyleStatus(setting?.message.join.enable))
         .setDisabled(!setting?.message.join.channel),
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-message-join-channel')
+        .setCustomId('kaori:setting-message-join-channel')
         .setLabel('Destinataire')
         .setEmoji(Emojis.White.channel)
         .setStyle(ButtonStyle.Secondary),
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-message-join-message')
+        .setCustomId('kaori:setting-message-join-message')
         .setLabel('Message')
         .setEmoji(Emojis.White.message)
         .setStyle(ButtonStyle.Secondary),
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-message-join-preview')
+        .setCustomId('kaori:setting-message-join-preview')
         .setLabel('Aperçu')
         .setStyle(ButtonStyle.Primary),
     ),
@@ -85,22 +85,22 @@ ControlPanelMessages.set(FeatureType.JoinAndLeaveMessage, new ControlPanelCompon
   .addActionRows((setting) => [
     new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-message-leave-enable')
+        .setCustomId('kaori:setting-message-leave-enable')
         .setLabel(buttonLabelStatus(setting?.message.leave.enable))
         .setStyle(buttonStyleStatus(setting?.message.leave.enable))
         .setDisabled(!setting?.message.leave.channel),
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-message-leave-channel')
+        .setCustomId('kaori:setting-message-leave-channel')
         .setLabel('Destinataire')
         .setEmoji(Emojis.White.channel)
         .setStyle(ButtonStyle.Secondary),
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-message-leave-message')
+        .setCustomId('kaori:setting-message-leave-message')
         .setLabel('Message')
         .setEmoji(Emojis.White.message)
         .setStyle(ButtonStyle.Secondary),
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-message-leave-preview')
+        .setCustomId('kaori:setting-message-leave-preview')
         .setLabel('Aperçu')
         .setStyle(ButtonStyle.Primary),
     ),
@@ -132,7 +132,7 @@ ControlPanelMessages.set(FeatureType.ReportToAdmin, new ControlPanelComponentPag
   .addActionRows(() => [
     new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-report-channel')
+        .setCustomId('kaori:setting-report-channel')
         .setLabel('Destinataire')
         .setEmoji(Emojis.White.channel)
         .setStyle(ButtonStyle.Secondary),
@@ -141,12 +141,12 @@ ControlPanelMessages.set(FeatureType.ReportToAdmin, new ControlPanelComponentPag
   .addActionRows((setting) => [
     new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-report-mention-enable')
+        .setCustomId('kaori:setting-report-mention-enable')
         .setLabel(buttonLabelStatus(setting?.report.mention.enable))
         .setStyle(buttonStyleStatus(setting?.report.mention.enable))
         .setDisabled(!setting?.report.mention.role),
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-report-mention-role')
+        .setCustomId('kaori:setting-report-mention-role')
         .setLabel('Rôle')
         .setEmoji(Emojis.White.role)
         .setStyle(ButtonStyle.Secondary),
@@ -183,7 +183,7 @@ ControlPanelMessages.set(FeatureType.MessageExpansion, new ControlPanelComponent
   .addActionRows((setting) => [
     new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-message-expansion-enable')
+        .setCustomId('kaori:setting-message-expansion-enable')
         .setLabel(buttonLabelStatus(setting?.message.expansion.enable))
         .setStyle(buttonStyleStatus(setting?.message.expansion.enable)),
     ),
@@ -191,7 +191,7 @@ ControlPanelMessages.set(FeatureType.MessageExpansion, new ControlPanelComponent
   .addActionRows((setting) => [
     new ActionRowBuilder<StringSelectMenuBuilder>().setComponents(
       new StringSelectMenuBuilder()
-        .setCustomId('nonick-js:setting-message-expansion-ignore-types')
+        .setCustomId('kaori:setting-message-expansion-ignore-types')
         .setMinValues(0)
         .setMaxValues(4)
         .setPlaceholder('Exceptions (Types)')
@@ -227,7 +227,7 @@ ControlPanelMessages.set(FeatureType.MessageExpansion, new ControlPanelComponent
     ),
     new ActionRowBuilder<ChannelSelectMenuBuilder>().setComponents(
       new ChannelSelectMenuBuilder()
-        .setCustomId('nonick-js:setting-message-expansion-ignore-channels')
+        .setCustomId('kaori:setting-message-expansion-ignore-channels')
         .setPlaceholder('Exceptions (Canaux)')
         .setChannelTypes([ChannelType.GuildText, ChannelType.GuildForum, ChannelType.GuildVoice, ChannelType.GuildStageVoice])
         .setMinValues(0)
@@ -276,12 +276,12 @@ ControlPanelMessages.set(FeatureType.EventLog, new ControlPanelComponentPaginati
   .addActionRows((setting) => [
     new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-log-timeout-enable')
+        .setCustomId('kaori:setting-log-timeout-enable')
         .setLabel(buttonLabelStatus(setting?.log.timeout.enable))
         .setStyle(buttonStyleStatus(setting?.log.timeout.enable))
         .setDisabled(!setting?.log?.timeout?.channel),
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-log-timeout-channel')
+        .setCustomId('kaori:setting-log-timeout-channel')
         .setLabel('Destinataire')
         .setEmoji(Emojis.White.channel)
         .setStyle(ButtonStyle.Secondary),
@@ -290,12 +290,12 @@ ControlPanelMessages.set(FeatureType.EventLog, new ControlPanelComponentPaginati
   .addActionRows((setting) => [
     new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-log-kick-enable')
+        .setCustomId('kaori:setting-log-kick-enable')
         .setLabel(buttonLabelStatus(setting?.log.kick.enable))
         .setStyle(buttonStyleStatus(setting?.log.kick.enable))
         .setDisabled(!setting?.log.kick.channel),
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-log-kick-channel')
+        .setCustomId('kaori:setting-log-kick-channel')
         .setLabel('Destinataire')
         .setEmoji(Emojis.White.channel)
         .setStyle(ButtonStyle.Secondary),
@@ -304,12 +304,12 @@ ControlPanelMessages.set(FeatureType.EventLog, new ControlPanelComponentPaginati
   .addActionRows((setting) => [
     new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-log-ban-enable')
+        .setCustomId('kaori:setting-log-ban-enable')
         .setLabel(buttonLabelStatus(setting?.log.ban.enable))
         .setStyle(buttonStyleStatus(setting?.log.ban.enable))
         .setDisabled(!setting?.log.ban.channel),
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-log-ban-channel')
+        .setCustomId('kaori:setting-log-ban-channel')
         .setLabel('Destinataire')
         .setEmoji(Emojis.White.channel)
         .setStyle(ButtonStyle.Secondary),
@@ -318,12 +318,12 @@ ControlPanelMessages.set(FeatureType.EventLog, new ControlPanelComponentPaginati
   .addActionRows((setting) => [
     new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-log-voice-enable')
+        .setCustomId('kaori:setting-log-voice-enable')
         .setLabel(buttonLabelStatus(setting?.log.voice.enable))
         .setStyle(buttonStyleStatus(setting?.log.voice.enable))
         .setDisabled(!setting?.log.voice.channel),
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-log-voice-channel')
+        .setCustomId('kaori:setting-log-voice-channel')
         .setLabel('Destinataire')
         .setEmoji(Emojis.White.channel)
         .setStyle(ButtonStyle.Secondary),
@@ -332,12 +332,12 @@ ControlPanelMessages.set(FeatureType.EventLog, new ControlPanelComponentPaginati
   .addActionRows((setting) => [
     new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-log-delete-enable')
+        .setCustomId('kaori:setting-log-delete-enable')
         .setLabel(buttonLabelStatus(setting?.log.delete.enable))
         .setStyle(buttonStyleStatus(setting?.log.delete.enable))
         .setDisabled(!setting?.log.delete.channel),
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-log-delete-channel')
+        .setCustomId('kaori:setting-log-delete-channel')
         .setLabel('Destinataire')
         .setEmoji(Emojis.White.channel)
         .setStyle(ButtonStyle.Secondary),
@@ -378,7 +378,7 @@ ControlPanelMessages.set(FeatureType.ChangeVerificationLevel, new ControlPanelCo
   .addActionRows((setting) => [
     new ActionRowBuilder<StringSelectMenuBuilder>().setComponents(
       new StringSelectMenuBuilder()
-        .setCustomId('nonick-js:setting-changeVerificationLevel-level')
+        .setCustomId('kaori:setting-changeVerificationLevel-level')
         .setPlaceholder('Configurer le niveau de vérification à changer pendant la période')
         .setOptions([
           { label: 'Bas', value: '1', description: 'Seuls les comptes avec une vérification par e-mail', emoji: '🟢' },
@@ -389,12 +389,12 @@ ControlPanelMessages.set(FeatureType.ChangeVerificationLevel, new ControlPanelCo
     ),
     new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-changeVerificationLevel-enable')
+        .setCustomId('kaori:setting-changeVerificationLevel-enable')
         .setLabel(buttonLabelStatus(setting?.changeVerificationLevel.enable))
         .setStyle(buttonStyleStatus(setting?.changeVerificationLevel.enable))
         .setDisabled(!(setting?.changeVerificationLevel.level.new && setting?.changeVerificationLevel.time.start !== null && setting?.changeVerificationLevel.time.end !== null)),
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-changeVerificationLevel-time')
+        .setCustomId('kaori:setting-changeVerificationLevel-time')
         .setLabel('Heure de début et de fin')
         .setEmoji(Emojis.White.schedule)
         .setStyle(ButtonStyle.Secondary),
@@ -403,12 +403,12 @@ ControlPanelMessages.set(FeatureType.ChangeVerificationLevel, new ControlPanelCo
   .addActionRows((setting) => [
     new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-changeVerificationLevel-log-enable')
+        .setCustomId('kaori:setting-changeVerificationLevel-log-enable')
         .setLabel(buttonLabelStatus(setting?.changeVerificationLevel.log.enable))
         .setStyle(buttonStyleStatus(setting?.changeVerificationLevel.log.enable))
         .setDisabled(!setting?.changeVerificationLevel.log.channel),
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-changeVerificationLevel-log-channel')
+        .setCustomId('kaori:setting-changeVerificationLevel-log-channel')
         .setLabel('Destinataire')
         .setStyle(ButtonStyle.Secondary),
     ),
@@ -440,7 +440,7 @@ ControlPanelMessages.set(FeatureType.AutoPublic, new ControlPanelComponentPagina
   .addActionRows((setting) => [
     new ActionRowBuilder<ChannelSelectMenuBuilder>().setComponents(
       new ChannelSelectMenuBuilder()
-        .setCustomId('nonick-js:setting-autoPublic-channels')
+        .setCustomId('kaori:setting-autoPublic-channels')
         .setPlaceholder('Sélectionner les canaux')
         .setChannelTypes(ChannelType.GuildAnnouncement)
         .setMinValues(0)
@@ -448,7 +448,7 @@ ControlPanelMessages.set(FeatureType.AutoPublic, new ControlPanelComponentPagina
     ),
     new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-autoPublic-enable')
+        .setCustomId('kaori:setting-autoPublic-enable')
         .setLabel(buttonLabelStatus(setting?.autoPublic.enable))
         .setStyle(buttonStyleStatus(setting?.autoPublic.enable)),
     ),
@@ -491,7 +491,7 @@ ControlPanelMessages.set(FeatureType.AutoModPlus, new ControlPanelComponentPagin
   .addActionRows((setting) => [
     new ActionRowBuilder<StringSelectMenuBuilder>().setComponents(
       new StringSelectMenuBuilder()
-        .setCustomId('nonick-js:setting-automod-filter')
+        .setCustomId('kaori:setting-automod-filter')
         .setPlaceholder('Sélectionner le filtre à activer')
         .setMinValues(0)
         .setMaxValues(3)
@@ -505,7 +505,7 @@ ControlPanelMessages.set(FeatureType.AutoModPlus, new ControlPanelComponentPagin
     ),
     new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-automod-enable')
+        .setCustomId('kaori:setting-automod-enable')
         .setLabel(buttonLabelStatus(setting?.autoMod.enable))
         .setStyle(buttonStyleStatus(setting?.autoMod.enable)),
     ),
@@ -513,12 +513,12 @@ ControlPanelMessages.set(FeatureType.AutoModPlus, new ControlPanelComponentPagin
   .addActionRows((setting) => [
     new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-automod-log-enable')
+        .setCustomId('kaori:setting-automod-log-enable')
         .setLabel(buttonLabelStatus(setting?.autoMod.log.enable))
         .setStyle(buttonStyleStatus(setting?.autoMod.log.enable))
         .setDisabled(!setting?.autoMod.log.channel),
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-automod-log-channel')
+        .setCustomId('kaori:setting-automod-log-channel')
         .setLabel('Destinataire')
         .setEmoji(Emojis.White.channel)
         .setStyle(ButtonStyle.Secondary),
@@ -527,7 +527,7 @@ ControlPanelMessages.set(FeatureType.AutoModPlus, new ControlPanelComponentPagin
   .addActionRows((setting) => [
     new ActionRowBuilder<ChannelSelectMenuBuilder>().setComponents(
       new ChannelSelectMenuBuilder()
-        .setCustomId('nonick-js:setting-automod-ignore-channels')
+        .setCustomId('kaori:setting-automod-ignore-channels')
         .setPlaceholder('Paramètres d\'exception (Canaux)')
         .setChannelTypes([ChannelType.GuildText, ChannelType.GuildForum, ChannelType.GuildVoice, ChannelType.GuildStageVoice])
         .setMinValues(0)
@@ -535,14 +535,14 @@ ControlPanelMessages.set(FeatureType.AutoModPlus, new ControlPanelComponentPagin
     ),
     new ActionRowBuilder<RoleSelectMenuBuilder>().setComponents(
       new RoleSelectMenuBuilder()
-        .setCustomId('nonick-js:setting-automod-ignore-roles')
+        .setCustomId('kaori:setting-automod-ignore-roles')
         .setPlaceholder('Paramètres d\'exception (Rôles)')
         .setMinValues(0)
         .setMaxValues(25),
     ),
     new ActionRowBuilder<ButtonBuilder>().setComponents(
       new ButtonBuilder()
-        .setCustomId('nonick-js:setting-automod-ignore-deleteAll')
+        .setCustomId('kaori:setting-automod-ignore-deleteAll')
         .setLabel('Supprimer toutes les exceptions')
         .setStyle(ButtonStyle.Danger)
         .setDisabled(!(setting?.autoMod.ignore.channels.length || setting?.autoMod.ignore.roles.length)),

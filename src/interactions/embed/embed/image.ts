@@ -4,13 +4,13 @@ import { isURL } from '../../../module/functions';
 import { reloadEmbedMaker } from './_function';
 
 const button = new Button(
-  { customId: 'nonick-js:embedMaker-image' },
+  { customId: 'kaori:embedMaker-image' },
   (interaction) => {
     const embed = interaction.message.embeds[0];
 
     interaction.showModal(
       new ModalBuilder()
-        .setCustomId('nonick-js:embedMaker-imageModal')
+        .setCustomId('kaori:embedMaker-imageModal')
         .setTitle('Image')
         .setComponents(
           new ActionRowBuilder<TextInputBuilder>().setComponents(
@@ -39,7 +39,7 @@ const button = new Button(
 );
 
 const modal = new Modal(
-  { customId: 'nonick-js:embedMaker-imageModal' },
+  { customId: 'kaori:embedMaker-imageModal' },
   (interaction) => {
     if (!interaction.isFromMessage()) return;
 

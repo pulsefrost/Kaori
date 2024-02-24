@@ -2,7 +2,7 @@ import { SelectMenu, SelectMenuType } from '@akki256/discord-interaction';
 import { PermissionFlagsBits } from 'discord.js';
 
 const select = new SelectMenu(
-  { customId: 'nonick-js:manageComponents-delete', type: SelectMenuType.String },
+  { customId: 'kaori:manageComponents-delete', type: SelectMenuType.String },
   async (interaction) => {
     if (!interaction.inCachedGuild() || !interaction.channel) return;
 

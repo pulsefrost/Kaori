@@ -3,11 +3,11 @@ import { ActionRow, ActionRowBuilder, ButtonBuilder, ButtonComponent, ButtonStyl
 import { checkAndFormatDangerPermission } from '../../../module/functions';
 
 const sendRoleButton = new Button(
-  { customId: 'nonick-js:embedMaker-roleButton-send' },
+  { customId: 'kaori:embedMaker-roleButton-send' },
   (interaction) => {
     interaction.showModal(
       new ModalBuilder()
-        .setCustomId('nonick-js:embedMaker-roleButton-sendModal')
+        .setCustomId('kaori:embedMaker-roleButton-sendModal')
         .setTitle('Créer un bouton')
         .setComponents(
           new ActionRowBuilder<TextInputBuilder>().setComponents(
@@ -41,7 +41,7 @@ const sendRoleButton = new Button(
 );
 
 const sendRoleButtonModal = new Modal(
-  { customId: 'nonick-js:embedMaker-roleButton-sendModal' },
+  { customId: 'kaori:embedMaker-roleButton-sendModal' },
   async (interaction) => {
     // Création du bouton
     if (!interaction.isFromMessage() || !interaction.inCachedGuild() || interaction.message.components[0].components[1].type !== ComponentType.Button || !interaction.channel) return;
@@ -62,7 +62,7 @@ const sendRoleButtonModal = new Modal(
       return interaction.reply({ content: '`❌` Vous ne pouvez pas ajouter un rôle supérieur à votre rôle actuel.', ephemeral: true });
 
     const button = new ButtonBuilder()
-      .setCustomId(`nonick-js:roleButton-${role.id}`)
+      .setCustomId(`kaori:roleButton-${role.id}`)
       .setStyle(interaction.message.components[0].components[1].style);
 
     if (emoji) {
@@ -89,7 +89,7 @@ const sendRoleButtonModal = new Modal(
       return interaction.reply({ content: '`❌` Aucun composant supplémentaire ne peut être ajouté !', ephemeral: true });
     if (targetMessage.components[0]?.components[0]?.type === ComponentType.StringSelect)
       return interaction.reply({ content: '`❌` Le menu déroulant et les boutons ne peuvent pas être ajoutés dans le même message.', ephemeral: true });
-    if (targetMessage.components.some(v => v.components.map(i => i.customId).includes(`nonick-js:roleButton-${role.id}`)))
+    if (targetMessage.components.some(v => v.components.map(i => i.customId).includes(`kaori:roleButton-${role.id}`)))
       return interaction.reply({ content: '`❌` Ce bouton pour ce rôle a déjà été ajouté.', ephemeral: true });
 
     const updatedComponents = targetMessage.components.map(v => ActionRowBuilder.from<ButtonBuilder>(v as ActionRow<ButtonComponent>));
@@ -124,11 +124,11 @@ const sendRoleButtonModal = new Modal(
         components: [
           new ActionRowBuilder<ButtonBuilder>().setComponents(
             new ButtonBuilder()
-              .setCustomId('nonick-js:embedMaker-roleButton-send-agree')
+              .setCustomId('kaori:embedMaker-roleButton-send-agree')
               .setLabel('Oui')
               .setStyle(ButtonStyle.Success),
             new ButtonBuilder()
-              .setCustomId('nonick-js:embedMaker-roleButton-send-disagree')
+              .setCustomId('kaori:embedMaker-roleButton-send-disagree')
               .setLabel('Non')
               .setStyle(ButtonStyle.Danger),
           ),
@@ -137,12 +137,12 @@ const sendRoleButtonModal = new Modal(
 
       message
         .awaitMessageComponent({
-          filter: v => /^nonick-js:embedMaker-roleButton-send-(agree|disagree)$/.test(v.customId),
+          filter: v => /^kaori:embedMaker-roleButton-send-(agree|disagree)$/.test(v.customId),
           componentType: ComponentType.Button,
           time: 180_000,
         })
         .then(async (i) => {
-          if (i.customId === 'nonick-js:embedMaker-roleButton-send-disagree')
+          if (i.customId === 'kaori:embedMaker-roleButton-send-disagree')
             return i.update({ embeds, components });
 
           await i.update({ content: '`⌛` Ajout du composant en cours...', embeds: [], components: [] });

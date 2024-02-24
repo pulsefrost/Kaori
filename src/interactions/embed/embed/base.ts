@@ -4,13 +4,13 @@ import { isURL } from '../../../module/functions';
 import { reloadEmbedMaker } from './_function';
 
 const button = new Button(
-  { customId: 'nonick-js:embedMaker-base' },
+  { customId: 'kaori:embedMaker-base' },
   (interaction) => {
     const embed = interaction.message.embeds[0];
 
     interaction.showModal(
       new ModalBuilder()
-        .setCustomId('nonick-js:embedMaker-baseModal')
+        .setCustomId('kaori:embedMaker-baseModal')
         .setTitle('Titre, Description, Couleur')
         .setComponents(
           new ActionRowBuilder<TextInputBuilder>().setComponents(
@@ -27,7 +27,7 @@ const button = new Button(
               .setCustomId('url')
               .setLabel('URL du Titre')
               .setValue(embed.url || '')
-              .setPlaceholder('Exemple : https://docs.nonick-js.com')
+              .setPlaceholder('Exemple : https://kaoricafe.fr')
               .setStyle(TextInputStyle.Short)
               .setRequired(false),
           ),
@@ -54,7 +54,7 @@ const button = new Button(
 );
 
 const modal = new Modal(
-  { customId: 'nonick-js:embedMaker-baseModal' },
+  { customId: 'kaori:embedMaker-baseModal' },
   (interaction) => {
     if (!interaction.isFromMessage()) return;
 
@@ -69,7 +69,7 @@ const modal = new Modal(
     try {
       color = resolveColor(color as ColorResolvable);
     } catch {
-      return interaction.reply({ content: '`❌` Code couleur invalide ou nom de couleur saisi. Veuillez consulter [cette page](https://docs.nonick-js.com/nonick.js/features/embed/) pour saisir une valeur correcte.', ephemeral: true });
+      return interaction.reply({ content: '`❌` Code couleur invalide ou nom de couleur saisi. Veuillez consulter [cette page](https://htmlcolorcodes.com) pour saisir une valeur correcte.', ephemeral: true });
     }
 
     const embed = EmbedBuilder

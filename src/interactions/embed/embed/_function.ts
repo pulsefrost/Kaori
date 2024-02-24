@@ -11,27 +11,27 @@ export function getBaseEmbedMakerButtons(embed: APIEmbed | Embed) {
     new ActionRowBuilder<ButtonBuilder>()
       .setComponents(
         new ButtonBuilder()
-          .setCustomId('nonick-js:embedMaker-base')
+          .setCustomId('kaori:embedMaker-base')
           .setLabel('Base')
           .setEmoji(Emojis.White.message)
           .setStyle(ButtonStyle.Success),
         new ButtonBuilder()
-          .setCustomId('nonick-js:embedMaker-image')
+          .setCustomId('kaori:embedMaker-image')
           .setLabel('Image')
           .setEmoji(Emojis.White.image)
           .setStyle(ButtonStyle.Secondary),
         new ButtonBuilder()
-          .setCustomId('nonick-js:embedMaker-author')
+          .setCustomId('kaori:embedMaker-author')
           .setLabel('Auteur')
           .setEmoji(Emojis.White.nickName)
           .setStyle(ButtonStyle.Secondary),
         new ButtonBuilder()
-          .setCustomId('nonick-js:embedMaker-footer')
+          .setCustomId('kaori:embedMaker-footer')
           .setLabel('Pied de page')
           .setEmoji(Emojis.White.nickName)
           .setStyle(ButtonStyle.Secondary),
         new ButtonBuilder()
-          .setCustomId('nonick-js:embedMaker-timeStamp')
+          .setCustomId('kaori:embedMaker-timeStamp')
           .setEmoji(Emojis.White.schedule)
           .setStyle(ButtonStyle.Secondary),
       ),
@@ -39,19 +39,19 @@ export function getBaseEmbedMakerButtons(embed: APIEmbed | Embed) {
     new ActionRowBuilder<ButtonBuilder>()
       .setComponents(
         new ButtonBuilder()
-          .setCustomId('nonick-js:embedMaker-addField')
+          .setCustomId('kaori:embedMaker-addField')
           .setLabel('Champ')
           .setEmoji(Emojis.White.addMark)
           .setStyle(ButtonStyle.Secondary)
           .setDisabled(embed.fields?.length === 25),
         new ButtonBuilder()
-          .setCustomId('nonick-js:embedMaker-removeField')
+          .setCustomId('kaori:embedMaker-removeField')
           .setLabel('Champ')
           .setEmoji(Emojis.White.removeMark)
           .setStyle(ButtonStyle.Secondary)
           .setDisabled(!embed.fields?.length),
         new ButtonBuilder()
-          .setCustomId('nonick-js:embedMaker-export')
+          .setCustomId('kaori:embedMaker-export')
           .setEmoji(Emojis.White.download)
           .setStyle(ButtonStyle.Danger),
       ),
@@ -65,7 +65,7 @@ export function getEmbedMakerButtons(embed: APIEmbed | Embed, type: embedMakerTy
     case 'send':
       actionRows[1].addComponents(
         new ButtonBuilder()
-          .setCustomId('nonick-js:embedMaker-send')
+          .setCustomId('kaori:embedMaker-send')
           .setLabel('Envoyer')
           .setStyle(ButtonStyle.Primary),
       );
@@ -74,7 +74,7 @@ export function getEmbedMakerButtons(embed: APIEmbed | Embed, type: embedMakerTy
     case 'edit':
       actionRows[1].addComponents(
         new ButtonBuilder()
-          .setCustomId('nonick-js:embedMaker-edit')
+          .setCustomId('kaori:embedMaker-edit')
           .setLabel('Modifier')
           .setStyle(ButtonStyle.Primary),
       );

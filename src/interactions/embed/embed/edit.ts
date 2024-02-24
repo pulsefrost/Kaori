@@ -2,7 +2,7 @@ import { Button } from '@akki256/discord-interaction';
 import { PermissionFlagsBits } from 'discord.js';
 
 const editEmbedButton = new Button(
-  { customId: 'nonick-js:embedMaker-edit' },
+  { customId: 'kaori:embedMaker-edit' },
   async (interaction) => {
     if (!interaction.inCachedGuild() || !interaction.channel) return;
 

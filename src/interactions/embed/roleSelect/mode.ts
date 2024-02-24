@@ -3,10 +3,10 @@ import { ActionRowBuilder, ComponentType, StringSelectMenuBuilder } from 'discor
 import { getRoleSelectMakerButtons } from './_function';
 
 const changeSelectMode = new Button(
-  { customId: /^nonick-js:embedMaker-selectRole-selectMode-(single|multi)$/ },
+  { customId: /^kaori:embedMaker-selectRole-selectMode-(single|multi)$/ },
   (interaction) => {
     const select = interaction.message.components[0].components[0];
-    const isSingleMode = interaction.customId === 'nonick-js:embedMaker-selectRole-selectMode-single';
+    const isSingleMode = interaction.customId === 'kaori:embedMaker-selectRole-selectMode-single';
 
     if (select.type !== ComponentType.StringSelect) return;
 

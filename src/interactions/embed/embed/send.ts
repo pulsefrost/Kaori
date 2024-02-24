@@ -2,7 +2,7 @@ import { PermissionFlagsBits, User } from 'discord.js';
 import { Button } from '@akki256/discord-interaction';
 
 const sendEmbedButton = new Button(
-  { customId: 'nonick-js:embedMaker-send' },
+  { customId: 'kaori:embedMaker-send' },
   async (interaction) => {
     if (!interaction.inCachedGuild()) return;
     if (!interaction.guild.members.me?.permissions.has(PermissionFlagsBits.ManageWebhooks))

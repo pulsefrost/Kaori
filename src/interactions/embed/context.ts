@@ -29,7 +29,7 @@ const context = new MessageContext(
       components: [
         new ActionRowBuilder<StringSelectMenuBuilder>().setComponents(
           new StringSelectMenuBuilder()
-            .setCustomId('nonick-js:embedMaker-editEmbedPanel')
+            .setCustomId('kaori:embedMaker-editEmbedPanel')
             .setOptions(
               { label: 'Éditer l\'incorporation', value: 'editEmbed', emoji: Emojis.White.pencil },
               { label: 'Ajouter un rôle (menu de sélection)', value: 'addRoleSelect', emoji: Emojis.White.role2 },
@@ -45,7 +45,7 @@ const context = new MessageContext(
 );
 
 const select = new SelectMenu(
-  { customId: 'nonick-js:embedMaker-editEmbedPanel', type: SelectMenuType.String },
+  { customId: 'kaori:embedMaker-editEmbedPanel', type: SelectMenuType.String },
   async (interaction) => {
     if (!interaction.inCachedGuild()) return;
     const targetId = interaction.message.embeds[0].footer?.text.match(/[0-9]{18,19}/)?.[0];
@@ -90,12 +90,12 @@ const select = new SelectMenu(
         components: [
           new ActionRowBuilder<ButtonBuilder>().setComponents(
             new ButtonBuilder()
-              .setCustomId('nonick-js:embedMaker-roleButton-send')
+              .setCustomId('kaori:embedMaker-roleButton-send')
               .setLabel('Créer un bouton')
               .setEmoji(Emojis.White.addMark)
               .setStyle(ButtonStyle.Secondary),
             new ButtonBuilder()
-              .setCustomId('nonick-js:embedMaker-roleButton-changeStyle')
+              .setCustomId('kaori:embedMaker-roleButton-changeStyle')
               .setLabel('Couleur')
               .setEmoji('🎨')
               .setStyle(ButtonStyle.Primary),
@@ -115,7 +115,7 @@ const select = new SelectMenu(
         components: [
           new ActionRowBuilder<ButtonBuilder>().setComponents(
             new ButtonBuilder()
-              .setCustomId('nonick-js:embedMaker-linkButton-send')
+              .setCustomId('kaori:embedMaker-linkButton-send')
               .setLabel('Créer un bouton')
               .setEmoji(Emojis.White.addMark)
               .setStyle(ButtonStyle.Secondary),
@@ -137,13 +137,13 @@ const select = new SelectMenu(
         components: [
           new ActionRowBuilder<StringSelectMenuBuilder>().setComponents(
             new StringSelectMenuBuilder()
-              .setCustomId('nonick-js:manageComponents-delete')
+              .setCustomId('kaori:manageComponents-delete')
               .setOptions(targetMessage.components.map((v, index) => ({ label: `${index + 1}ère ligne`, value: String(index) })))
               .setMaxValues(targetMessage.components.length),
           ),
           new ActionRowBuilder<ButtonBuilder>().setComponents(
             new ButtonBuilder()
-              .setCustomId('nonick-js:manageComponents-deleteAll')
+              .setCustomId('kaori:manageComponents-deleteAll')
               .setLabel('Supprimer tous les composants')
               .setEmoji('🗑')
               .setStyle(ButtonStyle.Danger),

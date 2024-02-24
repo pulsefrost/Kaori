@@ -2,7 +2,7 @@ import { Button } from '@akki256/discord-interaction';
 import { PermissionFlagsBits } from 'discord.js';
 
 const button = new Button(
-  { customId: 'nonick-js:manageComponents-deleteAll' },
+  { customId: 'kaori:manageComponents-deleteAll' },
   async (interaction) => {
     if (!interaction.inCachedGuild() || !interaction.channel) return;
 

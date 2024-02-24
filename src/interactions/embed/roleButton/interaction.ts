@@ -2,11 +2,11 @@ import { Button } from '@akki256/discord-interaction';
 import { codeBlock, Colors, EmbedBuilder, roleMention } from 'discord.js';
 
 const button = new Button(
-  { customId: /^nonick-js:roleButton-[0-9]{18,19}/ },
+  { customId: /^kaori:roleButton-[0-9]{18,19}/ },
   (interaction) => {
     if (!interaction.inCachedGuild()) return;
 
-    const roleId = interaction.customId.replace('nonick-js:roleButton-', '');
+    const roleId = interaction.customId.replace('kaori:roleButton-', '');
     const roles = interaction.member.roles;
 
     if (roles.cache.has(roleId))

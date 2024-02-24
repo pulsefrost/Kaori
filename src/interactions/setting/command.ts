@@ -40,14 +40,14 @@ const command = new ChatInput(
           .setTitle('`🔧` Paramètres')
           .setDescription([
             'Veuillez choisir la fonctionnalité que vous souhaitez configurer.',
-            'Pour obtenir des instructions détaillées sur la procédure et les paramètres de chaque fonctionnalité, veuillez consulter [ici](https://docs.nonick-js.com/nonick.js/setting/) ou référez-vous à la documentation spécifique de chaque fonctionnalité.',
+            'Pour obtenir des instructions détaillées sur la procédure et les paramètres de chaque fonctionnalité, veuillez consulter [ici](https://docs.kaori.com/nonick.js/setting/) ou référez-vous à la documentation spécifique de chaque fonctionnalité.',
           ].join('\n'))
           .setColor(Colors.Blurple),
       ],
       components: [
         new ActionRowBuilder<StringSelectMenuBuilder>().setComponents(
           new StringSelectMenuBuilder()
-            .setCustomId('nonick-js:setting-features')
+            .setCustomId('kaori:setting-features')
             .setMinValues(0)
             .setOptions(
               { label: 'Messages d\'arrivée et de départ', value: FeatureType.JoinAndLeaveMessage, description: 'Envoyer un message lorsque des membres rejoignent ou quittent le serveur', emoji: '🚪' },
@@ -66,7 +66,7 @@ const command = new ChatInput(
 );
 
 const featuresSelect = new SelectMenu(
-  { customId: 'nonick-js:setting-features', type: SelectMenuType.String },
+  { customId: 'kaori:setting-features', type: SelectMenuType.String },
   (interaction) => {
     if (!interaction.values.length) return interaction.update({});
 

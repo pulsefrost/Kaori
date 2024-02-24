@@ -2,7 +2,7 @@ import { SelectMenu, SelectMenuType } from '@akki256/discord-interaction';
 import { Colors, EmbedBuilder, MessageFlags } from 'discord.js';
 
 const roleSelect = new SelectMenu(
-  { customId: /^nonick-js:roleSelectMenu(-[1-5])?$|^reactionRole$/, type: SelectMenuType.String },
+  { customId: /^kaori:roleSelectMenu(-[1-5])?$|^reactionRole$/, type: SelectMenuType.String },
   async (interaction) => {
     if (!interaction.inCachedGuild()) return;
     if (interaction.message.flags.has(MessageFlags.Ephemeral)) return interaction.update({});
