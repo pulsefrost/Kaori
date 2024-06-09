@@ -1,8 +1,8 @@
-import { ApplicationCommandOptionType, bold, Colors, EmbedBuilder, formatEmoji, GuildFeature, GuildMember, inlineCode, PermissionFlagsBits, time, User, Interaction, ChatInputCommandInteraction, UserContextMenuCommandInteraction, Guild } from 'discord.js';
+import { ApplicationCommandOptionType, bold, Colors, EmbedBuilder, formatEmoji, GuildFeature, GuildMember, inlineCode, Interaction, PermissionFlagsBits, time, User } from 'discord.js';
 import { ChatInput, UserContext } from '@akki256/discord-interaction';
 import { Emojis } from '../module/constant';
 
-const flagEmojis = new Map<string, string>([
+const flagEmojis = new Map([
   ['Staff', '966753508739121222'],
   ['Partner', '966753508860768357'],
   ['CertifiedModerator', '959536411894243378'],
@@ -49,33 +49,30 @@ const Command = new ChatInput(
     ],
     dmPermission: false,
   },
-  async (interaction: ChatInputCommandInteraction) => {
+  async (interaction) => {
     if (!interaction.inCachedGuild()) return;
     const subCommand = interaction.options.getSubcommand();
 
-    if (subCommand === 'user') {
+    if (subCommand === 'user')
       return interaction.reply({ embeds: [await createUserInfoEmbed(interaction, interaction.options.getUser('user', true))], ephemeral: true });
-    }
 
-    if (subCommand === 'server') {
-      const owner = await interaction.guild.fetchOwner();
-
+    if (subCommand === 'server')
       return interaction.reply({
         embeds: [
           new EmbedBuilder()
             .setTitle(interaction.guild.name)
             .setDescription([
               `${formatEmoji(Emojis.White.id)} ID du serveur: \`${interaction.guildId}\``,
-              `${formatEmoji(Emojis.White.nickName)} Propriétaire: ${owner.user.tag}`,
+              `${formatEmoji(Emojis.White.nickName)} Propriétaire: ${await interaction.guild.fetchOwner()}`,
               `${formatEmoji(Emojis.White.nickName)} Nombre de membres: \`${interaction.guild.memberCount}\` personnes`,
-              `${formatEmoji(Emojis.White.channel)} Nombre de canaux: \`${interaction.guild.channels.cache.size}\``,
+              `${formatEmoji(Emojis.White.channel)} Nombre de canaux: \`${interaction.guild.channels.channelCountWithoutThreads}\``,
               `${formatEmoji(Emojis.White.schedule)} Date de création: ${time(interaction.guild.createdAt, 'D')}`,
               `${formatEmoji(Emojis.White.boost)} Nombre de boosts: \`${interaction.guild.premiumSubscriptionCount}\``,
             ].join('\n'))
             .setColor(Colors.White)
             .setThumbnail(interaction.guild.iconURL())
-            .addFields(
-              { name: 'Statut', value: interaction.guild.features.map((v: string) => featureTexts.get(v)).filter(Boolean).join('\n') || 'Aucun' },
+            .setFields(
+              { name: 'Statut', value: interaction.guild.features.map(v => featureTexts.get(v)).filter(Boolean).join('\n') || 'Aucun' },
               {
                 name: `Rôles (${interaction.guild.roles.cache.size})`,
                 value: interaction.member.permissions.has(PermissionFlagsBits.ManageRoles)
@@ -89,7 +86,6 @@ const Command = new ChatInput(
         ],
         ephemeral: true,
       });
-    }
   },
 );
 
@@ -98,7 +94,7 @@ const Context = new UserContext(
     name: 'Informations utilisateur',
     dmPermission: false,
   },
-  async (interaction: UserContextMenuCommandInteraction) => {
+  async (interaction) => {
     if (!interaction.inCachedGuild()) return;
 
     return interaction.reply({ embeds: [await createUserInfoEmbed(interaction, interaction.targetUser)], ephemeral: true });
@@ -109,20 +105,19 @@ async function createUserInfoEmbed(interaction: Interaction, user: User) {
   const member = await interaction.guild?.members.fetch(user.id).catch(() => undefined);
 
   const userFlags = user.flags?.toArray();
-  const userFlagsEmojis = userFlags?.map((v: string) => flagEmojis.get(v)).filter(Boolean);
+  const userFlagsEmojis = userFlags?.map(v => flagEmojis.get(v)).filter(Boolean);
 
-  if (!(member instanceof GuildMember)) {
+  if (!(member instanceof GuildMember))
     return new EmbedBuilder()
       .setAuthor({ name: (!user.bot && user.discriminator === '0') ? `@${user.username}` : `${user.tag}` })
       .setTitle('Cet utilisateur n\'est pas sur ce serveur')
       .setDescription(`${formatEmoji(Emojis.White.id)} ID de l'utilisateur: ${inlineCode(user.id)}`)
       .setColor(Colors.DarkerGrey)
       .setThumbnail(user.displayAvatarURL())
-      .addFields(
+      .setFields(
         { name: 'Date de création du compte', value: time(user.createdAt, 'D'), inline: true },
-        { name: 'Badge', value: userFlagsEmojis ? userFlagsEmojis.map((v: string) => formatEmoji(v || '0')).join('') : 'Aucun', inline: true },
+        { name: 'Badge', value: userFlagsEmojis ? userFlagsEmojis.map(v => formatEmoji(v || '0')).join('') : 'Aucun', inline: true },
       );
-  }
 
   const nickName = member.nickname ?? 'Aucun';
   const joinTime = member.joinedAt ? time(member.joinedAt, 'D') : 'Erreur';
@@ -139,26 +134,24 @@ async function createUserInfoEmbed(interaction: Interaction, user: User) {
     ].join('\n'))
     .setColor(member.roles.highest.color || Colors.White)
     .setThumbnail(user.displayAvatarURL())
-    .addFields(
+    .setFields(
       { name: 'Date de création du compte', value: time(user.createdAt, 'D'), inline: true },
       { name: 'Date d\'arrivée sur le serveur', value: joinTime, inline: true },
-      { name: 'Badge', value: userFlagsEmojis?.length ? userFlagsEmojis.map((v: string) => formatEmoji(v || '0')).join('') : 'Aucun', inline: true },
+      { name: 'Badge', value: userFlagsEmojis?.length ? userFlagsEmojis.map(v => formatEmoji(v || '0')).join('') : 'Aucun', inline: true },
       { name: 'Rôles', value: roles },
     );
 
-  if (member.premiumSince) {
+  if (member.premiumSince)
     embed.addFields({
       name: `${formatEmoji(Emojis.White.boost)} BOOST SERVEUR`,
       value: `Date de début du boost: ${time(member.premiumSince, 'D')} (${time(member.premiumSince, 'R')})`,
     });
-  }
 
-  if (member.isCommunicationDisabled() && interaction.inCachedGuild() && interaction.member.permissions.has(PermissionFlagsBits.ModerateMembers)) {
+  if (member.isCommunicationDisabled() && interaction.inCachedGuild() && interaction.member.permissions.has(PermissionFlagsBits.ModerateMembers))
     embed.addFields({
       name: `${formatEmoji(Emojis.White.timeOut)} Heure de levée du timeout`,
       value: `${time(member.communicationDisabledUntil, 'D')} (${time(member.communicationDisabledUntil, 'R')})`,
     });
-  }
 
   if (user.displayAvatarURL() !== user.displayAvatarURL()) {
     embed.setAuthor({ name: user.tag, iconURL: user.displayAvatarURL() });
