@@ -60,8 +60,8 @@ const ServerSettings = new Schema<IServerSettings>({
         type: SchemaTypes.Mixed,
         default: {
           embeds: [{
-            title: 'WELCOME',
-            description: '![user] **(![userTag])** さん、**![serverName]**へようこそ！',
+            title: 'BIENVENUE',
+            description: 'Bienvenue sur **![serverName]**, ![user] **(![userTag])** !',
             color: Colors.Green,
           }],
         },
@@ -72,7 +72,7 @@ const ServerSettings = new Schema<IServerSettings>({
       channel: { type: String, default: null },
       messageOptions: {
         type: SchemaTypes.Mixed,
-        default: { content: '**![userTag]** さんがサーバーを退室しました👋' },
+        default: { content: '**![userTag]** a quitté le serveur 👋' },
       },
     },
     expansion: {

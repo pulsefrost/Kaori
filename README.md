@@ -1,31 +1,31 @@
 # NoNICK.js
-[![Discord Support](https://img.shields.io/discord/949877204601405482?label=discord&logo=discord&logoColor=white)](https://discord.gg/fVcjCNn733)
+[![Discord Support](https://img.shields.io/discord/949877204601405482?label=discord&logo=discord&logoColor=white)](https://discord.gg/amies)
 [![GitHub License](https://img.shields.io/github/license/nonick-mc/DiscordBot-NoNick.js)](LICENSE)  
-サーバー運営をサポートする機能を搭載した多機能BOTです。
+C'est un bot multifonctionnel avec des fonctionnalités pour soutenir la gestion du serveur.
 
-# 機能
-* 🚪入退室ログ
-* 📢サーバー内通報
-* 🔗メッセージURL展開
-* 📝イベントログ
-  * タイムアウト
-  * キック
-  * BAN
-  * ボイスチャットの入退室
-* ✅自動認証レベル変更
+# Fonctionnalités
+* 🚪Journal des entrées et sorties
+* 📢Signalement dans le serveur
+* 🔗Développement des URL de messages
+* 📝Journal des événements
+  * Timeout
+  * Expulsion
+  * Bannissement
+  * Entrée et sortie du chat vocal
+* ✅Changement automatique du niveau de vérification
 * ✋AutoMod Plus
-* 💻豊富なコマンド
-  * `/timeout` ... ユーザーを最大28日タイムアウト
-  * `/embed` ... 埋め込みを作成 (作成した埋め込みにはロール付与ボタン等をつけることが可能)
-  * `/verify` ... ロール付与に特定のステップを要求する認証パネルを作成
-  * `/bulkdelete` ... メッセージを指定した数だけ削除
-  * `/ratelimit` ... チャンネルの低速モードを1秒単位で指定
-  * `/firstmessage` ... チャンネルで最初に送信されたメッセージのURLボタンを送信
+* 💻Commandes riches
+  * `/timeout` ... Timeout d'un utilisateur jusqu'à 28 jours
+  * `/embed` ... Créer un embed (avec possibilité d'ajouter des boutons pour attribuer des rôles, etc.)
+  * `/verify` ... Créer un panneau de vérification nécessitant des étapes spécifiques pour l'attribution des rôles
+  * `/bulkdelete` ... Supprimer un nombre spécifié de messages
+  * `/ratelimit` ... Spécifier le mode lent d'un canal à la seconde près
+  * `/firstmessage` ... Envoyer le bouton URL du premier message envoyé dans un canal
 
-## サポート
-BOTの使い方や設定の仕方は、[公式ドキュメント](https://docs.nonick-js.com)を使用して確認することが出来ます。  
-尚、ドキュメントを読んでもわからない場合は、[サポートサーバー](https://discord.gg/fVcjCNn733)で質問することもできます。
+## Support
+Vous pouvez vérifier comment utiliser et configurer le bot en utilisant la [documentation officielle](https://docs.nonick-js.com).  
+Si la documentation ne vous aide pas, vous pouvez poser des questions sur le [serveur de support](https://discord.gg/amies).
 
-## 貢献
-バグや脆弱性を発見したり、搭載してほしい機能がある場合は、このリポジトリからIssueを新規作成するか、[サポートサーバー](https://discord.gg/fVcjCNn733)から開発者に連絡してください！  
-いずれの場合も、既に同じ内容が投稿されていないか確認してください。
+## Contribuer
+Si vous trouvez un bug ou une vulnérabilité, ou si vous avez des fonctionnalités à proposer, créez un nouvel issue depuis ce dépôt ou contactez les développeurs via le [serveur de support](https://discord.gg/fVcjCNn733) !  
+Dans tous les cas, veuillez vérifier qu'un post similaire n'existe pas déjà.

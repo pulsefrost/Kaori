@@ -19,7 +19,7 @@ const leaveMessage = new DiscordEventBuilder({
       channel.send({
         embeds: [
           new EmbedBuilder()
-            .setAuthor({ name: `La collaboration de ${member.user.username} a été résiliée`, iconURL: member.user.displayAvatarURL() })
+            .setAuthor({ name: `${member.user.username} a quitté`, iconURL: member.user.displayAvatarURL() })
             .setColor(Colors.Red),
         ],
       }).catch(() => { });

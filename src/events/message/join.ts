@@ -19,7 +19,7 @@ const joinMessage = new DiscordEventBuilder({
       channel.send({
         embeds: [
           new EmbedBuilder()
-            .setAuthor({ name: `${member.user.username} が連携されました`, iconURL: member.user.displayAvatarURL() })
+            .setAuthor({ name: `${member.user.username} a rejoint`, iconURL: member.user.displayAvatarURL() })
             .setColor(Colors.Green),
         ],
       })
