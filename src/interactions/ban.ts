@@ -48,10 +48,11 @@ const banCommand = new ChatInput(
         ephemeral: true,
       });
     } catch (err) {
+      const errorMessage = (err instanceof Error) ? err.message : String(err);
       interaction.reply({
         embeds: [
           new EmbedBuilder()
-            .setDescription(`\`❌\` Échec du ban.\n${codeBlock(err)}`)
+            .setDescription(`\`❌\` Échec du ban.\n${codeBlock(errorMessage)}`)
             .setColor(Colors.Red),
         ],
         ephemeral: true,
