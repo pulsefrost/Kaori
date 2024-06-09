@@ -7,8 +7,7 @@
     "dev": "nodemon --inspect src/index.ts",
     "start": "node build/index.js",
     "build": "tsc -p . && pnpm run copy-assets",
-    "lint": "eslint . --ext .ts",
-    "copy-assets": "shx cp -r src/fonts build/fonts"
+    "lint": "eslint . --ext .ts"
   },
   "keywords": [],
   "author": "",
