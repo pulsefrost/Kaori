@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType, codeBlock, Colors, EmbedBuilder, PermissionFlagsBits, GuildMember, Interaction } from 'discord.js';
-import { ChatInput } from '@akki256/discord-interaction';
+import { ChatInputCommandInteraction } from '@akki256/discord-interaction';
 
 const kickCommand = new ChatInput(
   {
@@ -22,7 +22,7 @@ const kickCommand = new ChatInput(
     dmPermission: false,
   },
   { coolTime: 5000 },
-  async (interaction: Interaction) => {
+  async (interaction: ChatInputCommandInteraction) => {
     if (!interaction.inCachedGuild()) return;
 
     const member = interaction.options.getMember('user');
@@ -37,7 +37,7 @@ const kickCommand = new ChatInput(
       return interaction.reply({ content: '`❌` Échec de l\'expulsion en raison de permissions insuffisantes.', ephemeral: true });
 
     try {
-      await member.kick(interaction.options.getString('reason') ?? 'Aucune raison fournie');
+      await member.kick(interaction.options.getString('reason') || 'Aucune raison fournie');
 
       interaction.reply({
         embeds: [
