@@ -24,7 +24,7 @@ const statusCommand = new ChatInput(
             `\`🌐\` **Ping**: ${inlineCode(`${interaction.client.ws.ping}`)}`,
             `\`💾\` **Utilisation de la mémoire**: ${inlineCode((process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2))}MB`,
             `\`💽\` **Discord.js**: ${inlineCode(version)}`,
-            `\`💻\` **Plateforme*: ${inlineCode(process.platform)}`,
+            `\`💻\` **Plateforme**: ${inlineCode(process.platform)}`,
             `\`📡\` **Nombre d'installations**: ${inlineCode(`${interaction.client.guilds.cache.size}`)} Serveurs`,
             `\`👥\` **Nombre total de membres**: ${inlineCode(`${interaction.client.guilds.cache.reduce((a, b) => a + b.memberCount, 0)}`)} Membres`,
           ].join('\n'))
