@@ -40,7 +40,7 @@ const command = new ChatInput(
           .setTitle('`🔧` Paramètres')
           .setDescription([
             'Veuillez choisir la fonctionnalité que vous souhaitez configurer.',
-            'Pour obtenir des instructions détaillées sur la procédure et les paramètres de chaque fonctionnalité, veuillez consulter [ici](https://docs.kaori.com/nonick.js/setting/) ou référez-vous à la documentation spécifique de chaque fonctionnalité.',
+            'Pour obtenir des instructions détaillées sur la procédure et les paramètres de chaque fonctionnalité, veuillez consulter [ici](https://discord.gg/amies).',
           ].join('\n'))
           .setColor(Colors.Blurple),
       ],

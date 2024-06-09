@@ -16,7 +16,7 @@ const context = new MessageContext(
 
     const webhook = await interaction.targetMessage.fetchWebhook().catch(() => null);
     if (!webhook || !interaction.client.user.equals(webhook.owner as User))
-      return interaction.reply({ content: '`❌` Vous pouvez uniquement éditer les incorporations postées avec NoNICK.js et actuellement actives en tant que Webhook.', ephemeral: true });
+      return interaction.reply({ content: '`❌` Vous pouvez uniquement éditer les incorporations postées avec Kaori et actuellement actives en tant que Webhook.', ephemeral: true });
 
     interaction.reply({
       embeds: [

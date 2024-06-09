@@ -1,5 +1,4 @@
-import { ChatInputCommandInteraction, Guild, PermissionsBitField } from 'discord.js';
-import Config from '../../config.json';
+import { Guild, PermissionsBitField } from 'discord.js';
 
 const dangerPermissions = new Map([
   [ 'Administrator', 'Administrateur' ],
@@ -12,16 +11,19 @@ const dangerPermissions = new Map([
   [ 'ManageWebhooks', 'Gérer les webhooks' ],
   [ 'ManageEmojisAndStickers', 'Gérer les emojis et stickers' ],
   [ 'ManageEvents', 'Gérer les événements' ],
-  [ 'ManageThreads', 'Gérer les threads' ],
+  [ 'ManageThreads', 'Gérer les fils de discussion' ],
   [ 'ModerateMembers', 'Modérer les membres' ],
 ]);
 
 export function isBlocked(guild: Guild | null): boolean {
-  interface BlackListType { guilds: string[]; users: string[] }
-  const blackList: BlackListType = Config.blackList;
+  // interface BlackListType { guilds: string[]; users: string[] }
+  // const blackList: BlackListType = Config.blackList;
 
-  if (!guild) return false;
-  return (blackList.guilds.includes(guild.id) || blackList.users.includes(guild.ownerId));
+  // if (!guild) return false;
+  // return (blackList.guilds.includes(guild.id) || blackList.users.includes(guild.ownerId));
+
+  // Réimplémenté dans v5
+  return false;
 }
 
 export function isURL(text: string): boolean {
@@ -34,8 +36,4 @@ export function omitString(text: string, limit: number): string {
 
 export function checkAndFormatDangerPermission(permissions: Readonly<PermissionsBitField>) {
   return permissions.toArray().map(v => dangerPermissions.get(v)).filter(Boolean);
-}
-
-export async function checkPermission(interaction: ChatInputCommandInteraction): Promise<void> {
-  if (!Config.admin.users.includes(interaction.user.id)) await interaction.reply({ content: '`❌` Vous n\'avez pas la permission d\'exécuter cette commande', ephemeral: true });
 }

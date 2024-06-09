@@ -5,7 +5,6 @@ dotenv.config();
 import { ActivityType, AllowedMentionsTypes, Client, codeBlock, Colors, EmbedBuilder, Events, GatewayIntentBits, Partials, version } from 'discord.js';
 import { DiscordInteractions, ErrorCodes, InteractionsError } from '@akki256/discord-interaction';
 import { DiscordEvents } from './module/events';
-import { guildId, admin } from '../config.json';
 import { isBlocked } from './module/functions';
 import mongoose from 'mongoose';
 import cron from 'node-cron';
@@ -35,18 +34,18 @@ const interactions = new DiscordInteractions(client);
 interactions.loadRegistries(path.resolve(__dirname, './interactions'));
 
 client.once(Events.ClientReady, () => {
-  console.log('[INFO] Le BOT est prêt !');
+  console.log('[INFO] BOT ready!');
   console.table({
-    'Utilisateur du BOT': client.user?.tag,
-    'Serveur(s)': `${client.guilds.cache.size} Serveurs`,
-    'En train d\'observer': `${client.guilds.cache.reduce((a, b) => a + b.memberCount, 0)} Membres`,
+    'Bot User': client.user?.tag,
+    'Guild(s)': `${client.guilds.cache.size} Servers`,
+    'Watching': `${client.guilds.cache.reduce((a, b) => a + b.memberCount, 0)} Members`,
     'Discord.js': `v${version}`,
     'Node.js': process.version,
-    'Plateforme': `${process.platform} | ${process.arch}`,
-    'Mémoire': `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)} Mo | ${(process.memoryUsage().rss / 1024 / 1024).toFixed(2)} Mo`,
+    'Platform': `${process.platform} | ${process.arch}`,
+    'Memory': `${(process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2)}MB | ${(process.memoryUsage().rss / 1024 / 1024).toFixed(2)}MB`,
   });
 
-  interactions.registerCommands({ guildId: guildId ?? undefined, deleteNoLoad: true });
+  interactions.registerCommands({ guildId: process.env.GUILD_ID ?? undefined, deleteNoLoad: true });
   events.register(path.resolve(__dirname, './events'));
   reloadActivity();
 
@@ -64,7 +63,7 @@ client.on(Events.InteractionCreate, interaction => {
 
   if (isBlocked(interaction.guild))
     interaction.reply({
-      content: `\`🚫\` L'utilisation de ${interaction.client.user.username} sur ce serveur est interdite. Les réclamations peuvent être déposées [ici](https://discord.gg/fVcjCNn733)`,
+      content: `\`🚫\` L'utilisation de ${interaction.client.user.username} est interdite sur ce serveur. Pour faire appel, [cliquez ici](https://discord.gg/fVcjCNn733)`,
       ephemeral: true,
     });
 
@@ -79,12 +78,12 @@ client.on(Events.InteractionCreate, interaction => {
 process.on('uncaughtException', (err) => {
   console.error(err);
 
-  client.channels.fetch(admin.error).then(channel => {
+  client.channels.fetch(process.env.LOG_CHANNEL_ID).then(channel => {
     if (!channel?.isTextBased()) return;
     channel.send({
       embeds: [
         new EmbedBuilder()
-          .setTitle('`❌` Une exception a été levée')
+          .setTitle('`❌` Une exception s\'est produite')
           .setDescription(codeBlock(`${err.stack}`))
           .setColor(Colors.Red)
           .setTimestamp(),
@@ -94,7 +93,7 @@ process.on('uncaughtException', (err) => {
 });
 
 function reloadActivity() {
-  client.user?.setActivity({ name: `${client.guilds.cache.size} Serveurs`, type: ActivityType.Competing });
+  client.user?.setActivity({ name: `${client.guilds.cache.size} serveurs`, type: ActivityType.Competing });
 }
 
 client.login(process.env.BOT_TOKEN);

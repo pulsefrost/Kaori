@@ -13,7 +13,7 @@ const sendEmbedButton = new Button(
     await interaction.update({ content: '`⌛` Envoi de l\'incorporation en cours...', embeds: [], components: [] });
 
     const webhook = await (await interaction.guild.fetchWebhooks()).find(v => interaction.client.user.equals(v.owner as User))?.edit({ channel: interaction.channelId })
-      || await interaction.guild.channels.createWebhook({ name: 'NoNICK.js', avatar: interaction.client.user.displayAvatarURL(), channel: interaction.channelId });
+      || await interaction.guild.channels.createWebhook({ name: 'Kaori', avatar: interaction.client.user.displayAvatarURL(), channel: interaction.channelId });
 
     webhook
       .send({ embeds })
