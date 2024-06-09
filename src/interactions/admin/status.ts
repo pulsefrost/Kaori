@@ -6,7 +6,7 @@ import Config from '../../../config.json';
 const statusCommand = new ChatInput(
   {
     name: 'status',
-    description: '👷 BOTのステータスを表示',
+    description: '👷 Afficher le statut du bot',
     defaultMemberPermissions: PermissionFlagsBits.Administrator,
     dmPermission: false,
   },
@@ -19,14 +19,14 @@ const statusCommand = new ChatInput(
     interaction.reply({
       embeds: [
         new EmbedBuilder()
-          .setTitle(`${interaction.client.user.username} のステータス`)
+          .setTitle(`Statut ${interaction.client.user.username}`)
           .setDescription([
             `\`🌐\` **Ping**: ${inlineCode(`${interaction.client.ws.ping}`)}`,
-            `\`💾\` **メモリ使用量**: ${inlineCode((process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2))}MB`,
+            `\`💾\` **Utilisation de la mémoire**: ${inlineCode((process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2))}MB`,
             `\`💽\` **Discord.js**: ${inlineCode(version)}`,
-            `\`💻\` **プラットフォーム**: ${inlineCode(process.platform)}`,
-            `\`📡\` **導入数**: ${inlineCode(`${interaction.client.guilds.cache.size}`)} サーバー`,
-            `\`👥\` **総メンバー数**: ${inlineCode(`${interaction.client.guilds.cache.reduce((a, b) => a + b.memberCount, 0)}`)} 人`,
+            `\`💻\` **Plateforme*: ${inlineCode(process.platform)}`,
+            `\`📡\` **Nombre d'installations**: ${inlineCode(`${interaction.client.guilds.cache.size}`)} Serveurs`,
+            `\`👥\` **Nombre total de membres**: ${inlineCode(`${interaction.client.guilds.cache.reduce((a, b) => a + b.memberCount, 0)}`)} Membres`,
           ].join('\n'))
           .setThumbnail(interaction.client.user.displayAvatarURL())
           .setColor(Colors.Blurple),

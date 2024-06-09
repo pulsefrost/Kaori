@@ -6,7 +6,7 @@ import Config from '../../../config.json';
 const reloadCommand = new ChatInput(
   {
     name: 'reload',
-    description: '👷 BOTを再起動',
+    description: '👷 Redémarrer le bot',
     defaultMemberPermissions: PermissionFlagsBits.Administrator,
     dmPermission: false,
   },
@@ -19,7 +19,7 @@ const reloadCommand = new ChatInput(
     await interaction.reply({
       embeds: [
         new EmbedBuilder()
-          .setDescription('`🔌` 再起動します...')
+          .setDescription('`🔌` Redémarrage en cours...')
           .setColor(Colors.Green),
       ],
       ephemeral: true,
