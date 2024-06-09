@@ -1,5 +1,5 @@
-import { ApplicationCommandOptionType, codeBlock, Colors, EmbedBuilder, PermissionFlagsBits, GuildMember, Interaction } from 'discord.js';
-import { ChatInputCommandInteraction } from '@akki256/discord-interaction';
+import { ApplicationCommandOptionType, codeBlock, Colors, EmbedBuilder, PermissionFlagsBits, GuildMember } from 'discord.js';
+import { ChatInput } from '@akki256/discord-interaction'; // Assurez-vous que le chemin d'importation est correct
 
 const kickCommand = new ChatInput(
   {
@@ -22,7 +22,7 @@ const kickCommand = new ChatInput(
     dmPermission: false,
   },
   { coolTime: 5000 },
-  async (interaction: ChatInputCommandInteraction) => {
+  async (interaction) => {
     if (!interaction.inCachedGuild()) return;
 
     const member = interaction.options.getMember('user');

@@ -7,15 +7,10 @@ const unbanCommand = new ChatInput(
     description: 'Débannir un utilisateur du serveur',
     options: [
       {
-        name: 'user_id',
-        description: 'ID de l\'utilisateur',
-        type: ApplicationCommandOptionType.String,
+        name: 'user',
+        description: 'Utilisateur à débannir',
+        type: ApplicationCommandOptionType.User,
         required: true,
-      },
-      {
-        name: 'reason',
-        description: 'Raison',
-        type: ApplicationCommandOptionType.String,
       },
     ],
     defaultMemberPermissions: PermissionFlagsBits.BanMembers,
@@ -23,17 +18,18 @@ const unbanCommand = new ChatInput(
   },
   { coolTime: 5000 },
   async (interaction) => {
-
     if (!interaction.inCachedGuild()) return;
 
-    const userId = interaction.options.getString('user_id');
+    const userId = interaction.options.getString('user');
+    if (!userId) return; // Si userId est null, ne rien faire
 
     try {
-      await interaction.guild.members.unban(userId, interaction.options.getString('reason') ?? 'Aucune raison fournie');
+      await interaction.guild.members.unban(userId);
+
       interaction.reply({
         embeds: [
           new EmbedBuilder()
-            .setDescription(`\`✅\` L'utilisateur avec l'ID \`${userId}\` a été débanni du serveur.`)
+            .setDescription(`\`✅\` L'utilisateur avec l'ID ${userId} a été débanni du serveur.`)
             .setColor(Colors.Green),
         ],
         ephemeral: true,
@@ -43,14 +39,13 @@ const unbanCommand = new ChatInput(
       interaction.reply({
         embeds: [
           new EmbedBuilder()
-            .setDescription(`\`❌\` Échec du déban.\n${codeBlock(errorMessage)}`)
+            .setDescription(`\`❌\` Échec du débannissement de l'utilisateur avec l'ID ${userId}.\n${codeBlock(errorMessage)}`)
             .setColor(Colors.Red),
         ],
         ephemeral: true,
       });
     }
-
   },
 );
 
-module.exports = [unbanCommand];
+export default unbanCommand;
