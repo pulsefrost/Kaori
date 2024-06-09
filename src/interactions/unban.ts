@@ -8,8 +8,8 @@ const unbanCommand = new ChatInput(
     options: [
       {
         name: 'user',
-        description: 'Utilisateur à débannir',
-        type: ApplicationCommandOptionType.User, // Assurez-vous que le type est correctement défini
+        description: 'ID de l\'utilisateur à débannir',
+        type: ApplicationCommandOptionType.String,
         required: true,
       },
     ],
