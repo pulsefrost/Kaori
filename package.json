@@ -4,11 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --inspect src/index.ts",
-    "start": "node build/index.js",
-    "build": "tsc -p . && pnpm run copy-assets",
-    "lint": "eslint . --ext .ts",
-    "copy-assets": "shx cp -r src/fonts build/fonts"
+    "dev": "nodemon --exec node --loader ts-node/esm src/index.ts",
+    "start": "node build/src/index.js",
+    "reset": "node --loader ts-node/esm src/index.ts",
+    "build": "tsc -p ."
   },
   "keywords": [],
   "author": "",
