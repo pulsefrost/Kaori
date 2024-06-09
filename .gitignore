@@ -1,8 +1,0 @@
-# Directory
-node_modules
-build
-
-# File
-.env
-config.json
-changelog.md
