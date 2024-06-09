@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, codeBlock, Colors, EmbedBuilder, PermissionFlagsBits } from 'discord.js';
+import { ApplicationCommandOptionType, codeBlock, Colors, EmbedBuilder, PermissionFlagsBits, GuildMember } from 'discord.js';
 import { ChatInput } from '@akki256/discord-interaction';
 
 const banCommand = new ChatInput(
@@ -22,7 +22,7 @@ const banCommand = new ChatInput(
     dmPermission: false,
   },
   { coolTime: 5000 },
-  (interaction) => {
+  async (interaction) => {
 
     if (!interaction.inCachedGuild()) return;
 
@@ -37,27 +37,26 @@ const banCommand = new ChatInput(
     if (!interaction.member.permissions.has(PermissionFlagsBits.BanMembers) && interaction.member.roles.highest.position <= member.roles.highest.position)
       return interaction.reply({ content: '`❌` Vous n\'avez pas les permissions nécessaires pour bannir cet utilisateur.', ephemeral: true });
 
-    member.ban({ reason: interaction.options.getString('reason') ?? 'Aucune raison fournie' })
-      .then(() => {
-        interaction.reply({
-          embeds: [
-            new EmbedBuilder()
-              .setDescription(`\`✅\` ${member} a été banni du serveur.`)
-              .setColor(Colors.Green),
-          ],
-          ephemeral: true,
-        });
-      })
-      .catch((err) => {
-        interaction.reply({
-          embeds: [
-            new EmbedBuilder()
-              .setDescription(`\`❌\` Échec du ban.\n${codeBlock(err)}`)
-              .setColor(Colors.Red),
-          ],
-          ephemeral: true,
-        });
+    try {
+      await member.ban({ reason: interaction.options.getString('reason') ?? 'Aucune raison fournie' });
+      interaction.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setDescription(`\`✅\` ${member} a été banni du serveur.`)
+            .setColor(Colors.Green),
+        ],
+        ephemeral: true,
       });
+    } catch (err) {
+      interaction.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setDescription(`\`❌\` Échec du ban.\n${codeBlock(err)}`)
+            .setColor(Colors.Red),
+        ],
+        ephemeral: true,
+      });
+    }
 
   },
 );
