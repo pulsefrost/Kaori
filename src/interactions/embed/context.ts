@@ -97,7 +97,7 @@ const select = new SelectMenu(
             new ButtonBuilder()
               .setCustomId('kaori:embedMaker-roleButton-changeStyle')
               .setLabel('Couleur')
-              .setEmoji('🎨')
+              .setEmoji('1249649268122189947')
               .setStyle(ButtonStyle.Primary),
           ),
         ],
@@ -145,7 +145,7 @@ const select = new SelectMenu(
             new ButtonBuilder()
               .setCustomId('kaori:manageComponents-deleteAll')
               .setLabel('Supprimer tous les composants')
-              .setEmoji('🗑')
+              .setEmoji('1249648957538172999')
               .setStyle(ButtonStyle.Danger),
           ),
         ],

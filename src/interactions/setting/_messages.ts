@@ -200,12 +200,12 @@ ControlPanelMessages.set(FeatureType.MessageExpansion, new ControlPanelComponent
             {
               label: 'Annonce',
               value: String(ChannelType.GuildAnnouncement),
-              emoji: '966773928787836958',
+              emoji: '1249647015839924345',
             },
             {
               label: 'Vocal',
               value: String(ChannelType.GuildVoice),
-              emoji: '966773928733315142',
+              emoji: '1249647236300935190',
             },
             // {
             //   label: 'Scène',
@@ -215,12 +215,12 @@ ControlPanelMessages.set(FeatureType.MessageExpansion, new ControlPanelComponent
             {
               label: 'Thread (Public)',
               value: String(ChannelType.PublicThread),
-              emoji: '966773928712359946',
+              emoji: '1249647512609095765',
             },
             {
               label: 'Thread (Privé)',
               value: String(ChannelType.PrivateThread),
-              emoji: '966773928712359946',
+              emoji: '1249647512609095765',
             },
           ].map(options => ({ ...options, default: setting?.message.expansion.ignore.types.includes(Number(options.value)) })),
         ),
