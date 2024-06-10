@@ -13,8 +13,11 @@ RUN npm install
 # Copier le reste des fichiers de l'application
 COPY . .
 
+# Compiler le code TypeScript en JavaScript
+RUN npm run build
+
 # Exposer le port que votre application utilise
 EXPOSE 3000
 
 # Démarrer l'application
-CMD ["npm", "start"]
+CMD ["node", "build/src/index.js"]
