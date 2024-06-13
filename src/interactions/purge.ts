@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, Permissions, codeBlock, Colors, EmbedBuilder, Message } from 'discord.js';
+import { ApplicationCommandOptionType, PermissionFlagsBits, codeBlock, Colors, EmbedBuilder, Message } from 'discord.js';
 import { ChatInput } from '@akki256/discord-interaction';
 
 const purgeCommand = new ChatInput(
