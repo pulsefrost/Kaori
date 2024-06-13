@@ -38,7 +38,7 @@ const purgeCommand = new ChatInput(
 
       const messages = await interaction.channel.messages.fetch({ limit: amount });
       if (user) {
-        fetched = messages.filter(m => m.author.id === user.id).array();
+        fetched = Array.from(messages.filter(m => m.author.id === user.id).values());
       } else {
         fetched = Array.from(messages.values());
       }
