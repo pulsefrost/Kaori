@@ -49,9 +49,7 @@ export interface IServerSettings {
     },
   },
   afk: {
-    type: Map,
-    of: String,
-    default: {},
+    [userId: string]: string,
   },
 }
 
