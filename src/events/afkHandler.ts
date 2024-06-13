@@ -1,5 +1,5 @@
 import { Colors, EmbedBuilder, Events } from 'discord.js';
-import { DiscordEventBuilder } from '../../module/events';
+import { DiscordEventBuilder } from '../module/events';
 import ServerSettings from '../schemas/ServerSettings'; // Assurez-vous que le chemin est correct
 
 const afkHandler = new DiscordEventBuilder({
