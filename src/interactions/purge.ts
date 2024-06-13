@@ -19,7 +19,7 @@ const purgeCommand = new ChatInput(
         required: false,
       },
     ],
-    defaultMemberPermissions: PermissionFlagsBits.ManageMessages,
+    defaultMemberPermissions: PermissionFlagsBits.ManageMessages,, // Utilisation directe de la constante
     dmPermission: false,
   },
   { coolTime: 5000 },
@@ -37,11 +37,11 @@ const purgeCommand = new ChatInput(
       let fetched: Message[] | undefined;
 
       if (user) {
-        fetched = await interaction.channel.messages.fetch({ limit: amount })
-          .then(messages => messages.filter(m => m.author.id === user.id));
+        const messages = await interaction.channel.messages.fetch({ limit: amount });
+        fetched = messages.filter(m => m.author.id === user.id).array(); // Utilisation de `.array()` pour obtenir un tableau
       } else {
         const messages = await interaction.channel.messages.fetch({ limit: amount });
-        fetched = messages.array();
+        fetched = messages.array(); // Utilisation de `.array()` pour obtenir un tableau
       }
 
       if (!fetched || fetched.length === 0) {
