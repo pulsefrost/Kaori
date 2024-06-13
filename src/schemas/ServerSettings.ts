@@ -48,6 +48,11 @@ export interface IServerSettings {
       roles: string[],
     },
   },
+  afk: {
+    type: Map,
+    of: String,
+    default: {},
+  },
 }
 
 const ServerSettings = new Schema<IServerSettings>({
@@ -146,6 +151,11 @@ const ServerSettings = new Schema<IServerSettings>({
       channels: { type: [String], default: [] },
       roles: { type: [String], default: [] },
     },
+  },
+  afk: {
+    type: Map,
+    of: String,
+    default: {},
   },
 });
 
