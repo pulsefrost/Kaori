@@ -1,6 +1,6 @@
-import { ApplicationCommandOptionType, codeBlock, Colors, EmbedBuilder, PermissionFlagsBits } from 'discord.js';
+import { ApplicationCommandOptionType, Colors, EmbedBuilder, PermissionFlagsBits } from 'discord.js';
 import { ChatInput } from '@akki256/discord-interaction';
-import ServerSettings from '../schemas/ServerSettings'; // assurez-vous de bien importer votre modèle
+import ServerSettings from '../schemas/ServerSettings'; // Assurez-vous que le chemin est correct
 
 const afkCommand = new ChatInput(
   {
