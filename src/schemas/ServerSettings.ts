@@ -1,4 +1,12 @@
 import { Schema, model } from 'mongoose';
+import { BaseMessageOptions, ChannelType } from 'discord.js'; // Assurez-vous d'importer correctement
+
+type CustomMessageOptions = Pick<BaseMessageOptions, 'content' | 'files' | 'embeds'>;
+
+type LogCategoryOptions = {
+  enable: boolean,
+  channel: string | null
+};
 
 export interface IServerSettings {
   serverId: string;

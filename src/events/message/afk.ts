@@ -1,6 +1,6 @@
 import { Colors, EmbedBuilder, Events } from 'discord.js';
 import { DiscordEventBuilder } from '../../module/events';
-import ServerSettings from '../schemas/ServerSettings'; // assurez-vous de bien importer votre modèle
+import ServerSettings from '../../schemas/ServerSettings'; // Chemin corrigé
 
 const handleAfkStatus = new DiscordEventBuilder({
   type: Events.MessageCreate,
