@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, Permissions, codeBlock, Colors, EmbedBuilder } from 'discord.js';
+import { ApplicationCommandOptionType, Permissions, codeBlock, Colors, EmbedBuilder, Message } from 'discord.js';
 import { ChatInput } from '@akki256/discord-interaction';
 
 const purgeCommand = new ChatInput(
@@ -24,24 +24,28 @@ const purgeCommand = new ChatInput(
   },
   { coolTime: 5000 },
   async (interaction) => {
-    if (!interaction.inCachedGuild()) return;
+    if (!interaction.inCachedGuild() || !interaction.channel) return;
 
     const amount = interaction.options.getInteger('amount');
     const user = interaction.options.getUser('user');
 
-    if (amount < 1 || amount > 100) {
+    if (amount === null || amount < 1 || amount > 100) {
       return interaction.reply({ content: '`❌` Veuillez spécifier un nombre entre 1 et 100.', ephemeral: true });
     }
 
     try {
-      let fetched;
+      let fetched: Message[] | undefined;
+
       if (user) {
-        // Suppression des messages d'un utilisateur spécifique
         fetched = await interaction.channel.messages.fetch({ limit: amount })
           .then(messages => messages.filter(m => m.author.id === user.id));
       } else {
-        // Suppression de tous les messages dans le canal
-        fetched = await interaction.channel.messages.fetch({ limit: amount });
+        const messages = await interaction.channel.messages.fetch({ limit: amount });
+        fetched = messages.array();
+      }
+
+      if (!fetched || fetched.length === 0) {
+        return interaction.reply({ content: '`❌` Aucun message trouvé à supprimer.', ephemeral: true });
       }
 
       await interaction.channel.bulkDelete(fetched);
@@ -49,7 +53,7 @@ const purgeCommand = new ChatInput(
       interaction.reply({
         embeds: [
           new EmbedBuilder()
-            .setDescription(`\`✅\` ${fetched.size} messages ont été supprimés.`)
+            .setDescription(`\`✅\` ${fetched.length} messages ont été supprimés.`)
             .setColor(Colors.Green),
         ],
         ephemeral: true,
