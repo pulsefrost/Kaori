@@ -19,7 +19,7 @@ const purgeCommand = new ChatInput(
         required: false,
       },
     ],
-    defaultMemberPermissions: Permissions.FLAGS.MANAGE_MESSAGES,
+    defaultMemberPermissions: Permissions.FLAGS.ManageMessages,
     dmPermission: false,
   },
   { coolTime: 5000 },
