@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, codeBlock, Colors, EmbedBuilder, PermissionFlagsBits, GuildMember } from 'discord.js';
+import { ApplicationCommandOptionType, codeBlock, Colors, EmbedBuilder, PermissionFlagsBits } from 'discord.js';
 import { ChatInput } from '@akki256/discord-interaction';
 import ServerSettings from '../schemas/ServerSettings'; // assurez-vous de bien importer votre modèle
 

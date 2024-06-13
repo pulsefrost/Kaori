@@ -1,71 +1,76 @@
-import { BaseMessageOptions, ChannelType, Colors } from 'discord.js';
-import { model, Schema, SchemaTypes } from 'mongoose';
-
-type CustomMessageOptions = Pick<BaseMessageOptions, 'content' | 'files' | 'embeds'>;
-type LogCategoryOptions = { enable: boolean, channel: (string | null) }
+import { Schema, model } from 'mongoose';
 
 export interface IServerSettings {
-  serverId: string,
+  serverId: string;
   message: {
-    join: { enable: boolean, channel: (string | null), messageOptions: CustomMessageOptions },
-    leave: { enable: boolean, channel: (string | null), messageOptions: CustomMessageOptions },
+    join: { enable: boolean, channel: string | null, messageOptions: CustomMessageOptions };
+    leave: { enable: boolean, channel: string | null, messageOptions: CustomMessageOptions };
     expansion: {
-      enable: boolean,
+      enable: boolean;
       ignore: {
-        types: (ChannelType[]),
-        channels: (string[]),
-      },
-    },
-  },
+        types: ChannelType[];
+        channels: string[];
+      };
+    };
+  };
   report: {
-    channel: (string | null),
-    mention: { enable: boolean; role: (string | null) },
-  },
+    channel: string | null;
+    mention: { enable: boolean; role: string | null };
+  };
   log: {
     timeout: LogCategoryOptions;
     kick: LogCategoryOptions;
     ban: LogCategoryOptions;
     voice: LogCategoryOptions;
     delete: LogCategoryOptions;
-  },
+  };
   changeVerificationLevel: {
-    enable: boolean,
-    log: { enable: boolean, channel: (string | null) },
-    level: { old: (number | null), new: (number | null) },
-    time: { start: (number | null), end: (number | null) },
-  },
-  autoPublic: { enable: boolean, channels: string[] },
+    enable: boolean;
+    log: { enable: boolean, channel: string | null };
+    level: { old: number | null, new: number | null };
+    time: { start: number | null, end: number | null };
+  };
+  autoPublic: { enable: boolean, channels: string[] };
   autoMod: {
-    enable: boolean,
-    log: { enable: boolean, channel: (string | null) },
+    enable: boolean;
+    log: { enable: boolean, channel: string | null };
     filter: {
-      inviteUrl: boolean,
-      token: boolean,
-      shortUrl: boolean,
-    },
+      inviteUrl: boolean;
+      token: boolean;
+      shortUrl: boolean;
+    };
     ignore: {
-      channels: string[],
-      roles: string[],
-    },
-  },
-  afk: {
-    [userId: string]: string,
-  },
+      channels: string[];
+      roles: string[];
+    };
+  };
+  afk: Map<string, string>;
 }
 
-const ServerSettings = new Schema<IServerSettings>({
+const CustomMessageOptionsSchema = new Schema({
+  content: String,
+  files: [String],
+  embeds: [Object],
+}, { _id: false });
+
+const LogCategoryOptionsSchema = new Schema({
+  enable: { type: Boolean, default: false },
+  channel: { type: String, default: null },
+}, { _id: false });
+
+const serverSettingsSchema = new Schema<IServerSettings>({
   serverId: { type: String, required: true, unique: true },
   message: {
     join: {
       enable: { type: Boolean, default: false },
       channel: { type: String, default: null },
       messageOptions: {
-        type: SchemaTypes.Mixed,
+        type: CustomMessageOptionsSchema,
         default: {
           embeds: [{
             title: 'BIENVENUE',
             description: 'Bienvenue sur **![serverName]**, ![user] **(![userTag])** !',
-            color: Colors.Green,
+            color: 'GREEN',
           }],
         },
       },
@@ -74,7 +79,7 @@ const ServerSettings = new Schema<IServerSettings>({
       enable: { type: Boolean, default: false },
       channel: { type: String, default: null },
       messageOptions: {
-        type: SchemaTypes.Mixed,
+        type: CustomMessageOptionsSchema,
         default: { content: '**![userTag]** a quitté le serveur 👋' },
       },
     },
@@ -94,26 +99,11 @@ const ServerSettings = new Schema<IServerSettings>({
     },
   },
   log: {
-    timeout: {
-      enable: { type: Boolean, default: false },
-      channel: { type: String, default: null },
-    },
-    kick: {
-      enable: { type: Boolean, default: false },
-      channel: { type: String, default: null },
-    },
-    ban: {
-      enable: { type: Boolean, default: false },
-      channel: { type: String, default: null },
-    },
-    voice: {
-      enable: { type: Boolean, default: false },
-      channel: { type: String, default: null },
-    },
-    delete: {
-      enable: { type: Boolean, default: false },
-      channel: { type: String, default: null },
-    },
+    timeout: { type: LogCategoryOptionsSchema, default: { enable: false, channel: null } },
+    kick: { type: LogCategoryOptionsSchema, default: { enable: false, channel: null } },
+    ban: { type: LogCategoryOptionsSchema, default: { enable: false, channel: null } },
+    voice: { type: LogCategoryOptionsSchema, default: { enable: false, channel: null } },
+    delete: { type: LogCategoryOptionsSchema, default: { enable: false, channel: null } },
   },
   changeVerificationLevel: {
     enable: { type: Boolean, default: false },
@@ -153,8 +143,8 @@ const ServerSettings = new Schema<IServerSettings>({
   afk: {
     type: Map,
     of: String,
-    default: {},
+    default: new Map(),
   },
 });
 
-export default model<IServerSettings>('ServerSettings', ServerSettings);
+export default model<IServerSettings>('ServerSettings', serverSettingsSchema);
