@@ -3,24 +3,24 @@ import { ChatInput, UserContext } from '@akki256/discord-interaction';
 import { Emojis } from '../module/constant';
 
 const flagEmojis = new Map([
-  ['Staff', '966753508739121222'],
-  ['Partner', '966753508860768357'],
-  ['CertifiedModerator', '959536411894243378'],
-  ['Hypesquad', '966753508961439745'],
-  ['HypeSquadOnlineHouse1', '966753508843978872'],
-  ['HypeSquadOnlineHouse2', '966753508927889479'],
-  ['HypeSquadOnlineHouse3', '966753508776890459'],
-  ['BugHunterLevel1', '966753508848205925'],
-  ['BugHunterLevel2', '966753508755898410'],
-  ['ActiveDeveloper', '1040345950318768218'],
-  ['VerifiedDeveloper', '966753508705583174'],
-  ['PremiumEarlySupporter', '966753508751736892'],
+  ['Staff', '1251322333856010260'],
+  ['Partner', '1251322713205772299'],
+  ['CertifiedModerator', '1251322251702304808'],
+  ['Hypesquad', '1251322395596292137'],
+  ['HypeSquadOnlineHouse1', '1251322481390653541'],
+  ['HypeSquadOnlineHouse2', '1251322506938290207'],
+  ['HypeSquadOnlineHouse3', '1251322492228862085'],
+  ['BugHunterLevel1', '1251321662872485929'],
+  ['BugHunterLevel2', '1251321756350943385'],
+  ['ActiveDeveloper', '1251321904657207338'],
+  ['VerifiedDeveloper', '1251322246257971301'],
+  ['PremiumEarlySupporter', '1251323760636854323'],
 ]);
 
 const featureTexts = new Map<string, string>([
-  [GuildFeature.Partnered, `${formatEmoji('982512900432351262')} Discord Partner`],
-  [GuildFeature.Verified, `${formatEmoji('982512902042955806')} Vérifié`],
-  [GuildFeature.Discoverable, `${formatEmoji('1087358252691496960')} Serveur public`],
+  [GuildFeature.Partnered, `${formatEmoji('1251322713205772299')} Discord Partner`],
+  [GuildFeature.Verified, `${formatEmoji('1251322254256771156')} Vérifié`],
+  [GuildFeature.Discoverable, `${formatEmoji('1251324088983490591')} Serveur public`],
 ]);
 
 const Command = new ChatInput(
@@ -121,7 +121,6 @@ async function createUserInfoEmbed(interaction: Interaction, user: User) {
 
   const nickName = member.nickname ?? 'Aucun';
   const joinTime = member.joinedAt ? time(member.joinedAt, 'D') : 'Erreur';
-  const roles = member.roles.cache
     .filter(role => role.name !== '@everyone')
     .sort((before, after) => before.position > after.position ? -1 : 1)
     ?.map(role => role?.toString())?.join(' ') || 'Aucun';
@@ -138,7 +137,6 @@ async function createUserInfoEmbed(interaction: Interaction, user: User) {
       { name: 'Date de création du compte', value: time(user.createdAt, 'D'), inline: true },
       { name: 'Date d\'arrivée sur le serveur', value: joinTime, inline: true },
       { name: 'Badge', value: userFlagsEmojis?.length ? userFlagsEmojis.map(v => formatEmoji(v || '0')).join('') : 'Aucun', inline: true },
-      { name: 'Rôles', value: roles },
     );
 
   if (member.premiumSince)
