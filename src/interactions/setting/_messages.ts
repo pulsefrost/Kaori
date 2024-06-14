@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, channelMention, ChannelSelectMenuBuilder, ChannelType, Colors, EmbedBuilder, , inlineCode, roleMention, RoleSelectMenuBuilder, StringSelectMenuBuilder } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, channelMention, ChannelSelectMenuBuilder, ChannelType, Colors, EmbedBuilder, formatEmoji, inlineCode, roleMention, RoleSelectMenuBuilder, StringSelectMenuBuilder } from 'discord.js';
 import { Emojis } from '../../module/constant';
 import { ControlPanelComponentPagination } from './_pagination';
 import { booleanStatus, buttonLabelStatus, buttonStyleStatus, channelStatus, roleStatus } from '../../module/settingStatus';
