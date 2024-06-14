@@ -121,9 +121,6 @@ async function createUserInfoEmbed(interaction: Interaction, user: User) {
 
   const nickName = member.nickname ?? 'Aucun';
   const joinTime = member.joinedAt ? time(member.joinedAt, 'D') : 'Erreur';
-    .filter(role => role.name !== '@everyone')
-    .sort((before, after) => before.position > after.position ? -1 : 1)
-    ?.map(role => role?.toString())?.join(' ') || 'Aucun';
 
   const embed = new EmbedBuilder()
     .setAuthor({ name: (!user.bot && user.discriminator === '0') ? `@${user.username}` : `${user.tag}` })
