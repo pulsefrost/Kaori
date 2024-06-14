@@ -2,9 +2,9 @@ import { ButtonStyle, channelMention, formatEmoji, roleMention } from 'discord.j
 import { Emojis } from './constant';
 
 const StatusEmoji = {
-  enable: '1076014905922170900',
-  disable: '1076014910686908467',
-  sync: '1076014908946268191',
+  enable: '1251318815187537951',
+  disable: '1251318812758900817',
+  sync: '1251319301109977172',
 };
 
 export function booleanStatus(boolean?: boolean): string {
