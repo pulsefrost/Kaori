@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@akki256/discord-interaction": "^3.1.0",
-    "@napi-rs/canvas": "0.1.37",
+    "@napi-rs/canvas": "^0.1.37",
     "@types/adm-zip": "^0.5.0",
     "@types/node": "^18.16.3",
     "@types/node-cron": "^3.0.7",
