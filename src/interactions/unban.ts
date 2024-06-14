@@ -7,7 +7,7 @@ const unbanCommand = new ChatInput(
     description: 'Débannir un utilisateur du serveur',
     options: [
       {
-        name: 'user',
+        name: 'utilisateur',
         description: 'ID de l\'utilisateur à débannir',
         type: ApplicationCommandOptionType.String,
         required: true,
@@ -20,7 +20,7 @@ const unbanCommand = new ChatInput(
   async (interaction) => {
     if (!interaction.inCachedGuild()) return;
 
-    const userId = interaction.options.getString('user');
+    const userId = interaction.options.getString('utilisateur');
     if (!userId) return; // Si userId est null, ne rien faire
 
     try {

@@ -3,17 +3,17 @@ import { ChatInput } from '@akki256/discord-interaction';
 
 const purgeCommand = new ChatInput(
   {
-    name: 'purge',
+    name: 'clear',
     description: 'Supprime les messages dans le canal actuel',
     options: [
       {
-        name: 'amount',
+        name: 'nombre',
         description: 'Nombre de messages à supprimer (entre 1 et 100)',
         type: ApplicationCommandOptionType.Integer,
         required: true,
       },
       {
-        name: 'user',
+        name: 'utilisateur',
         description: 'Utilisateur dont les messages seront supprimés',
         type: ApplicationCommandOptionType.User,
         required: false,
@@ -26,8 +26,8 @@ const purgeCommand = new ChatInput(
   async (interaction) => {
     if (!interaction.inCachedGuild() || !interaction.channel) return;
 
-    const amount = interaction.options.getInteger('amount');
-    const user = interaction.options.getUser('user');
+    const amount = interaction.options.getInteger('nombre');
+    const user = interaction.options.getUser('utilisateur');
 
     if (amount === null || amount < 1 || amount > 100) {
       return interaction.reply({ content: '`❌` Veuillez spécifier un nombre entre 1 et 100.', ephemeral: true });

@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, channelMention, ChannelSelectMenuBuilder, ChannelType, Colors, EmbedBuilder, formatEmoji, inlineCode, roleMention, RoleSelectMenuBuilder, StringSelectMenuBuilder } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, channelMention, ChannelSelectMenuBuilder, ChannelType, Colors, EmbedBuilder, , inlineCode, roleMention, RoleSelectMenuBuilder, StringSelectMenuBuilder } from 'discord.js';
 import { Emojis } from '../../module/constant';
 import { ControlPanelComponentPagination } from './_pagination';
 import { booleanStatus, buttonLabelStatus, buttonStyleStatus, channelStatus, roleStatus } from '../../module/settingStatus';
@@ -358,8 +358,8 @@ ControlPanelMessages.set(FeatureType.ChangeVerificationLevel, new ControlPanelCo
             name: 'Paramètres généraux',
             value: [
               booleanStatus(setting?.changeVerificationLevel.enable),
-              `${formatEmoji(Emojis.Gray.schedule)} **Heure de début : **${setting?.changeVerificationLevel.time.start == null ? 'Non défini' : `${setting?.changeVerificationLevel.time.start}:00`}`,
-              `${formatEmoji(Emojis.Gray.schedule)} **Heure de fin : **${setting?.changeVerificationLevel.time.end == null ? 'Non défini' : `${setting?.changeVerificationLevel.time.end}:00`}`,
+              `**Heure de début : **${setting?.changeVerificationLevel.time.start == null ? 'Non défini' : `${setting?.changeVerificationLevel.time.start}:00`}`,
+              `**Heure de fin : **${setting?.changeVerificationLevel.time.end == null ? 'Non défini' : `${setting?.changeVerificationLevel.time.end}:00`}`,
             ].join('\n'),
             inline: true,
           },
@@ -468,7 +468,7 @@ ControlPanelMessages.set(FeatureType.AutoModPlus, new ControlPanelComponentPagin
             name: 'Paramètres généraux',
             value: [
               booleanStatus(setting?.autoMod.enable),
-              `${formatEmoji(Emojis.Gray.text)} **Filtre :** ${Object.entries(setting?.autoMod.filter || {}).filter(v => v[1]).map(v => inlineCode(autoModFilter.get(v[0])!)).join(' ') || 'Aucun'}`,
+              `**Filtre :** ${Object.entries(setting?.autoMod.filter || {}).filter(v => v[1]).map(v => inlineCode(autoModFilter.get(v[0])!)).join(' ') || 'Aucun'}`,
             ].join('\n'),
             inline: true,
           },
@@ -480,8 +480,8 @@ ControlPanelMessages.set(FeatureType.AutoModPlus, new ControlPanelComponentPagin
           {
             name: 'Paramètres d\'exception',
             value: [
-              `${formatEmoji(Emojis.Gray.channel)} **Canaux :** ${setting?.autoMod.ignore.channels.map(v => channelMention(v)).join(' ') || 'Aucun'}`,
-              `${formatEmoji(Emojis.Gray.member)} **Rôles :** ${setting?.autoMod.ignore.roles.map(v => roleMention(v)).join(' ') || 'Aucun'}`,
+              `**Canaux :** ${setting?.autoMod.ignore.channels.map(v => channelMention(v)).join(' ') || 'Aucun'}`,
+              `**Rôles :** ${setting?.autoMod.ignore.roles.map(v => roleMention(v)).join(' ') || 'Aucun'}`,
             ].join('\n'),
           },
         )

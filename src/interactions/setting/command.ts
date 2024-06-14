@@ -9,7 +9,7 @@ const command = new ChatInput(
     description: 'Paramètres du BOT',
     options: [
       {
-        name: 'feature',
+        name: 'fonctions',
         description: 'Fonctionnalité à configurer',
         choices: [
           { name: 'Messages d\'arrivée et de départ', value: FeatureType.JoinAndLeaveMessage },
@@ -28,8 +28,8 @@ const command = new ChatInput(
   },
   { coolTime: 10_000 },
   async (interaction) => {
-    if (interaction.options.getString('feature')) {
-      const pagination = ControlPanelMessages.get(interaction.options.getString('feature') as FeatureType);
+    if (interaction.options.getString('fonctions')) {
+      const pagination = ControlPanelMessages.get(interaction.options.getString('fonctions') as FeatureType);
       if (!(pagination instanceof ControlPanelComponentPagination)) return;
       return pagination.replyMessage(interaction, true);
     }

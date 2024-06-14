@@ -7,13 +7,13 @@ const kickCommand = new ChatInput(
     description: 'Expulser un utilisateur du serveur',
     options: [
       {
-        name: 'user',
+        name: 'utilisateur',
         description: 'Utilisateur à expulser',
         type: ApplicationCommandOptionType.User,
         required: true,
       },
       {
-        name: 'reason',
+        name: 'raison',
         description: 'Raison de l\'expulsion',
         type: ApplicationCommandOptionType.String,
       },
@@ -25,7 +25,7 @@ const kickCommand = new ChatInput(
   async (interaction) => {
     if (!interaction.inCachedGuild()) return;
 
-    const member = interaction.options.getMember('user');
+    const member = interaction.options.getMember('utilisateur');
 
     if (!(member instanceof GuildMember))
       return interaction.reply({ content: '`❌` Cet utilisateur n\'est pas présent sur le serveur.', ephemeral: true });
@@ -37,7 +37,7 @@ const kickCommand = new ChatInput(
       return interaction.reply({ content: '`❌` Échec de l\'expulsion en raison de permissions insuffisantes.', ephemeral: true });
 
     try {
-      await member.kick(interaction.options.getString('reason') || 'Aucune raison fournie');
+      await member.kick(interaction.options.getString('raison') || 'Aucune raison fournie');
 
       interaction.reply({
         embeds: [

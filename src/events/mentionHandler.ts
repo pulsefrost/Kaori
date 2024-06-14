@@ -14,16 +14,21 @@ const mentionHandler = new DiscordEventBuilder({
     if (!serverSettings) return;
 
     const mentionedUsers = message.mentions.users;
-    mentionedUsers.forEach(user => {
+    mentionedUsers.forEach(async user => {
       const afkStatus = serverSettings.afk.get(user.id);
       if (afkStatus) {
-        message.channel.send({
+        const replyMessage = await message.channel.send({
           embeds: [
             new EmbedBuilder()
               .setDescription(`\`💤\` ${user.tag} est actuellement AFK : ${afkStatus}`)
               .setColor(Colors.Yellow),
           ],
         });
+
+        // Supprime le message après 5 secondes
+        setTimeout(() => {
+          replyMessage.delete().catch(console.error);
+        }, 10000);
       }
     });
   },

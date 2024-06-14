@@ -29,11 +29,11 @@ const Command = new ChatInput(
     description: 'Afficher les informations d\'un utilisateur/serveur',
     options: [
       {
-        name: 'user',
+        name: 'utilisateur',
         description: 'Afficher les informations d\'un utilisateur',
         options: [
           {
-            name: 'user',
+            name: 'utilisateur',
             description: 'Utilisateur',
             type: ApplicationCommandOptionType.User,
             required: true,
@@ -42,7 +42,7 @@ const Command = new ChatInput(
         type: ApplicationCommandOptionType.Subcommand,
       },
       {
-        name: 'server',
+        name: 'serveur',
         description: 'Afficher les informations du serveur',
         type: ApplicationCommandOptionType.Subcommand,
       },
@@ -53,10 +53,10 @@ const Command = new ChatInput(
     if (!interaction.inCachedGuild()) return;
     const subCommand = interaction.options.getSubcommand();
 
-    if (subCommand === 'user')
-      return interaction.reply({ embeds: [await createUserInfoEmbed(interaction, interaction.options.getUser('user', true))], ephemeral: true });
+    if (subCommand === 'utilisateur')
+      return interaction.reply({ embeds: [await createUserInfoEmbed(interaction, interaction.options.getUser('utilisateur', true))], ephemeral: true });
 
-    if (subCommand === 'server')
+    if (subCommand === 'serveur')
       return interaction.reply({
         embeds: [
           new EmbedBuilder()

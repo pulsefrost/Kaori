@@ -19,13 +19,18 @@ const afkHandler = new DiscordEventBuilder({
       serverSettings.afk.delete(userId);
       await serverSettings.save();
 
-      message.channel.send({
+      const replyMessage = await message.channel.send({
         embeds: [
           new EmbedBuilder()
             .setDescription(`\`✅\` Bienvenue de retour <@${userId}>. Votre statut AFK a été retiré.`)
             .setColor(Colors.Green),
         ],
       });
+
+      // Supprime le message après 5 secondes
+      setTimeout(() => {
+        replyMessage.delete().catch(console.error);
+      }, 5000);
     }
   },
 });

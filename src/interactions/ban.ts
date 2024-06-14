@@ -7,13 +7,13 @@ const banCommand = new ChatInput(
     description: 'Bannir un utilisateur du serveur',
     options: [
       {
-        name: 'user',
+        name: 'utilisateur',
         description: 'Utilisateur',
         type: ApplicationCommandOptionType.User,
         required: true,
       },
       {
-        name: 'reason',
+        name: 'raison',
         description: 'Raison',
         type: ApplicationCommandOptionType.String,
       },
@@ -26,7 +26,7 @@ const banCommand = new ChatInput(
 
     if (!interaction.inCachedGuild()) return;
 
-    const member = interaction.options.getMember('user');
+    const member = interaction.options.getMember('utilisateur');
 
     if (!(member instanceof GuildMember))
       return interaction.reply({ content: '`❌` Cet utilisateur n\'est pas présent sur le serveur.', ephemeral: true });
@@ -38,7 +38,7 @@ const banCommand = new ChatInput(
       return interaction.reply({ content: '`❌` Vous n\'avez pas les permissions nécessaires pour bannir cet utilisateur.', ephemeral: true });
 
     try {
-      await member.ban({ reason: interaction.options.getString('reason') ?? 'Aucune raison fournie' });
+      await member.ban({ reason: interaction.options.getString('raison') ?? 'Aucune raison fournie' });
       interaction.reply({
         embeds: [
           new EmbedBuilder()

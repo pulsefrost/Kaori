@@ -7,13 +7,13 @@ const firstMessageCommand = new ChatInput(
     description: 'Envoyer un bouton avec l\'URL du premier message dans le canal',
     options: [
       {
-        name: 'content',
+        name: 'contenu',
         description: 'Message',
         maxLength: 200,
         type: ApplicationCommandOptionType.String,
       },
       {
-        name: 'label',
+        name: 'texte',
         description: 'Texte du bouton',
         maxLength: 80,
         type: ApplicationCommandOptionType.String,
@@ -28,11 +28,11 @@ const firstMessageCommand = new ChatInput(
     interaction.channel.messages.fetch({ after: '1', limit: 1 })
       .then((messages) => {
         interaction.reply({
-          content: interaction.options.getString('content') ?? undefined,
+          content: interaction.options.getString('contenu') ?? undefined,
           components: [
             new ActionRowBuilder<ButtonBuilder>().setComponents(
               new ButtonBuilder()
-                .setLabel(interaction.options.getString('label') ?? 'Aller en haut')
+                .setLabel(interaction.options.getString('texte') ?? 'Aller en haut')
                 .setURL(messages.first()?.url || `https://discord.com/channels/${interaction.guildId}/${interaction.channelId}/${messages.first()?.id}`)
                 .setStyle(ButtonStyle.Link),
             ),

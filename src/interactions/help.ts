@@ -10,7 +10,7 @@ const feature = [
 const helpCommand = new ChatInput(
   {
     name: 'help',
-    description: 'À propos de ce BOT',
+    description: 'À propos de Kaori',
     dmPermission: true,
   },
   (interaction) => {

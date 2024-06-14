@@ -8,18 +8,18 @@ const timeoutCommand = new ChatInput(
     description: 'Met un utilisateur en mode hors ligne',
     options: [
       {
-        name: 'user',
+        name: 'utilisateur',
         description: 'Utilisateur',
         type: ApplicationCommandOptionType.User,
         required: true,
       },
       {
-        name: 'day',
+        name: 'jour',
         description: 'Jours',
         type: ApplicationCommandOptionType.Number,
       },
       {
-        name: 'hour',
+        name: 'heure',
         description: 'Heures',
         type: ApplicationCommandOptionType.Number,
       },
@@ -29,7 +29,7 @@ const timeoutCommand = new ChatInput(
         type: ApplicationCommandOptionType.Number,
       },
       {
-        name: 'reason',
+        name: 'raison',
         description: 'Raison',
         type: ApplicationCommandOptionType.String,
       },
@@ -42,10 +42,10 @@ const timeoutCommand = new ChatInput(
 
     if (!interaction.inCachedGuild()) return;
 
-    const member = interaction.options.getMember('user');
+    const member = interaction.options.getMember('utilisateur');
     const duration = Duration.toMS([
-      `${interaction.options.getNumber('day') ?? 0}d`,
-      `${interaction.options.getNumber('hour') ?? 0}h`,
+      `${interaction.options.getNumber('jour') ?? 0}d`,
+      `${interaction.options.getNumber('heure') ?? 0}h`,
       `${interaction.options.getNumber('minute') ?? 0}m`,
     ].join(''));
 

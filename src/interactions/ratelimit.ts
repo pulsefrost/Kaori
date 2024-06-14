@@ -7,7 +7,7 @@ const setRateLimitCommand = new ChatInput(
     description: 'Définit le mode lent de ce canal',
     options: [
       {
-        name: 'duration',
+        name: 'duree',
         description: 'Durée en secondes',
         minValue: 0,
         maxValue: 21600,
@@ -22,7 +22,7 @@ const setRateLimitCommand = new ChatInput(
   async (interaction) => {
 
     if (!interaction.inCachedGuild() || !interaction.channel) return;
-    const duration = interaction.options.getInteger('duration', true);
+    const duration = interaction.options.getInteger('duree', true);
 
     if (!interaction.appPermissions?.has(PermissionFlagsBits.ManageChannels))
       return interaction.reply({ content: '`❌` Insuffisance de permissions du bot, impossible de modifier le mode lent.', ephemeral: true });
