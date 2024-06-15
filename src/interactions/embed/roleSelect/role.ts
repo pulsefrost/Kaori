@@ -36,7 +36,7 @@ const addRole = [
               new TextInputBuilder()
                 .setCustomId('description')
                 .setLabel('Description du rôle')
-                .setPlaceholder('Exemple : Recommandé pour les utilisateurs qui jouent à Minecraft!')
+                .setPlaceholder('Exemple : Un Homme')
                 .setMaxLength(100)
                 .setStyle(TextInputStyle.Short)
                 .setRequired(false),
@@ -44,7 +44,7 @@ const addRole = [
             new ActionRowBuilder<TextInputBuilder>().setComponents(
               new TextInputBuilder()
                 .setCustomId('emojiNameOrId')
-                .setLabel('Nom ou ID d\'emoji Unicode ou emoji personnalisé')
+                .setLabel('Nom ou ID d\'emoji')
                 .setPlaceholder('Un seul caractère • Entrez le nom ou l\'ID de l\'emoji personnalisé')
                 .setMaxLength(32)
                 .setStyle(TextInputStyle.Short)
