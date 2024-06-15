@@ -73,15 +73,6 @@ const Command = new ChatInput(
             .setThumbnail(interaction.guild.iconURL())
             .setFields(
               { name: 'Statut', value: interaction.guild.features.map(v => featureTexts.get(v)).filter(Boolean).join('\n') || 'Aucun' },
-              {
-                name: `Rôles (${interaction.guild.roles.cache.size})`,
-                value: interaction.member.permissions.has(PermissionFlagsBits.ManageRoles)
-                  ? interaction.guild.roles.cache
-                    .filter(role => role.name !== '@everyone')
-                    .sort((before, after) => before.position > after.position ? -1 : 1)
-                    ?.map(role => role?.toString())?.join(' ') || 'Aucun'
-                  : '🔒 Vous devez avoir la permission `Gérer les rôles`',
-              },
             ),
         ],
         ephemeral: true,
