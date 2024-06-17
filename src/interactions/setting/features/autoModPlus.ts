@@ -110,7 +110,6 @@ const ignoreSetting = [
           $set: {
             'autoMod.ignore.channels': [],
             'autoMod.ignore.roles': [],
-            'autoMod.ignore.categories': [],
           },
         },
         { upsert: true, new: true },
