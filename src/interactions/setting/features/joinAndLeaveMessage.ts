@@ -234,8 +234,7 @@ const leaveMessageSetting = [
           .setDescription(joinAndLeaveMessagePlaceHolder.parse(v.data.description || '', ({ guild, user })) || null)
           .setURL(v.data.url || null)
           .setColor(v.data.color || Colors.Green)
-          .setImage(v.data.image?.url || null)
-          .setThumbnail(interaction.user.displayAvatarURL())),
+          .setImage(v.data.image?.url || null)),
         ephemeral: true,
       });
     },

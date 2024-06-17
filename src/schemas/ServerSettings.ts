@@ -78,7 +78,7 @@ const serverSettingsSchema = new Schema<IServerSettings>({
           embeds: [{
             title: 'BIENVENUE',
             description: 'Bienvenue sur **![serverName]**, ![user] **(![userTag])** !',
-            color: 'GREEN',
+            color: null,
             image: null,
           }],
         },
