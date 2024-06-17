@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, channelMention, ChannelSelectMenuBuilder, ChannelType, Colors, EmbedBuilder, formatEmoji, inlineCode, roleMention, RoleSelectMenuBuilder, StringSelectMenuBuilder } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, channelMention, ChannelSelectMenuBuilder, CategorySelectMenuBuilder, ChannelType, Colors, EmbedBuilder, formatEmoji, inlineCode, roleMention, RoleSelectMenuBuilder, StringSelectMenuBuilder } from 'discord.js';
 import { Emojis } from '../../module/constant';
 import { ControlPanelComponentPagination } from './_pagination';
 import { booleanStatus, buttonLabelStatus, buttonStyleStatus, channelStatus, roleStatus } from '../../module/settingStatus';
@@ -540,8 +540,8 @@ ControlPanelMessages.set(FeatureType.AutoModPlus, new ControlPanelComponentPagin
         .setMinValues(0)
         .setMaxValues(25),
     ),
-    new ActionRowBuilder<ChannelSelectMenuBuilder>().setComponents(
-      new ChannelSelectMenuBuilder()
+    new ActionRowBuilder<CategorySelectMenuBuilder>().setComponents(
+      new CategorySelectMenuBuilder()
         .setCustomId('kaori:setting-automod-ignore-categories')
         .setPlaceholder('Paramètres d\'exception (Canaux)')
         .setChannelTypes([ChannelType.GuildCategory])
