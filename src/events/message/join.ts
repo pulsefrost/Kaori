@@ -37,9 +37,7 @@ const joinMessage = new DiscordEventBuilder({
         embeds: option.embeds?.map(v => EmbedBuilder.from(v)).map(v => EmbedBuilder.from(v)
           .setTitle(joinAndLeaveMessagePlaceHolder.parse(v.data.title || '', ({ guild, user })) || null)
           .setDescription(joinAndLeaveMessagePlaceHolder.parse(v.data.description || '', ({ guild, user })) || null)
-          .setURL(v.data.url || null)
-          .setColor(Colors.Green)
-          .setThumbnail(member.user.displayAvatarURL())),
+          .setURL(v.data.url || null)),
       });
     }
   },
