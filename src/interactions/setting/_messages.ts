@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, channelMention, CategoryMention, ChannelSelectMenuBuilder, ChannelType, Colors, EmbedBuilder, formatEmoji, inlineCode, roleMention, RoleSelectMenuBuilder, StringSelectMenuBuilder } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, channelMention, ChannelSelectMenuBuilder, ChannelType, Colors, EmbedBuilder, formatEmoji, inlineCode, roleMention, RoleSelectMenuBuilder, StringSelectMenuBuilder } from 'discord.js';
 import { Emojis } from '../../module/constant';
 import { ControlPanelComponentPagination } from './_pagination';
 import { booleanStatus, buttonLabelStatus, buttonStyleStatus, channelStatus, roleStatus } from '../../module/settingStatus';
@@ -175,6 +175,11 @@ ControlPanelMessages.set(FeatureType.MessageExpansion, new ControlPanelComponent
           {
             name: 'Exceptions (Canaux)',
             value: setting?.message.expansion.ignore.channels?.map(v => channelMention(v)).join(' ') || 'Aucune',
+            inline: true,
+          },
+          {
+            name: 'Exceptions (Catégories)',
+            value: setting?.message.expansion.ignore.categories?.map(v => channelMention(v)).join(' ') || 'Aucune',
             inline: true,
           },
         ),
@@ -482,7 +487,6 @@ ControlPanelMessages.set(FeatureType.AutoModPlus, new ControlPanelComponentPagin
             value: [
               `**Canaux :** ${setting?.autoMod.ignore.channels.map(v => channelMention(v)).join(' ') || 'Aucun'}`,
               `**Rôles :** ${setting?.autoMod.ignore.roles.map(v => roleMention(v)).join(' ') || 'Aucun'}`,
-              `**Catégories :** ${setting?.autoMod.ignore.categories.map(v => CategoryMention(v)).join(' ') || 'Aucun'}`,
             ].join('\n'),
           },
         )
@@ -538,6 +542,14 @@ ControlPanelMessages.set(FeatureType.AutoModPlus, new ControlPanelComponentPagin
       new RoleSelectMenuBuilder()
         .setCustomId('kaori:setting-automod-ignore-roles')
         .setPlaceholder('Paramètres d\'exception (Rôles)')
+        .setMinValues(0)
+        .setMaxValues(25),
+    ),
+    new ActionRowBuilder<ChannelSelectMenuBuilder>().setComponents(
+      new ChannelSelectMenuBuilder()
+        .setCustomId('kaori:setting-automod-ignore-channels')
+        .setPlaceholder('Paramètres d\'exception (Canaux)')
+        .setChannelTypes([ChannelType.GuildCategory])
         .setMinValues(0)
         .setMaxValues(25),
     ),
