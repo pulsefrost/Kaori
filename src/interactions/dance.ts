@@ -31,7 +31,8 @@ const danceCommand = new ChatInput(
         content: `*${interaction.user.toString()} est en train de dancer*`,
         embeds: [
           new EmbedBuilder()
-            .setTitle(data.results[0].anime_name)
+            .setTitle('Titre de l\'anime :')
+            .setDescription(data.results[0].anime_name)
             .setImage(data.results[0].url)
             .setColor('#2C2D31'),
         ],

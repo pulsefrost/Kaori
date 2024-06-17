@@ -5,6 +5,7 @@ import fetch from 'cross-fetch'; // Utilisation de cross-fetch
 interface ApiResponse {
   results: {
     url: string;
+    anime_name: string;
   }[];
 }
 
@@ -43,7 +44,9 @@ const hugCommand = new ChatInput(
         content: `*${interaction.user.toString()} câline ${user.toString()}*`,
         embeds: [
           new EmbedBuilder()
-            .setImage(data.results[0].url)
+          .setTitle('Titre de l\'anime :')
+          .setDescription(data.results[0].anime_name)
+          .setImage(data.results[0].url)
             .setColor('#2C2D31'),
         ],
         ephemeral: false,
