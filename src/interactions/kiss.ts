@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionType, EmbedBuilder, Colors } from 'discord.js';
-import { ChatInput } from '@akki256/discord-interaction'; // Assurez-vous que le chemin d'importation est correct
-import fetch from 'node-fetch'; // Assurez-vous d'avoir installé node-fetch
+import { ChatInput } from '@akki256/discord-interaction';
+import fetch from 'node-fetch';
 
 const kissCommand = new ChatInput(
   {
@@ -25,10 +25,10 @@ const kissCommand = new ChatInput(
     if (!user)
       return interaction.reply({ content: '`❌` Utilisateur introuvable.', ephemeral: true });
 
-    // Utilisation de l'API nekos.fun pour obtenir une image de baiser
+    // Utilisation de l'API nekos.best pour obtenir une image de baiser
     try {
       const response = await fetch('https://nekos.best/api/v2/kiss');
-      const data = await response.json();
+      const data: { results: { url: string }[] } = await response.json();
 
       interaction.reply({
         content: `*${interaction.user.username} envoie un baiser à ${user.user.username}*`,
