@@ -1,5 +1,6 @@
 import { ApplicationCommandOptionType, EmbedBuilder } from 'discord.js';
 import { ChatInput } from '@akki256/discord-interaction';
+import fetch from 'cross-fetch'; // Utilisation de cross-fetch
 
 interface ApiResponse {
   results: {
@@ -30,14 +31,13 @@ const kissCommand = new ChatInput(
     if (!user)
       return interaction.reply({ content: '`❌` Utilisateur introuvable.', ephemeral: true });
 
-    // Utilisation de fetch avec une importation dynamique
+    // Utilisation de cross-fetch pour récupérer les données
     try {
-      const fetchModule = await import('node-fetch');
-      const response = await fetchModule.default('https://nekos.best/api/v2/kiss');
+      const response = await fetch('https://nekos.best/api/v2/kiss');
       const responseData = await response.json();
 
-      // Vérification et typage de responseData
-      const data: ApiResponse = responseData as ApiResponse;
+      // Typage de responseData avec l'interface ApiResponse
+      const data: ApiResponse = responseData;
 
       interaction.reply({
         content: `*${interaction.user.username} envoie un baiser à ${user.user.username}*`,
