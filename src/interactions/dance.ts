@@ -10,7 +10,7 @@ interface ApiResponse {
 
 const danceCommand = new ChatInput(
   {
-    name: 'hug',
+    name: 'dance',
     description: 'Dance',
     dmPermission: false,
   },
