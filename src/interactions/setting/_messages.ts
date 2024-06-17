@@ -1,4 +1,4 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, channelMention, ChannelSelectMenuBuilder, ChannelType, Colors, EmbedBuilder, formatEmoji, inlineCode, roleMention, RoleSelectMenuBuilder, StringSelectMenuBuilder } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, channelMention, CategoryMention, ChannelSelectMenuBuilder, ChannelType, Colors, EmbedBuilder, formatEmoji, inlineCode, roleMention, RoleSelectMenuBuilder, StringSelectMenuBuilder } from 'discord.js';
 import { Emojis } from '../../module/constant';
 import { ControlPanelComponentPagination } from './_pagination';
 import { booleanStatus, buttonLabelStatus, buttonStyleStatus, channelStatus, roleStatus } from '../../module/settingStatus';
@@ -482,6 +482,7 @@ ControlPanelMessages.set(FeatureType.AutoModPlus, new ControlPanelComponentPagin
             value: [
               `**Canaux :** ${setting?.autoMod.ignore.channels.map(v => channelMention(v)).join(' ') || 'Aucun'}`,
               `**Rôles :** ${setting?.autoMod.ignore.roles.map(v => roleMention(v)).join(' ') || 'Aucun'}`,
+              `**Catégories :** ${setting?.autoMod.ignore.categories.map(v => CategoryMention(v)).join(' ') || 'Aucun'}`,
             ].join('\n'),
           },
         )

@@ -50,6 +50,7 @@ export interface IServerSettings {
     ignore: {
       channels: string[];
       roles: string[];
+      categories: string[];
     };
   };
   afk: Map<string, string>;

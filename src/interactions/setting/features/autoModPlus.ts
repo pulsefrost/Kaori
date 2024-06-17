@@ -86,6 +86,20 @@ const ignoreSetting = [
     },
   ),
 
+  // Rôle
+  new SelectMenu(
+    { customId: 'kaori:setting-automod-ignore-categories', type: SelectMenuType.Role },
+    async (interaction) => {
+      const res = await ServerSettings.findOneAndUpdate(
+        { serverId: interaction.guildId },
+        { $set: { 'autoMod.ignore.categories': interaction.values } },
+        { upsert: true, new: true },
+      );
+
+      reloadMessage(interaction, res, FeatureType.AutoModPlus);
+    },
+  ),
+
   // Supprimer tout
   new Button(
     { customId: 'kaori:setting-automod-ignore-deleteAll' },
@@ -96,6 +110,7 @@ const ignoreSetting = [
           $set: {
             'autoMod.ignore.channels': [],
             'autoMod.ignore.roles': [],
+            'autoMod.ignore.categories': [],
           },
         },
         { upsert: true, new: true },
