@@ -1,7 +1,6 @@
 import { ApplicationCommandOptionType, EmbedBuilder } from 'discord.js';
 import { ChatInput } from '@akki256/discord-interaction';
 
-
 interface ApiResponse {
   results: {
     url: string;
@@ -35,7 +34,10 @@ const kissCommand = new ChatInput(
     try {
       const fetchModule = await import('node-fetch');
       const response = await fetchModule.default('https://nekos.best/api/v2/kiss');
-      const data: ApiResponse = await response.json();
+      const responseData = await response.json();
+
+      // Vérification et typage de responseData
+      const data: ApiResponse = responseData as ApiResponse;
 
       interaction.reply({
         content: `*${interaction.user.username} envoie un baiser à ${user.user.username}*`,
