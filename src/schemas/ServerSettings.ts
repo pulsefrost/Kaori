@@ -79,6 +79,7 @@ const serverSettingsSchema = new Schema<IServerSettings>({
             title: 'BIENVENUE',
             description: 'Bienvenue sur **![serverName]**, ![user] **(![userTag])** !',
             color: 'GREEN',
+            image: null,
           }],
         },
       },

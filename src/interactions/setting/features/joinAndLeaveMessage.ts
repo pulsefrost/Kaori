@@ -53,7 +53,7 @@ const joinMessageSetting = [
                 .setCustomId('url')
                 .setLabel('URL du Titre')
                 .setValue(embed.data.url || '')
-                .setPlaceholder('Exemple : https://docs.kaori.com')
+                .setPlaceholder('Exemple : https://kaoricafe.fr/')
                 .setStyle(TextInputStyle.Short)
                 .setRequired(false),
             ),
@@ -65,6 +65,24 @@ const joinMessageSetting = [
                 .setMaxLength(3999)
                 .setStyle(TextInputStyle.Paragraph)
                 .setPlaceholder('Conseil : La documentation officielle explique l\'utilisation de syntaxes spéciales.')
+                .setRequired(false),
+            ),
+            new ActionRowBuilder<TextInputBuilder>().setComponents(
+              new TextInputBuilder()
+                .setCustomId('image')
+                .setLabel('URL de l\'image')
+                .setValue(embed.data.image?.url || '')
+                .setPlaceholder('Exemple : https://example.com/image.png')
+                .setStyle(TextInputStyle.Short)
+                .setRequired(false),
+            ),
+            new ActionRowBuilder<TextInputBuilder>().setComponents(
+              new TextInputBuilder()
+                .setCustomId('color')
+                .setLabel('Couleur')
+                .setValue(embed.data.color ? `#${embed.data.color.toString(16)}` : '')
+                .setPlaceholder('Exemple : #FF5733')
+                .setStyle(TextInputStyle.Short)
                 .setRequired(false),
             ),
           ),
@@ -79,17 +97,24 @@ const joinMessageSetting = [
       const title = interaction.fields.getTextInputValue('title');
       const url = interaction.fields.getTextInputValue('url');
       const description = interaction.fields.getTextInputValue('description');
+      const imageUrl = interaction.fields.getTextInputValue('image');
+      const color = interaction.fields.getTextInputValue('color');
 
       if (!title && !description)
         return interaction.reply({ content: '`❌` Le titre et la description doivent être saisis.', ephemeral: true });
       if (url && !isURL(url))
         return interaction.reply({ content: '`❌` Veuillez saisir une URL commençant par `http://` ou `https://`.', ephemeral: true });
+      if (imageUrl && !isURL(imageUrl))
+        return interaction.reply({ content: '`❌` Veuillez saisir une URL d\'image valide commençant par `http://` ou `https://`.', ephemeral: true });
+      if (color && !/^#[0-9A-F]{6}$/i.test(color))
+        return interaction.reply({ content: '`❌` Veuillez saisir une couleur valide au format hexadécimal.', ephemeral: true });
 
       const embed = new EmbedBuilder()
         .setTitle(title || null)
         .setURL(url || null)
-        .setColor(Colors.Green)
-        .setDescription(description || null);
+        .setColor(color ? parseInt(color.slice(1), 16) : Colors.Green)
+        .setDescription(description || null)
+        .setImage(imageUrl || null);
 
       const res = await ServerSettings.findOneAndUpdate(
         { serverId: interaction.guildId },
@@ -121,7 +146,8 @@ const joinMessageSetting = [
           .setTitle(joinAndLeaveMessagePlaceHolder.parse(v.data.title || '', ({ guild, user })) || null)
           .setDescription(joinAndLeaveMessagePlaceHolder.parse(v.data.description || '', ({ guild, user })) || null)
           .setURL(v.data.url || null)
-          .setColor(Colors.Green)
+          .setColor(v.data.color || Colors.Green)
+          .setImage(v.data.image?.url || null)
           .setThumbnail(interaction.user.displayAvatarURL())),
         ephemeral: true,
       });
@@ -208,7 +234,8 @@ const leaveMessageSetting = [
           .setTitle(joinAndLeaveMessagePlaceHolder.parse(v.data.title || '', ({ guild, user })) || null)
           .setDescription(joinAndLeaveMessagePlaceHolder.parse(v.data.description || '', ({ guild, user })) || null)
           .setURL(v.data.url || null)
-          .setColor(Colors.Green)
+          .setColor(v.data.color || Colors.Green)
+          .setImage(v.data.image?.url || null)
           .setThumbnail(interaction.user.displayAvatarURL())),
         ephemeral: true,
       });
