@@ -8,39 +8,26 @@ interface ApiResponse {
   }[];
 }
 
-const kissCommand = new ChatInput(
+const sleepCommand = new ChatInput(
   {
-    name: 'kiss',
-    description: 'Embrasser un utilisateur',
-    options: [
-      {
-        name: 'utilisateur',
-        description: 'Utilisateur à qui faire le baiser',
-        type: ApplicationCommandOptionType.User,
-        required: true,
-      },
-    ],
+    name: 'sleep',
+    description: 'Dormir',
     dmPermission: false,
   },
   { coolTime: 5000 },
   async (interaction) => {
     if (!interaction.inCachedGuild()) return;
 
-    const user = interaction.options.getMember('utilisateur');
-
-    if (!user)
-      return interaction.reply({ content: '`❌` Utilisateur introuvable.', ephemeral: true });
-
     // Utilisation de cross-fetch pour récupérer les données
     try {
-      const response = await fetch('https://nekos.best/api/v2/kiss');
+      const response = await fetch('https://nekos.best/api/v2/sleep');
       const responseData = await response.json();
 
       // Typage de responseData avec l'interface ApiResponse
       const data: ApiResponse = responseData;
 
       interaction.reply({
-        content: `*${interaction.user.toString()} embrasse ${user.toString()}*`,
+        content: `*${interaction.user.toString()} est en train de dormir*`,
         embeds: [
           new EmbedBuilder()
             .setImage(data.results[0].url)
@@ -49,10 +36,10 @@ const kissCommand = new ChatInput(
         ephemeral: false,
       });
     } catch (error) {
-      console.error('Erreur lors de la récupération de l\'image de baiser :', error);
-      interaction.reply({ content: '`❌` Une erreur est survenue lors de l\'envoi du baiser.', ephemeral: true });
+      console.error('Erreur lors de la récupération de l\'image de dodo :', error);
+      interaction.reply({ content: '`❌` Une erreur est survenue lors de l\'envoi du dodo.', ephemeral: true });
     }
   },
 );
 
-export default kissCommand;
+export default sleepCommand;
