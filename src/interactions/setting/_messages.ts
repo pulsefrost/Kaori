@@ -529,7 +529,7 @@ ControlPanelMessages.set(FeatureType.AutoModPlus, new ControlPanelComponentPagin
       new ChannelSelectMenuBuilder()
         .setCustomId('kaori:setting-automod-ignore-channels')
         .setPlaceholder('Paramètres d\'exception (Canaux)')
-        .setChannelTypes([ChannelType.GuildText, ChannelType.GuildForum, ChannelType.GuildVoice, ChannelType.GuildStageVoice, ChannelType.GuildCategory])
+        .setChannelTypes([ChannelType.GuildText, ChannelType.GuildForum, ChannelType.GuildVoice, ChannelType.GuildStageVoice])
         .setMinValues(0)
         .setMaxValues(25),
     ),
