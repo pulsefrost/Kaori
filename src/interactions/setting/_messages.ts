@@ -177,11 +177,6 @@ ControlPanelMessages.set(FeatureType.MessageExpansion, new ControlPanelComponent
             value: setting?.message.expansion.ignore.channels?.map(v => channelMention(v)).join(' ') || 'Aucune',
             inline: true,
           },
-          {
-            name: 'Exceptions (Catégories)',
-            value: setting?.message.expansion.ignore.categories?.map(v => channelMention(v)).join(' ') || 'Aucune',
-            inline: true,
-          },
         ),
     ],
   }))
@@ -547,7 +542,7 @@ ControlPanelMessages.set(FeatureType.AutoModPlus, new ControlPanelComponentPagin
     ),
     new ActionRowBuilder<ChannelSelectMenuBuilder>().setComponents(
       new ChannelSelectMenuBuilder()
-        .setCustomId('kaori:setting-automod-ignore-channels')
+        .setCustomId('kaori:setting-automod-ignore-categories')
         .setPlaceholder('Paramètres d\'exception (Canaux)')
         .setChannelTypes([ChannelType.GuildCategory])
         .setMinValues(0)
