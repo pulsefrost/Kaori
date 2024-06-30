@@ -33,7 +33,7 @@ const joinMessage = new DiscordEventBuilder({
       const user = member.user;
 
       channel.send({
-        content: joinAndLeaveMessagePlaceHolder.parse(option.content || '![user] <:a_OshinoWelcomeDNS:1167127985510424606>', ({ guild, user })) || undefined,
+        content: joinAndLeaveMessagePlaceHolder.parse(option.content || '![user] <:db_bow:1256961975729131521>', ({ guild, user })) || undefined,
         embeds: option.embeds?.map(v => EmbedBuilder.from(v)).map(v => EmbedBuilder.from(v)
           .setTitle(joinAndLeaveMessagePlaceHolder.parse(v.data.title || '', ({ guild, user })) || null)
           .setDescription(joinAndLeaveMessagePlaceHolder.parse(v.data.description || '', ({ guild, user })) || null)
