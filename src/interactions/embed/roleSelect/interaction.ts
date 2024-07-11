@@ -1,5 +1,5 @@
 import { SelectMenu, SelectMenuType } from '@akki256/discord-interaction';
-import { Colors, EmbedBuilder, MessageFlags } from 'discord.js';
+import { Colors, EmbedBuilder, MessageFlags, roleMention } from 'discord.js';
 
 const roleSelect = new SelectMenu(
   { customId: /^kaori:roleSelectMenu(-[1-5])?$|^reactionRole$/, type: SelectMenuType.String },
@@ -12,21 +12,38 @@ const roleSelect = new SelectMenu(
     const roles = interaction.member.roles;
     let error = false;
 
-    await roles.remove(interaction.component.options.map(opt => opt.value).filter(opt => !interaction.values.includes(opt))).catch(() => error = true);
-    await roles.add(interaction.values).catch(() => error = true);
+    try {
+      await roles.remove(interaction.component.options.map(opt => opt.value).filter(opt => !interaction.values.includes(opt)));
+      await roles.add(interaction.values);
+    } catch (e) {
+      error = true;
+    }
 
-    if (error)
-      return interaction.followUp({
+    if (error) {
+      await interaction.followUp({
         embeds: [new EmbedBuilder().setDescription('`❌` Certains rôles n\'ont pas pu être ajoutés ou supprimés.').setColor(Colors.Red)],
         ephemeral: true,
       });
+    } else {
+      await interaction.followUp({
+        embeds: [new EmbedBuilder().setDescription('`✅` Les rôles ont été mis à jour !').setColor(Colors.Green)],
+        ephemeral: true,
+      });
 
-    await interaction.followUp({
-      embeds: [new EmbedBuilder().setDescription('`✅` Les rôles ont été mis à jour !').setColor(Colors.Green)],
-      ephemeral: true,
-    });
+      // Log des rôles ajoutés
+      interaction.values.forEach(roleId => {
+        console.log(`Rôle ajouté : ${roleMention(roleId)}`);
+      });
 
-    setTimeout(() => interaction.deleteReply(), 3_000);
+      // Log des rôles retirés
+      interaction.component.options.forEach(option => {
+        if (!interaction.values.includes(option.value)) {
+          console.log(`Rôle retiré : ${roleMention(option.value)}`);
+        }
+      });
+    }
+
+    setTimeout(() => interaction.deleteReply(), 3000);
   },
 );
 
