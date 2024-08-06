@@ -42,7 +42,7 @@ const command = new ChatInput(
             'Veuillez choisir la fonctionnalité que vous souhaitez configurer.',
             'Pour obtenir des instructions détaillées sur la procédure et les paramètres de chaque fonctionnalité, veuillez consulter [ici](https://discord.gg/amies).',
           ].join('\n'))
-          .setColor(Colors.Blurple),
+          .setColor('#F4C1B3'),
       ],
       components: [
         new ActionRowBuilder<StringSelectMenuBuilder>().setComponents(

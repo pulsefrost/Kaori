@@ -43,7 +43,7 @@ const kickCommand = new ChatInput(
         embeds: [
           new EmbedBuilder()
             .setDescription(`\`✅\` ${member.user.tag} a été expulsé du serveur.`)
-            .setColor(Colors.Green),
+            .setColor('#F4C1B3'),
         ],
         ephemeral: true,
       });

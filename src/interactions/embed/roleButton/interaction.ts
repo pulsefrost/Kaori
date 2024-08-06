@@ -1,38 +1,65 @@
-import { Button } from '@akki256/discord-interaction';
-import { codeBlock, Colors, EmbedBuilder, roleMention } from 'discord.js';
+import { SelectMenu, SelectMenuType } from '@akki256/discord-interaction';
+import { Colors, EmbedBuilder, MessageFlags } from 'discord.js';
 
-const button = new Button(
-  { customId: /^kaori:roleButton-[0-9]{18,19}/ },
+const roleSelect = new SelectMenu(
+  { customId: /^kaori:roleSelectMenu(-[1-5])?$|^reactionRole$/, type: SelectMenuType.String },
   async (interaction) => {
     if (!interaction.inCachedGuild()) return;
+    if (interaction.message.flags.has(MessageFlags.Ephemeral)) return interaction.update({});
 
-    const roleId = interaction.customId.replace('kaori:roleButton-', '');
+    await interaction.deferReply({ ephemeral: true });
+
     const roles = interaction.member.roles;
+    const allOptions = interaction.component.options.map(opt => opt.value);
+    const newRoles = interaction.values;
 
-    try {
-      if (roles.cache.has(roleId)) {
-        await roles.remove(roleId);
-        await interaction.reply({
-          embeds: [new EmbedBuilder().setDescription(`\`✅\` Suppression du rôle réussie : ${roleMention(roleId)}.`).setColor(Colors.Green)],
-          ephemeral: true,
-        });
-        console.log(`Rôle retiré : ${roleMention(roleId)}`);
-      } else {
-        await roles.add(roleId);
-        await interaction.reply({
-          embeds: [new EmbedBuilder().setDescription(`\`✅\` Ajout du rôle réussi : ${roleMention(roleId)}.`).setColor(Colors.Green)],
-          ephemeral: true,
-        });
-        console.log(`Rôle ajouté : ${roleMention(roleId)}`);
-      }
-      setTimeout(() => interaction.deleteReply(), 3000);
-    } catch (error) {
-      interaction.reply({
-        embeds: [new EmbedBuilder().setDescription(`\`❌\` Échec de l'opération.\n${codeBlock(error)}`).setColor(Colors.Red)],
+    // Rôles avant la mise à jour
+    const oldRoles = allOptions.filter(opt => roles.cache.has(opt));
+
+    // Supprimer les rôles non sélectionnés
+    let error = false;
+    await roles.remove(allOptions.filter(opt => !newRoles.includes(opt))).catch(() => error = true);
+    // Ajouter les nouveaux rôles
+    await roles.add(newRoles).catch(() => error = true);
+
+    if (error)
+      return interaction.followUp({
+        embeds: [new EmbedBuilder().setDescription('`❌` Certains rôles n\'ont pas pu être ajoutés ou supprimés.').setColor(Colors.Red)],
         ephemeral: true,
       });
+
+    // Rôles après la mise à jour
+    const updatedRoles = interaction.member.roles.cache;
+
+    // Rôles ajoutés et supprimés
+    const addedRoles = newRoles.filter(role => !oldRoles.includes(role));
+    const removedRoles = oldRoles.filter(role => !newRoles.includes(role));
+
+    let description = '`✅` Les rôles ont été mis à jour !\n\n';
+
+    if (addedRoles.length) {
+      description += '**Rôles ajoutés:**\n';
+      addedRoles.forEach(roleId => {
+        const role = updatedRoles.get(roleId);
+        if (role) description += `• <@&${role.id}>\n`;
+      });
     }
+
+    if (removedRoles.length) {
+      description += '**Rôles supprimés:**\n';
+      removedRoles.forEach(roleId => {
+        const role = updatedRoles.get(roleId);
+        if (role) description += `• <@&${role.id}>\n`;
+      });
+    }
+
+    await interaction.followUp({
+      embeds: [new EmbedBuilder().setDescription(description).setColor(Colors.Green)],
+      ephemeral: true,
+    });
+
+    setTimeout(() => interaction.deleteReply(), 3_000);
   },
 );
 
-module.exports = [button];
+module.exports = [roleSelect];

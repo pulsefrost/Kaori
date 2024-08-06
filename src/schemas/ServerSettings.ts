@@ -53,6 +53,10 @@ export interface IServerSettings {
     };
   };
   afk: Map<string, string>;
+  animeNews: {
+    channelId: string | null;
+    roleId: string | null;
+  };
 }
 
 const CustomMessageOptionsSchema = new Schema({

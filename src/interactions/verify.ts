@@ -78,7 +78,6 @@ const verifyCommand = new ChatInput(
     interaction.reply({
       embeds: [
         new EmbedBuilder()
-          .setTitle(`\`✅\` Vérification : ${verifyTypeName.get(verifyType)!}`)
           .setDescription(interaction.options.getString('description')?.replace('  ', '\n') || null)
           .setColor(interaction.options.getNumber('color') ?? Colors.Green)
           .setImage(interaction.options.getAttachment('image')?.url || null)

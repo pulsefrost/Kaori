@@ -47,7 +47,7 @@ const hugCommand = new ChatInput(
           .setTitle('Titre de l\'anime :')
           .setDescription(data.results[0].anime_name)
           .setImage(data.results[0].url)
-            .setColor('#2C2D31'),
+            .setColor('#F4C1B3'),
         ],
         ephemeral: false,
       });

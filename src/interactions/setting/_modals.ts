@@ -6,7 +6,7 @@ export const channelModal = new ModalBuilder()
     new ActionRowBuilder<TextInputBuilder>().setComponents(
       new TextInputBuilder()
         .setCustomId('nameOrId')
-        .setLabel('Nom ddu salon ou ID')
+        .setLabel('Nom du salon ou ID')
         .setMaxLength(100)
         .setStyle(TextInputStyle.Short),
     ),

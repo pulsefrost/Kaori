@@ -15,3 +15,7 @@ language = "nodejs"
 run = ["sh", "-c", "npm start"]
 deploymentTarget = "gce"
 ignorePorts = true
+
+[[ports]]
+localPort = 3000
+externalPort = 80

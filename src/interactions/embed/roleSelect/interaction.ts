@@ -10,38 +10,49 @@ const roleSelect = new SelectMenu(
     await interaction.deferReply({ ephemeral: true });
 
     const roles = interaction.member.roles;
+    const allOptions = interaction.component.options.map(opt => opt.value);
+    const newRoles = interaction.values;
+
+    // Rôles avant la mise à jour
+    const oldRoles = allOptions.filter(opt => roles.cache.has(opt));
+
     let error = false;
 
-    try {
-      await roles.remove(interaction.component.options.map(opt => opt.value).filter(opt => !interaction.values.includes(opt)));
-      await roles.add(interaction.values);
-    } catch (e) {
-      error = true;
-    }
+    // Supprimer les rôles non sélectionnés
+    const removedRoles = allOptions.filter(opt => !newRoles.includes(opt));
+    await roles.remove(removedRoles).catch(() => error = true);
+
+    // Ajouter les nouveaux rôles
+    const addedRoles = newRoles.filter(role => !oldRoles.includes(role));
+    await roles.add(addedRoles).catch(() => error = true);
 
     if (error) {
-      await interaction.followUp({
+      return interaction.followUp({
         embeds: [new EmbedBuilder().setDescription('`❌` Certains rôles n\'ont pas pu être ajoutés ou supprimés.').setColor(Colors.Red)],
         ephemeral: true,
       });
-    } else {
-      await interaction.followUp({
-        embeds: [new EmbedBuilder().setDescription('`✅` Les rôles ont été mis à jour !').setColor(Colors.Green)],
-        ephemeral: true,
-      });
+    }
 
-      // Log des rôles ajoutés
-      interaction.values.forEach(roleId => {
-        console.log(`Rôle ajouté : ${roleMention(roleId)}`);
-      });
+    let description = '`✅` Les rôles ont été mis à jour !\n\n';
 
-      // Log des rôles retirés
-      interaction.component.options.forEach(option => {
-        if (!interaction.values.includes(option.value)) {
-          console.log(`Rôle retiré : ${roleMention(option.value)}`);
-        }
+    if (addedRoles.length) {
+      description += '**Rôles ajoutés :**\n';
+      addedRoles.forEach(roleId => {
+        description += `• ${roleMention(roleId)}\n`;
       });
     }
+
+    if (removedRoles.length) {
+      description += '**Rôles supprimés :**\n';
+      removedRoles.forEach(roleId => {
+        description += `• ${roleMention(roleId)}\n`;
+      });
+    }
+
+    await interaction.followUp({
+      embeds: [new EmbedBuilder().setDescription(description).setColor(Colors.Green)],
+      ephemeral: true,
+    });
 
     setTimeout(() => interaction.deleteReply(), 3000);
   },

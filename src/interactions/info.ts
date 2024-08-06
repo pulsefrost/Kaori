@@ -70,7 +70,7 @@ const Command = new ChatInput(
               `${formatEmoji(Emojis.White.boost)} Nombre de boosts: \`${interaction.guild.premiumSubscriptionCount}\``,
             ].join('\n'))
             .setColor(Colors.White)
-            .setThumbnail(interaction.guild.iconURL())
+            .setImage('https://i.imgur.com/tjiIwzV.png')
             .setFields(
               { name: 'Statut', value: interaction.guild.features.map(v => featureTexts.get(v)).filter(Boolean).join('\n') || 'Aucun' },
             ),
@@ -104,7 +104,7 @@ async function createUserInfoEmbed(interaction: Interaction, user: User) {
       .setTitle('Cet utilisateur n\'est pas sur ce serveur')
       .setDescription(`${formatEmoji(Emojis.White.id)} ID de l'utilisateur: ${inlineCode(user.id)}`)
       .setColor(Colors.DarkerGrey)
-      .setThumbnail(user.displayAvatarURL())
+      .setImage('https://i.imgur.com/tjiIwzV.png')
       .setFields(
         { name: 'Date de création du compte', value: time(user.createdAt, 'D'), inline: true },
         { name: 'Badge', value: userFlagsEmojis ? userFlagsEmojis.map(v => formatEmoji(v || '0')).join('') : 'Aucun', inline: true },
@@ -120,7 +120,7 @@ async function createUserInfoEmbed(interaction: Interaction, user: User) {
       `${formatEmoji(Emojis.White.id)} ID de l'utilisateur ${inlineCode(user.id)}`,
     ].join('\n'))
     .setColor(member.roles.highest.color || Colors.White)
-    .setThumbnail(user.displayAvatarURL())
+    .setImage('https://i.imgur.com/tjiIwzV.png')
     .setFields(
       { name: 'Date de création du compte', value: time(user.createdAt, 'D'), inline: true },
       { name: 'Date d\'arrivée sur le serveur', value: joinTime, inline: true },
@@ -141,7 +141,7 @@ async function createUserInfoEmbed(interaction: Interaction, user: User) {
 
   if (user.displayAvatarURL() !== user.displayAvatarURL()) {
     embed.setAuthor({ name: user.tag, iconURL: user.displayAvatarURL() });
-    embed.setThumbnail(member.displayAvatarURL());
+    embed.setImage('https://i.imgur.com/tjiIwzV.png')
   }
 
   return embed;

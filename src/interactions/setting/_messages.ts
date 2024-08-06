@@ -44,7 +44,7 @@ ControlPanelMessages.set(FeatureType.JoinAndLeaveMessage, new ControlPanelCompon
       new EmbedBuilder()
         .setTitle('`🔧` Paramètres : Messages d\'entrée et de sortie')
         .setDescription('```Envoie des messages lorsque des membres rejoignent ou quittent le serveur. (Les messages peuvent être prévisualisés avec le bouton "Aperçu" de chaque paramètre.)```')
-        .setColor(Colors.Blurple)
+        .setColor('#F4C1B3')
         .setFields(
           {
             name: 'À l\'entrée',
@@ -114,7 +114,7 @@ ControlPanelMessages.set(FeatureType.ReportToAdmin, new ControlPanelComponentPag
       new EmbedBuilder()
         .setTitle('`🔧` Paramètres : Signalement interne dans le serveur')
         .setDescription('```Les membres peuvent signaler des messages ou des utilisateurs en violation des règles aux modérateurs.```')
-        .setColor(Colors.Blurple)
+        .setColor('#F4C1B3')
         .setFields(
           {
             name: 'Paramètres généraux',
@@ -161,7 +161,7 @@ ControlPanelMessages.set(FeatureType.MessageExpansion, new ControlPanelComponent
       new EmbedBuilder()
         .setTitle('`🔧` Paramètres : Expansion des URL de message')
         .setDescription('```Lorsqu\'une URL de message Discord est envoyée, envoie le contenu du message ainsi que les informations sur l\'expéditeur.```')
-        .setColor(Colors.Blurple)
+        .setColor('#F4C1B3')
         .setFields(
           {
             name: 'Paramètres de base',
@@ -243,7 +243,7 @@ ControlPanelMessages.set(FeatureType.EventLog, new ControlPanelComponentPaginati
       new EmbedBuilder()
         .setTitle('`🔧` Paramètres : Journal des événements')
         .setDescription('```Envoie des journaux des événements survenus dans le serveur.```')
-        .setColor(Colors.Blurple)
+        .setColor('#F4C1B3')
         .setFields(
           {
             name: 'Timeout',
@@ -352,7 +352,7 @@ ControlPanelMessages.set(FeatureType.ChangeVerificationLevel, new ControlPanelCo
       new EmbedBuilder()
         .setTitle('`🔧` Paramètres : Changement automatique du niveau de vérification')
         .setDescription('```Change automatiquement le niveau de vérification du serveur pendant une certaine période.```')
-        .setColor(Colors.Blurple)
+        .setColor('#F4C1B3')
         .setFields(
           {
             name: 'Paramètres généraux',
@@ -422,7 +422,7 @@ ControlPanelMessages.set(FeatureType.AutoPublic, new ControlPanelComponentPagina
       new EmbedBuilder()
         .setTitle('`🔧` Paramètres : Annonce automatique')
         .setDescription('```Publie automatiquement les messages envoyés dans le canal d\'annonce spécifié. (Les messages envoyés par le BOT ne seront pas publiés)```')
-        .setColor(Colors.Blurple)
+        .setColor('#F4C1B3')
         .setFields(
           {
             name: 'Paramètres généraux',
@@ -462,7 +462,7 @@ ControlPanelMessages.set(FeatureType.AutoModPlus, new ControlPanelComponentPagin
       new EmbedBuilder()
         .setTitle('`🔧` Paramètres : AutoMod Plus')
         .setDescription('```Active des filtres de messages avancés difficiles à configurer avec AutoMod standard. Les messages détectés par les filtres seront automatiquement supprimés.```')
-        .setColor(Colors.Blurple)
+        .setColor('#F4C1B3')
         .setFields(
           {
             name: 'Paramètres généraux',
