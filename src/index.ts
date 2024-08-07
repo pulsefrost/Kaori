@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 dotenv.config();
 
+import express from 'express'; // Import Express
 import { ActivityType, AllowedMentionsTypes, Client, codeBlock, Colors, EmbedBuilder, Events, GatewayIntentBits, Partials, version, ClientOptions as DiscordClientOptions } from 'discord.js';
 import { DiscordInteractions, ErrorCodes, InteractionsError } from '@akki256/discord-interaction';
 import { DiscordEvents } from './module/events';
@@ -13,9 +14,21 @@ import changeVerificationLevel from './cron/changeVerificationLevel';
 import ServerSettings from './schemas/ServerSettings';
 import { Client as SelfbotClient } from 'discord.js-selfbot-v13';
 
+// Set up Express server
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+    res.send('Bot is running');
+});
+
+app.listen(PORT, () => {
+    console.log(`Server is listening on port ${PORT}`);
+});
+
 // Type for the options parameter for SelfbotClient
 interface SelfbotClientOptions {
-  // Define other properties if needed
+    // Define other properties if needed
 }
 
 // Fonction pour créer un client avec des options spécifiques
@@ -139,7 +152,11 @@ process.on('uncaughtException', (err) => {
                     .setColor(Colors.Red)
                     .setTimestamp(),
             ],
+        }).catch(fetchError => {
+            console.error('Failed to send error message:', fetchError);
         });
+    }).catch(fetchError => {
+        console.error('Failed to fetch admin channel:', fetchError);
     });
 });
 
@@ -147,6 +164,15 @@ function reloadActivity() {
     mainClient.user?.setActivity({ name: `${mainClient.guilds.cache.size} Serveurs`, type: ActivityType.Competing });
 }
 
-mainClient.login(process.env.BOT_TOKEN);
+mainClient.login(process.env.BOT_TOKEN).catch(err => {
+    console.error('Failed to log in the main client:', err);
+});
+
 mongoose.set('strictQuery', false);
-mongoose.connect(process.env.MONGODB_URI, { dbName: process.env.MONGODB_DBNAME });
+mongoose.connect(process.env.MONGODB_URI, { dbName: process.env.MONGODB_DBNAME })
+    .then(() => {
+        console.log('Connected to MongoDB');
+    })
+    .catch(err => {
+        console.error('Failed to connect to MongoDB:', err);
+    });
