@@ -3,7 +3,10 @@ import path from 'path';
 dotenv.config();
 
 import express from 'express';
-import { ActivityType, AllowedMentionsTypes, Client, codeBlock, Colors, EmbedBuilder, Events, GatewayIntentBits, Partials, version, ClientOptions as DiscordClientOptions } from 'discord.js';
+import {
+    ActivityType, AllowedMentionsTypes, Client, codeBlock, Colors,
+    EmbedBuilder, Events, GatewayIntentBits, Partials, version, ClientOptions as DiscordClientOptions
+} from 'discord.js';
 import { DiscordInteractions, ErrorCodes, InteractionsError } from '@akki256/discord-interaction';
 import { DiscordEvents } from './module/events';
 import { guildId, admin } from '../config.json';
@@ -12,28 +15,33 @@ import mongoose from 'mongoose';
 import cron from 'node-cron';
 import changeVerificationLevel from './cron/changeVerificationLevel';
 import ServerSettings from './schemas/ServerSettings';
-import { Client as SelfbotClient } from 'discord.js-selfbot-v13';
+import { Client as SelfbotClient, ClientOptions as SelfbotClientOptions } from 'discord.js-selfbot-v13';
 
-// Définition de SelfbotClientOptions
-interface SelfbotClientOptions {
-    // Propriétés que tu veux inclure dans SelfbotClientOptions
-    property1?: string;
-    property2?: number;
-}
+// Configuration du serveur Express
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-// Définition de ClientTokenPair
-interface ClientTokenPair {
-    client: SelfbotClient;
-    token: string | undefined;
-}
+app.get('/', (req, res) => {
+    res.send('Bot is running');
+});
+
+app.listen(PORT, () => {
+    console.log(`Server is listening on port ${PORT}`);
+});
+
+// Type étendu pour les options du client
+type ExtendedSelfbotClientOptions = SelfbotClientOptions & {
+    // Ajouter des propriétés supplémentaires si nécessaire
+    customProperty?: string;
+};
 
 // Fonction pour créer un client avec des options spécifiques
-function createClient(options: SelfbotClientOptions): SelfbotClient {
+function createClient(options: ExtendedSelfbotClientOptions): SelfbotClient {
     return new SelfbotClient(options);
 }
 
 // Tableau des paires de client et de jeton
-const clients: ClientTokenPair[] = [
+const clients: { client: SelfbotClient; token: string | undefined }[] = [
     { client: createClient({}), token: process.env.Camelia },
     { client: createClient({}), token: process.env.Masha },
     { client: createClient({}), token: process.env.Minji },
@@ -164,46 +172,3 @@ mongoose.connect(process.env.MONGODB_URI, { dbName: process.env.MONGODB_DBNAME }
     .catch(err => {
         console.error('Failed to connect to MongoDB:', err);
     });
-
-// Ajout du code spécifique pour la gestion des messages avec images dans des salons spécifiques
-
-const specificChannelIds = [
-    '1256703625980543139', '1256705442176962653',
-    '1256706229326319668', '1256705892913512468',
-    '1265686084075913298', '1265686531193049168'
-];
-
-let feurCount = 0;
-
-mainClient.on('messageCreate', async message => {
-    if (message.author.bot) return;
-
-    // Vérifier si le message est dans un salon spécifique
-    if (specificChannelIds.includes(message.channel.id)) {
-        // Vérifier s'il y a des pièces jointes (images)
-        if (message.attachments.size > 0) {
-            await message.react('🩷');
-            const thread = await message.startThread({
-                name: `Commentaires`,
-                autoArchiveDuration: 60, // Durée en minutes avant archivage du fil
-            });
-            console.log(`Thread créé: ${thread.name}`);
-        } else {
-            // Supprimer le message s'il n'y a pas d'image
-            await message.delete();
-            await message.channel.send(`${message.author}, seuls les messages contenant une image sont acceptés.`);
-        }
-    }
-});
-
-// Configuration de l'application Express
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-app.get('/', (req, res) => {
-    res.send('Bot is running');
-});
-
-app.listen(PORT, () => {
-    console.log(`Server is listening on port ${PORT}`);
-});
