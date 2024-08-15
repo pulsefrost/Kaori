@@ -14,41 +14,18 @@ import changeVerificationLevel from './cron/changeVerificationLevel';
 import ServerSettings from './schemas/ServerSettings';
 import { Client as SelfbotClient } from 'discord.js-selfbot-v13';
 
-// Initialisation du bot principal avec discord.js
-const mainClient = new Client({
-    intents: [
-        GatewayIntentBits.Guilds, GatewayIntentBits.GuildModeration,
-        GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers,
-        GatewayIntentBits.MessageContent, GatewayIntentBits.DirectMessages,
-        GatewayIntentBits.GuildVoiceStates,
-    ],
-    partials: [
-        Partials.Channel, Partials.GuildMember,
-        Partials.Message, Partials.User,
-    ],
-    allowedMentions: {
-        parse: [
-            AllowedMentionsTypes.Role, AllowedMentionsTypes.User,
-        ],
-    },
-} as DiscordClientOptions);
+// Définition de SelfbotClientOptions
+interface SelfbotClientOptions {
+    // Propriétés que tu veux inclure dans SelfbotClientOptions
+    property1?: string;
+    property2?: number;
+}
 
-// Ajout des interactions et événements
-const events = new DiscordEvents(mainClient);
-const interactions = new DiscordInteractions(mainClient);
-interactions.loadRegistries(path.resolve(__dirname, './interactions'));
-
-// Set up Express server
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-app.get('/', (req, res) => {
-    res.send('Bot is running');
-});
-
-app.listen(PORT, () => {
-    console.log(`Server is listening on port ${PORT}`);
-});
+// Définition de ClientTokenPair
+interface ClientTokenPair {
+    client: SelfbotClient;
+    token: string | undefined;
+}
 
 // Fonction pour créer un client avec des options spécifiques
 function createClient(options: SelfbotClientOptions): SelfbotClient {
@@ -85,7 +62,29 @@ clients.forEach(({ client, token }) => {
     connectClient(client, token);
 });
 
-// Événements du bot principal
+// Initialisation du bot principal avec discord.js
+const mainClient = new Client({
+    intents: [
+        GatewayIntentBits.Guilds, GatewayIntentBits.GuildModeration,
+        GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.MessageContent, GatewayIntentBits.DirectMessages,
+        GatewayIntentBits.GuildVoiceStates,
+    ],
+    partials: [
+        Partials.Channel, Partials.GuildMember,
+        Partials.Message, Partials.User,
+    ],
+    allowedMentions: {
+        parse: [
+            AllowedMentionsTypes.Role, AllowedMentionsTypes.User,
+        ],
+    },
+} as DiscordClientOptions); // Cast to DiscordClientOptions
+
+const events = new DiscordEvents(mainClient);
+const interactions = new DiscordInteractions(mainClient);
+interactions.loadRegistries(path.resolve(__dirname, './interactions'));
+
 mainClient.once(Events.ClientReady, () => {
     console.log('[INFO] Le BOT est prêt !');
     console.table({
@@ -149,7 +148,6 @@ process.on('uncaughtException', (err) => {
     });
 });
 
-// Fonction pour recharger l'activité du bot
 function reloadActivity() {
     mainClient.user?.setActivity({ name: `${mainClient.guilds.cache.size} Serveurs`, type: ActivityType.Competing });
 }
@@ -158,7 +156,6 @@ mainClient.login(process.env.BOT_TOKEN).catch(err => {
     console.error('Failed to log in the main client:', err);
 });
 
-// Connexion à MongoDB
 mongoose.set('strictQuery', false);
 mongoose.connect(process.env.MONGODB_URI, { dbName: process.env.MONGODB_DBNAME })
     .then(() => {
@@ -168,8 +165,15 @@ mongoose.connect(process.env.MONGODB_URI, { dbName: process.env.MONGODB_DBNAME }
         console.error('Failed to connect to MongoDB:', err);
     });
 
-// Ajout de la fonctionnalité de gestion des salons spécifiques
-const specificChannelIds = ['1256703625980543139', '1256705442176962653', '1256706229326319668', '1256705892913512468', '1265686084075913298', '1265686531193049168'];
+// Ajout du code spécifique pour la gestion des messages avec images dans des salons spécifiques
+
+const specificChannelIds = [
+    '1256703625980543139', '1256705442176962653',
+    '1256706229326319668', '1256705892913512468',
+    '1265686084075913298', '1265686531193049168'
+];
+
+let feurCount = 0;
 
 mainClient.on('messageCreate', async message => {
     if (message.author.bot) return;
@@ -190,4 +194,16 @@ mainClient.on('messageCreate', async message => {
             await message.channel.send(`${message.author}, seuls les messages contenant une image sont acceptés.`);
         }
     }
+});
+
+// Configuration de l'application Express
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+    res.send('Bot is running');
+});
+
+app.listen(PORT, () => {
+    console.log(`Server is listening on port ${PORT}`);
 });
