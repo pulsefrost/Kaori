@@ -42,10 +42,10 @@ function createClient(options: ExtendedSelfbotClientOptions): SelfbotClient {
 
 // Tableau des paires de client et de jeton
 const clients: { client: SelfbotClient; token: string | undefined }[] = [
-    //{ client: createClient({}), token: process.env.Camelia },
-    //{ client: createClient({}), token: process.env.Masha },
+    { client: createClient({}), token: process.env.Camelia },
+    { client: createClient({}), token: process.env.Masha },
     { client: createClient({}), token: process.env.Minji },
-    //{ client: createClient({}), token: process.env.Cassidy },
+    { client: createClient({}), token: process.env.Cassidy },
     { client: createClient({}), token: process.env.Keii },
     { client: createClient({}), token: process.env.Frost },
     { client: createClient({}), token: process.env.Himeji },
@@ -133,6 +133,34 @@ mainClient.on(Events.InteractionCreate, interaction => {
                 return interaction.reply({ content: '`⌛` La commande est en cooldown', ephemeral: true });
             console.log(err);
         });
+});
+
+// Gestion des messages pour créer des threads dans des salons spécifiques
+const specificChannelIds = [
+    '1256703625980543139', '1256705442176962653', 
+    '1256706229326319668', '1256705892913512468', 
+    '1265686084075913298', '1265686531193049168'
+]; // IDs des salons spécifiques
+
+mainClient.on('messageCreate', async message => {
+    if (message.author.bot) return;
+
+    // Vérifier si le message est dans un salon spécifique
+    if (specificChannelIds.includes(message.channel.id)) {
+        // Vérifier s'il y a des pièces jointes (images)
+        if (message.attachments.size > 0) {
+            await message.react('🩷');
+            const thread = await message.startThread({
+                name: `Commentaires`,
+                autoArchiveDuration: 60, // Durée en minutes avant archivage du fil
+            });
+            console.log(`Thread créé: ${thread.name}`);
+        } else {
+            // Supprimer le message s'il n'y a pas d'image
+            await message.delete();
+            await message.channel.send(`${message.author}, seuls les messages contenant une image sont acceptés.`);
+        }
+    }
 });
 
 process.on('uncaughtException', (err) => {
