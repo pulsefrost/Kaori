@@ -42,10 +42,10 @@ function createClient(options: ExtendedSelfbotClientOptions): SelfbotClient {
 
 // Tableau des paires de client et de jeton
 const clients: { client: SelfbotClient; token: string | undefined }[] = [
-    { client: createClient({}), token: process.env.Camelia },
-    { client: createClient({}), token: process.env.Masha },
+    //{ client: createClient({}), token: process.env.Camelia },
+    //{ client: createClient({}), token: process.env.Masha },
     { client: createClient({}), token: process.env.Minji },
-    { client: createClient({}), token: process.env.Cassidy },
+    //{ client: createClient({}), token: process.env.Cassidy },
     { client: createClient({}), token: process.env.Keii },
     { client: createClient({}), token: process.env.Frost },
     { client: createClient({}), token: process.env.Himeji },
