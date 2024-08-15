@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 dotenv.config();
 
-import express from 'express'; // Import Express
+import express from 'express';
 import { ActivityType, AllowedMentionsTypes, Client, codeBlock, Colors, EmbedBuilder, Events, GatewayIntentBits, Partials, version, ClientOptions as DiscordClientOptions } from 'discord.js';
 import { DiscordInteractions, ErrorCodes, InteractionsError } from '@akki256/discord-interaction';
 import { DiscordEvents } from './module/events';
@@ -13,6 +13,30 @@ import cron from 'node-cron';
 import changeVerificationLevel from './cron/changeVerificationLevel';
 import ServerSettings from './schemas/ServerSettings';
 import { Client as SelfbotClient } from 'discord.js-selfbot-v13';
+
+// Initialisation du bot principal avec discord.js
+const mainClient = new Client({
+    intents: [
+        GatewayIntentBits.Guilds, GatewayIntentBits.GuildModeration,
+        GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.MessageContent, GatewayIntentBits.DirectMessages,
+        GatewayIntentBits.GuildVoiceStates,
+    ],
+    partials: [
+        Partials.Channel, Partials.GuildMember,
+        Partials.Message, Partials.User,
+    ],
+    allowedMentions: {
+        parse: [
+            AllowedMentionsTypes.Role, AllowedMentionsTypes.User,
+        ],
+    },
+} as DiscordClientOptions);
+
+// Ajout des interactions et événements
+const events = new DiscordEvents(mainClient);
+const interactions = new DiscordInteractions(mainClient);
+interactions.loadRegistries(path.resolve(__dirname, './interactions'));
 
 // Set up Express server
 const app = express();
@@ -26,33 +50,20 @@ app.listen(PORT, () => {
     console.log(`Server is listening on port ${PORT}`);
 });
 
-// Type for the options parameter for SelfbotClient
-interface SelfbotClientOptions {
-    // Define other properties if needed
-}
-
 // Fonction pour créer un client avec des options spécifiques
 function createClient(options: SelfbotClientOptions): SelfbotClient {
     return new SelfbotClient(options);
 }
 
-// Type for the client object
-interface ClientTokenPair {
-    client: SelfbotClient;
-    token: string | undefined;
-}
-
 // Tableau des paires de client et de jeton
 const clients: ClientTokenPair[] = [
     { client: createClient({}), token: process.env.Camelia },
-    //{ client: createClient({}), token: process.env.Masha },
+    { client: createClient({}), token: process.env.Masha },
     { client: createClient({}), token: process.env.Minji },
     { client: createClient({}), token: process.env.Cassidy },
     { client: createClient({}), token: process.env.Keii },
     { client: createClient({}), token: process.env.Frost },
-    { client: createClient({}), token: process.env.Maxcense },
     { client: createClient({}), token: process.env.Himeji },
-    { client: createClient({}), token: process.env.Chino }
 ];
 
 // Fonction pour se connecter avec un jeton donné
@@ -74,29 +85,7 @@ clients.forEach(({ client, token }) => {
     connectClient(client, token);
 });
 
-// Initialisation du bot principal avec discord.js
-const mainClient = new Client({
-    intents: [
-        GatewayIntentBits.Guilds, GatewayIntentBits.GuildModeration,
-        GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers,
-        GatewayIntentBits.MessageContent, GatewayIntentBits.DirectMessages,
-        GatewayIntentBits.GuildVoiceStates,
-    ],
-    partials: [
-        Partials.Channel, Partials.GuildMember,
-        Partials.Message, Partials.User,
-    ],
-    allowedMentions: {
-        parse: [
-            AllowedMentionsTypes.Role, AllowedMentionsTypes.User,
-        ],
-    },
-} as DiscordClientOptions); // Cast to DiscordClientOptions
-
-const events = new DiscordEvents(mainClient);
-const interactions = new DiscordInteractions(mainClient);
-interactions.loadRegistries(path.resolve(__dirname, './interactions'));
-
+// Événements du bot principal
 mainClient.once(Events.ClientReady, () => {
     console.log('[INFO] Le BOT est prêt !');
     console.table({
@@ -160,6 +149,7 @@ process.on('uncaughtException', (err) => {
     });
 });
 
+// Fonction pour recharger l'activité du bot
 function reloadActivity() {
     mainClient.user?.setActivity({ name: `${mainClient.guilds.cache.size} Serveurs`, type: ActivityType.Competing });
 }
@@ -168,6 +158,7 @@ mainClient.login(process.env.BOT_TOKEN).catch(err => {
     console.error('Failed to log in the main client:', err);
 });
 
+// Connexion à MongoDB
 mongoose.set('strictQuery', false);
 mongoose.connect(process.env.MONGODB_URI, { dbName: process.env.MONGODB_DBNAME })
     .then(() => {
@@ -176,3 +167,27 @@ mongoose.connect(process.env.MONGODB_URI, { dbName: process.env.MONGODB_DBNAME }
     .catch(err => {
         console.error('Failed to connect to MongoDB:', err);
     });
+
+// Ajout de la fonctionnalité de gestion des salons spécifiques
+const specificChannelIds = ['1256703625980543139', '1256705442176962653', '1256706229326319668', '1256705892913512468', '1265686084075913298', '1265686531193049168'];
+
+mainClient.on('messageCreate', async message => {
+    if (message.author.bot) return;
+
+    // Vérifier si le message est dans un salon spécifique
+    if (specificChannelIds.includes(message.channel.id)) {
+        // Vérifier s'il y a des pièces jointes (images)
+        if (message.attachments.size > 0) {
+            await message.react('🩷');
+            const thread = await message.startThread({
+                name: `Commentaires`,
+                autoArchiveDuration: 60, // Durée en minutes avant archivage du fil
+            });
+            console.log(`Thread créé: ${thread.name}`);
+        } else {
+            // Supprimer le message s'il n'y a pas d'image
+            await message.delete();
+            await message.channel.send(`${message.author}, seuls les messages contenant une image sont acceptés.`);
+        }
+    }
+});
