@@ -1,10 +1,10 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } from 'discord.js';  // Discord.js v14+
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, TextChannel } from 'discord.js';  // Discord.js v14+
 import { getTimeFromInput } from './functions'; // Fonction pour gérer la conversion de durée
 import Giveaway from '../schemas/giveaway.schema'; // Importer le schéma de la base de données
 
 let participants = new Set<string>();
 
-export async function startGiveaway(interaction: any, duration: string, prize: string, emote?: string) {
+export async function startGiveaway(interaction: any, duration: string, prize: string, channel: TextChannel, emote?: string) {
     const endTime = Date.now() + getTimeFromInput(duration); // Convertit la durée en millisecondes
     const embed = new EmbedBuilder()
         .setTitle("🎉 Giveaway!")
@@ -19,15 +19,17 @@ export async function startGiveaway(interaction: any, duration: string, prize: s
             .setDisabled(false)  // Le bouton est activé au départ
     );
 
-    const giveawayMessage = await interaction.reply({ embeds: [embed], components: [row], fetchReply: true });
+    // Envoyer l'embed dans le salon spécifié
+    const giveawayMessage = await channel.send({ embeds: [embed], components: [row] });
 
     if (emote) {
         await giveawayMessage.react(emote);
     }
 
+    // Sauvegarder le giveaway dans la base de données
     const newGiveaway = new Giveaway({
         messageId: giveawayMessage.id,
-        channelId: interaction.channel.id,
+        channelId: channel.id,
         guildId: interaction.guild.id,
         prize,
         participants: [],
