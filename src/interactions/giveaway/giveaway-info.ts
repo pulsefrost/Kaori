@@ -5,14 +5,15 @@ import { ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, StringSelectMe
 const giveawayInfoCommand = new ChatInput(
   {
     name: 'giveaway-info',
-    description: 'Voir les informations d\'un giveaway existant',
+    description: 'Voir les informations d\'un giveaway existant sur ce serveur',
   },
   async (interaction) => {
-    // Récupérer tous les giveaways de la base de données
-    const giveaways = await Giveaway.find();
+    // Récupérer tous les giveaways de la base de données pour ce serveur
+    const guildId = interaction.guild?.id;
+    const giveaways = await Giveaway.find({ guildId });
 
     if (giveaways.length === 0) {
-      return interaction.reply({ content: 'Aucun giveaway disponible.', ephemeral: true });
+      return interaction.reply({ content: 'Aucun giveaway disponible sur ce serveur.', ephemeral: true });
     }
 
     // Créer un menu déroulant avec les titres de tous les giveaways disponibles
