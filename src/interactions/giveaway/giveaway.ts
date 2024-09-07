@@ -16,7 +16,7 @@ const startGiveawayCommand = new ChatInput(
       {
         name: 'duration',
         type: ApplicationCommandOptionType.String,
-        description: 'La durée du giveaway (ex: 1s, 1m, 1d, 1w)',
+        description: 'La durée du giveaway (ex: 1s, 1m, 1d, 1h, 1w)',
         required: true,
       },
       {
@@ -35,6 +35,9 @@ const startGiveawayCommand = new ChatInput(
     // Vérification que le channel est défini et est un TextChannel
     if (prize && duration && channel && channel instanceof TextChannel) {
       await startGiveaway(interaction, duration, prize, channel); // On sait que channel est un TextChannel ici
+
+      // Répondre avec un message éphémère pour confirmer que le giveaway a été lancé
+      await interaction.reply({ content: '🎉 Le giveaway a été lancé avec succès !', ephemeral: true });
     } else {
       // Gestion de l'erreur si le channel n'est pas valide
       await interaction.reply({ content: "Veuillez spécifier un salon textuel valide.", ephemeral: true });
