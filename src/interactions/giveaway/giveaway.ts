@@ -1,5 +1,5 @@
 import { ChatInput } from '@akki256/discord-interaction';
-import { ApplicationCommandOptionType } from 'discord.js';
+import { ApplicationCommandOptionType, TextChannel } from 'discord.js';
 import { startGiveaway } from '../../module/giveaway'; // Utilisation du module giveaway.ts
 
 const startGiveawayCommand = new ChatInput(
@@ -20,24 +20,24 @@ const startGiveawayCommand = new ChatInput(
         required: true,
       },
       {
-        name: 'emote',
-        type: ApplicationCommandOptionType.String,
-        description: "L'émote à utiliser pour rejoindre (facultatif)",
-        required: false,
+        name: 'channel',
+        type: ApplicationCommandOptionType.Channel,
+        description: "Le salon où envoyer l'embed du giveaway",
+        required: true,
       },
     ],
   },
   async (interaction) => {
     const prize = interaction.options.getString('prize');
     const duration = interaction.options.getString('duration');
-    const emote = interaction.options.getString('emote');
+    const channel = interaction.options.getChannel('channel') as TextChannel;
 
-    // Vérification que duration et prize sont bien des strings avant de les passer à startGiveaway
-    if (prize && duration) {
-      await startGiveaway(interaction, duration, prize, emote || undefined); // Emote peut être undefined
+    // Vérification que duration, prize et channel sont bien définis
+    if (prize && duration && channel) {
+      await startGiveaway(interaction, duration, prize, channel); // Passer le channel au lieu de l'emote
     } else {
-      // Gestion de l'erreur si prize ou duration est null
-      await interaction.reply({ content: "Une erreur est survenue avec le prize ou la durée.", ephemeral: true });
+      // Gestion de l'erreur si prize, duration ou channel est null
+      await interaction.reply({ content: "Une erreur est survenue avec le prize, la durée ou le salon.", ephemeral: true });
     }
   }
 );
