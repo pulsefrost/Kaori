@@ -63,6 +63,11 @@ export async function endGiveaway(interaction: any, message: any, prize: string,
         return;
     }
 
+    // Si l'interaction n'a pas encore reçu de réponse, différer la réponse
+    if (!interaction.deferred && !interaction.replied) {
+        await interaction.deferReply({ ephemeral: true });
+    }
+
     const winnerId = giveaway.participants[Math.floor(Math.random() * giveaway.participants.length)];
     const winner = await interaction.guild?.members.fetch(winnerId);
 
@@ -81,6 +86,7 @@ export async function endGiveaway(interaction: any, message: any, prize: string,
 
     await message.edit({ content: "🎉 Le giveaway est terminé ! 🎉", embeds: [embed], components: [disabledRow] });
 
+    // Répondre à l'interaction avec le gagnant
     await interaction.followUp({ content: `🎉 Félicitations <@${winnerId}> ! Tu as gagné **${prize}** ! 🎉` });
 
     await Giveaway.findByIdAndDelete(giveawayId);  // Supprimer l'entrée de la base de données
