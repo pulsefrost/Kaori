@@ -2,8 +2,7 @@ import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, TextChannel
 import { getTimeFromInput } from './functions'; // Fonction pour gérer la conversion de durée
 import Giveaway from '../schemas/giveaway.schema'; // Importer le schéma de la base de données
 
-// La fonction startGiveaway reste globalement similaire
-export async function startGiveaway(interaction: any, duration: string, prize: string, channel: TextChannel, emote?: string) {
+export async function startGiveaway(interaction: any, duration: string, prize: string, channel: TextChannel) {
     const endTime = Date.now() + getTimeFromInput(duration); // Convertit la durée en millisecondes
     const embed = new EmbedBuilder()
         .setTitle("🎉 Giveaway!")
@@ -20,10 +19,6 @@ export async function startGiveaway(interaction: any, duration: string, prize: s
 
     // Envoyer l'embed dans le salon spécifié
     const giveawayMessage = await channel.send({ embeds: [embed], components: [row] });
-
-    if (emote) {
-        await giveawayMessage.react(emote);
-    }
 
     // Sauvegarder le giveaway dans la base de données
     const newGiveaway = new Giveaway({
@@ -43,12 +38,14 @@ export async function startGiveaway(interaction: any, duration: string, prize: s
     collector.on('collect', async (i: any) => {
         const giveaway = await Giveaway.findById(newGiveaway._id);
 
-        if (!giveaway.participants.includes(i.user.id)) {
+        if (giveaway && !giveaway.participants.includes(i.user.id)) { // Ajout de la vérification de null
             giveaway.participants.push(i.user.id);
             await giveaway.save();  // Sauvegarder la participation dans la base de données
             i.reply({ content: 'Tu es inscrit au giveaway!', ephemeral: true });
-        } else {
+        } else if (giveaway) {
             i.reply({ content: 'Tu es déjà inscrit au giveaway.', ephemeral: true });
+        } else {
+            i.reply({ content: "Le giveaway n'existe plus.", ephemeral: true });
         }
     });
 
@@ -60,7 +57,7 @@ export async function startGiveaway(interaction: any, duration: string, prize: s
 export async function endGiveaway(interaction: any, message: any, prize: string, giveawayId: string) {
     const giveaway = await Giveaway.findById(giveawayId);
 
-    if (!giveaway || giveaway.participants.length === 0) {
+    if (!giveaway || giveaway.participants.length === 0) { // Vérification de null pour 'giveaway'
         await message.edit({ content: "Aucun participant, le giveaway est annulé.", components: [] });
         await Giveaway.findByIdAndDelete(giveawayId); // Supprimer le giveaway de la base de données
         return;
