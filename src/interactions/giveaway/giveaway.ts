@@ -30,14 +30,14 @@ const startGiveawayCommand = new ChatInput(
   async (interaction) => {
     const prize = interaction.options.getString('prize');
     const duration = interaction.options.getString('duration');
-    const channel = interaction.options.getChannel('channel') as TextChannel;
+    const channel = interaction.options.getChannel('channel');
 
-    // Vérification que duration, prize et channel sont bien définis
-    if (prize && duration && channel) {
-      await startGiveaway(interaction, duration, prize, channel); // Passer le channel au lieu de l'emote
+    // Vérification que le channel est défini et est un TextChannel
+    if (prize && duration && channel && channel.isTextBased()) {
+      await startGiveaway(interaction, duration, prize, channel as TextChannel); // On sait que channel est un TextChannel ici
     } else {
-      // Gestion de l'erreur si prize, duration ou channel est null
-      await interaction.reply({ content: "Une erreur est survenue avec le prize, la durée ou le salon.", ephemeral: true });
+      // Gestion de l'erreur si le channel n'est pas valide
+      await interaction.reply({ content: "Veuillez spécifier un salon textuel valide.", ephemeral: true });
     }
   }
 );
