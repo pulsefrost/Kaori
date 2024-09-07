@@ -7,7 +7,7 @@ export async function startGiveaway(interaction: any, duration: string, prize: s
     const embed = new EmbedBuilder()
         .setTitle("🎉 Giveaway!")
         .setDescription(`Prix: **${prize}**\nClique sur le bouton pour participer !\nTermine <t:${Math.floor(endTime / 1000)}:R>`)
-        .setColor("Random");
+        .setColor("#2F3136");
 
     const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
         new ButtonBuilder()
