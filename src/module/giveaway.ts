@@ -2,8 +2,7 @@ import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, TextChannel
 import { getTimeFromInput } from './functions'; // Fonction pour gérer la conversion de durée
 import Giveaway from '../schemas/giveaway.schema'; // Importer le schéma de la base de données
 
-let participants = new Set<string>();
-
+// La fonction startGiveaway reste globalement similaire
 export async function startGiveaway(interaction: any, duration: string, prize: string, channel: TextChannel, emote?: string) {
     const endTime = Date.now() + getTimeFromInput(duration); // Convertit la durée en millisecondes
     const embed = new EmbedBuilder()
@@ -32,17 +31,25 @@ export async function startGiveaway(interaction: any, duration: string, prize: s
         channelId: channel.id,
         guildId: interaction.guild.id,
         prize,
-        participants: [],
+        participants: [], // Initialiser la liste des participants
         endDate: new Date(endTime),
     });
     await newGiveaway.save();
 
+    // Création d'un collecteur pour gérer les participations
     const filter = (i: any) => i.customId === 'enter_giveaway';
     const collector = giveawayMessage.createMessageComponentCollector({ filter, time: getTimeFromInput(duration) });
 
-    collector.on('collect', (i: any) => {
-        participants.add(i.user.id);
-        i.reply({ content: 'Tu es inscrit au giveaway!', ephemeral: true });
+    collector.on('collect', async (i: any) => {
+        const giveaway = await Giveaway.findById(newGiveaway._id);
+
+        if (!giveaway.participants.includes(i.user.id)) {
+            giveaway.participants.push(i.user.id);
+            await giveaway.save();  // Sauvegarder la participation dans la base de données
+            i.reply({ content: 'Tu es inscrit au giveaway!', ephemeral: true });
+        } else {
+            i.reply({ content: 'Tu es déjà inscrit au giveaway.', ephemeral: true });
+        }
     });
 
     collector.on('end', async () => {
@@ -51,13 +58,15 @@ export async function startGiveaway(interaction: any, duration: string, prize: s
 }
 
 export async function endGiveaway(interaction: any, message: any, prize: string, giveawayId: string) {
-    if (participants.size === 0) {
+    const giveaway = await Giveaway.findById(giveawayId);
+
+    if (!giveaway || giveaway.participants.length === 0) {
         await message.edit({ content: "Aucun participant, le giveaway est annulé.", components: [] });
         await Giveaway.findByIdAndDelete(giveawayId); // Supprimer le giveaway de la base de données
         return;
     }
 
-    const winnerId = Array.from(participants)[Math.floor(Math.random() * participants.size)];
+    const winnerId = giveaway.participants[Math.floor(Math.random() * giveaway.participants.length)];
     const winner = await interaction.guild?.members.fetch(winnerId);
 
     const embed = new EmbedBuilder()
@@ -78,6 +87,4 @@ export async function endGiveaway(interaction: any, message: any, prize: string,
     await interaction.followUp({ content: `🎉 Félicitations <@${winnerId}> ! Tu as gagné **${prize}** ! 🎉` });
 
     await Giveaway.findByIdAndDelete(giveawayId);  // Supprimer l'entrée de la base de données
-
-    participants.clear(); // Réinitialisation pour de futurs giveaways
 }
