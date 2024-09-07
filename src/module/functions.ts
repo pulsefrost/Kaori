@@ -38,6 +38,7 @@ export function checkAndFormatDangerPermission(permissions: Readonly<Permissions
 
 export async function checkPermission(interaction: ChatInputCommandInteraction): Promise<void> {
   if (!Config.admin.users.includes(interaction.user.id)) await interaction.reply({ content: '`❌` Vous n\'avez pas la permission d\'exécuter cette commande', ephemeral: true });
+<<<<<<< HEAD
 }
 export function getTimeFromInput(input: string): number {
     const timeUnits: { [key: string]: number } = {
@@ -53,3 +54,6 @@ export function getTimeFromInput(input: string): number {
 
     return value * (timeUnits[unit] || 0); // Convert to milliseconds
 }
+=======
+}
+>>>>>>> 4a5a7636369c47dddfd55a55a4277f497b1edca6
