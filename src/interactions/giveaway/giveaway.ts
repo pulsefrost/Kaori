@@ -1,5 +1,5 @@
 import { ChatInput } from '@akki256/discord-interaction';
-import { ApplicationCommandOptionType, TextChannel } from 'discord.js';
+import { ApplicationCommandOptionType, TextChannel, GuildChannel } from 'discord.js';
 import { startGiveaway } from '../../module/giveaway'; // Utilisation du module giveaway.ts
 
 const startGiveawayCommand = new ChatInput(
@@ -30,11 +30,11 @@ const startGiveawayCommand = new ChatInput(
   async (interaction) => {
     const prize = interaction.options.getString('prize');
     const duration = interaction.options.getString('duration');
-    const channel = interaction.options.getChannel('channel');
+    const channel = interaction.options.getChannel('channel') as GuildChannel | null;
 
     // Vérification que le channel est défini et est un TextChannel
-    if (prize && duration && channel && channel.isTextBased()) {
-      await startGiveaway(interaction, duration, prize, channel as TextChannel); // On sait que channel est un TextChannel ici
+    if (prize && duration && channel && channel instanceof TextChannel) {
+      await startGiveaway(interaction, duration, prize, channel); // On sait que channel est un TextChannel ici
     } else {
       // Gestion de l'erreur si le channel n'est pas valide
       await interaction.reply({ content: "Veuillez spécifier un salon textuel valide.", ephemeral: true });
