@@ -1,54 +1,51 @@
-import { ChatInputCommandInteraction } from 'discord.js';
 import { ChatInput } from '@akki256/discord-interaction';
-import { EmbedBuilder } from 'discord.js';
-import fs from 'fs';
-import path from 'path';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, Colors, EmbedBuilder, inlineCode } from 'discord.js';
+
+const feature = [
+  'Messages d\'entrée/sortie', 'Signalements internes du serveur',
+  'Journal de modération', 'Changement automatique du niveau de vérification',
+  'Commande de création de panneau de rôles', 'Commande de création d\'incorporation',
+];
 
 const helpCommand = new ChatInput(
   {
     name: 'help',
-    description: 'Affiche la liste des commandes disponibles et leurs descriptions',
+    description: 'À propos de Kaori',
     dmPermission: true,
   },
-  async (interaction: ChatInputCommandInteraction) => {
-    try {
-      // Path to the interactions (commands) folder
-      const commandsPath = path.resolve(__dirname, 'interactions');
+  (interaction) => {
 
-      // Check if directory exists
-      if (!fs.existsSync(commandsPath)) {
-        throw new Error(`Directory does not exist: ${commandsPath}`);
-      }
+    interaction.reply({
+      embeds: [
+        new EmbedBuilder()
+          .setTitle(interaction.client.user.username)
+          .setDescription([
+            'Équipé de fonctionnalités utiles pour la gestion et la croissance des serveurs !',
+            'Nous travaillons chaque jour pour développer un "BOT multifonction facile à utiliser et complètement gratuit".',
+            '## Modération\n</ban:1266326311396315157> Bannir une personne.\n</clear:1266326320489693215> Supprimer des messages.\n</kick:1266326436529176576> Expulser une personne.\n</verify:1266326626636005396> Panneau de verification.\n</ratelimit:1266326518599254094> Mettre un temps d\'attante d\'envoi de messages.\n</unban:1266326618268373118> Débannir une personne.\n</timeout:1266326614262808648> Mute une personne.\n</pauseinvite:1266326443764351071> Mettre les invitations en pause.\n</firstmessage:1266326342543347797> Premier message du salon.\n</setting:1266326521396592703> Paramètre du serveur',
+            '## Utilitaire\n</info serveur:1266326433186447411> Information sur le serveur.\n</info utilisateur:1266326433186447411> Information Utilisateur.\n</afk:1266326308388864161> Signaler que vous êtes AFK.',
+            '## Anime\n</hug:1266326429251932191> Câliner une personnne.\n</kiss:1266326439817646091> Embrasser une personne.\n</dance:1266326331214528555> Dancer.\n</pout:1266326515671498897> Bouder.'
+          ].join('\n'))
+          .setColor('#F4C1B3')
+          .setImage('https://i.imgur.com/MsdEvPA.png')
+          .setFields({ name: 'Quelques fonctionnalités incluses', value: feature.map(v => inlineCode(v)).join(' ') }),
+      ],
+      components: [
+        new ActionRowBuilder<ButtonBuilder>().setComponents(
+          new ButtonBuilder()
+            .setLabel('Serveur de support')
+            .setStyle(ButtonStyle.Link)
+            .setURL('https://discord.gg/amies'),
+          new ButtonBuilder()
+            .setLabel('Guide d\'utilisation')
+            .setStyle(ButtonStyle.Link)
+            .setURL('https://kaoricafe.fr'),
+        ),
+      ],
+      ephemeral: false,
+    });
 
-      // List all command files
-      const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.ts') || file.endsWith('.js'));
-
-      // Array to hold command details
-      let commandList: string[] = [];
-
-      // Loop through each command file and extract name and description
-      for (const file of commandFiles) {
-        const command = await import(path.join(commandsPath, file));
-        
-        // Check if the command has a name and description
-        if (command.default?.name && command.default?.description) {
-          commandList.push(`**/${command.default.name}** - ${command.default.description}`);
-        }
-      }
-
-      // Create the embed message
-      const helpEmbed = new EmbedBuilder()
-        .setTitle('Liste des commandes')
-        .setDescription(commandList.join('\n'))
-        .setColor(0x00AE86);
-
-      // Send the embed as a reply
-      await interaction.reply({ embeds: [helpEmbed] });
-    } catch (error) {
-      console.error('Failed to generate help command:', error);
-      await interaction.reply({ content: 'Une erreur est survenue lors de la génération de la liste des commandes.', ephemeral: true });
-    }
-  }
+  },
 );
 
-export default helpCommand;
+module.exports = [helpCommand];
