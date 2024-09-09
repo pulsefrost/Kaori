@@ -93,6 +93,19 @@ const interactionCommand = new ChatInput(
         ],
       },
       {
+        name: 'hug',
+        description: 'Câline quelqu\'un affectueusement',
+        type: ApplicationCommandOptionType.Subcommand,
+        options: [
+          {
+            name: 'user',
+            description: 'Choisissez un utilisateur à câliner',
+            type: ApplicationCommandOptionType.User,
+            required: true,
+          },
+        ],
+      },
+      {
         name: 'kick',
         description: 'Donnez un coup de pied à un utilisateur',
         type: ApplicationCommandOptionType.Subcommand,
@@ -202,24 +215,24 @@ const interactionCommand = new ChatInput(
         gifData = await fetchInteractionGif(subCommand);
       }
 
+      // Envoyer un message de confirmation éphémère pour l'utilisateur qui a utilisé la commande
+      await interaction.reply({
+        content: `Interaction ${subCommand} effectuée avec succès !`,
+        ephemeral: true, // Seulement visible par l'utilisateur qui a déclenché l'action
+      });
+
       // Vérification que gifData a bien été assigné avant de l'utiliser
       if (gifData) {
         // Envoyer la réponse avec un embed contenant l'image, visible à tous
-        await interaction.reply({
+        await interaction.followUp({
           embeds: [
             new EmbedBuilder()
               .setTitle('Titre de l\'anime :')
-              .setDescription(gifData.results[0].anime_name)
+              .setDescription(`${interaction.user.toString()} a ${subCommand} ${targetUser?.toString() || ''}`)
               .setImage(gifData.results[0].url)
               .setColor('#F4C1B3'),
           ],
           ephemeral: false, // L'embed sera visible par tous
-        });
-
-        // Envoyer un message de confirmation éphémère pour l'utilisateur qui a utilisé la commande
-        await interaction.followUp({
-          content: `Interaction ${subCommand} effectuée avec succès !`,
-          ephemeral: true, // Seulement visible par l'utilisateur qui a déclenché l'action
         });
       }
     } catch (error) {
