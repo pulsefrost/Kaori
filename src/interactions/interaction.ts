@@ -40,24 +40,43 @@ const interactionCommand = new ChatInput(
     description: 'Effectuer différentes interactions amusantes ou affectueuses',
     options: [
       {
-        name: 'husbando',
-        description: 'Complimente quelqu\'un en le qualifiant de husbando idéal',
+        name: 'hug',
+        description: 'Câline quelqu\'un affectueusement',
         type: ApplicationCommandOptionType.Subcommand,
+        options: [
+          {
+            name: 'user',
+            description: 'Choisissez un utilisateur à câliner',
+            type: ApplicationCommandOptionType.User,
+            required: true,
+          },
+        ],
       },
       {
-        name: 'kitsune',
-        description: 'Transforme-toi en un adorable kitsune',
+        name: 'slap',
+        description: 'Giflez un utilisateur',
         type: ApplicationCommandOptionType.Subcommand,
+        options: [
+          {
+            name: 'user',
+            description: 'Choisissez un utilisateur à gifler',
+            type: ApplicationCommandOptionType.User,
+            required: true,
+          },
+        ],
       },
       {
-        name: 'neko',
-        description: 'Deviens un adorable neko',
+        name: 'kiss',
+        description: 'Embrasse un utilisateur',
         type: ApplicationCommandOptionType.Subcommand,
-      },
-      {
-        name: 'waifu',
-        description: 'Complimente quelqu\'un en le qualifiant de waifu',
-        type: ApplicationCommandOptionType.Subcommand,
+        options: [
+          {
+            name: 'user',
+            description: 'Choisissez un utilisateur à embrasser',
+            type: ApplicationCommandOptionType.User,
+            required: true,
+          },
+        ],
       },
       {
         name: 'bite',
@@ -112,19 +131,6 @@ const interactionCommand = new ChatInput(
         ],
       },
       {
-        name: 'hug',
-        description: 'Câline quelqu\'un affectueusement',
-        type: ApplicationCommandOptionType.Subcommand,
-        options: [
-          {
-            name: 'user',
-            description: 'Choisissez un utilisateur à câliner',
-            type: ApplicationCommandOptionType.User,
-            required: true,
-          },
-        ],
-      },
-      {
         name: 'kick',
         description: 'Donnez un coup de pied à un utilisateur',
         type: ApplicationCommandOptionType.Subcommand,
@@ -164,19 +170,6 @@ const interactionCommand = new ChatInput(
         ],
       },
       {
-        name: 'slap',
-        description: 'Giflez un utilisateur',
-        type: ApplicationCommandOptionType.Subcommand,
-        options: [
-          {
-            name: 'user',
-            description: 'Choisissez un utilisateur à gifler',
-            type: ApplicationCommandOptionType.User,
-            required: true,
-          },
-        ],
-      },
-      {
         name: 'tickle',
         description: 'Chatouillez un utilisateur',
         type: ApplicationCommandOptionType.Subcommand,
@@ -209,6 +202,7 @@ const interactionCommand = new ChatInput(
         description: 'Fais un signe de la main',
         type: ApplicationCommandOptionType.Subcommand,
       },
+      // Ajoute ici toutes les autres sous-commandes nécessaires...
     ],
     dmPermission: false,
   },
@@ -233,30 +227,20 @@ const interactionCommand = new ChatInput(
         gifData = await fetchInteractionGif(subCommand);
       }
 
-      // Envoyer un message éphémère de confirmation (qui ne sera pas visible par les autres)
-      await interaction.reply({
-        content: 'Interaction effectuée avec succès !',
-        ephemeral: true,
-      });
-
       // Vérification que gifData a bien été assigné avant de l'utiliser
       if (gifData) {
-        // Envoyer l'embed et le contenu dans un message visible à tous
-        await interaction.followUp({
+        // Envoyer directement le message et l'embed dans le canal sans utiliser reply ou followUp
+        await interaction.channel?.send({
           content: responseMessage,
           embeds: [
             new EmbedBuilder()
-              .setTitle('Titre de l\'anime :')
-              .setDescription(gifData.results[0].anime_name)
               .setImage(gifData.results[0].url)
               .setColor('#F4C1B3'),
           ],
-          ephemeral: false, // L'embed et le contenu seront visibles par tous
         });
       }
     } catch (error) {
       console.error(`Erreur lors de la récupération du gif pour ${subCommand} :`, error);
-      interaction.reply({ content: '`❌` Une erreur est survenue lors de l\'interaction.', ephemeral: true });
     }
   },
 );
