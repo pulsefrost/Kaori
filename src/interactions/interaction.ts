@@ -9,16 +9,173 @@ interface ApiResponse {
   }[];
 }
 
-const hugCommand = new ChatInput(
+// Fonction pour récupérer l'URL et le nom de l'anime depuis l'API
+async function fetchInteractionGif(endpoint: string): Promise<ApiResponse> {
+  const response = await fetch(`https://nekos.best/api/v2/${endpoint}`);
+  return await response.json();
+}
+
+const interactionCommand = new ChatInput(
   {
-    name: 'hug',
-    description: 'Faites un câlin à un utilisateur',
+    name: 'interaction',
+    description: 'Effectuer différentes interactions amusantes ou affectueuses',
     options: [
       {
-        name: 'utilisateur',
-        description: 'Utilisateur à qui faire le câlin',
-        type: ApplicationCommandOptionType.User,
-        required: true,
+        name: 'husbando',
+        description: 'Complimente quelqu\'un en le qualifiant de husbando idéal',
+        type: ApplicationCommandOptionType.Subcommand,
+      },
+      {
+        name: 'kitsune',
+        description: 'Transforme-toi en un adorable kitsune',
+        type: ApplicationCommandOptionType.Subcommand,
+      },
+      {
+        name: 'neko',
+        description: 'Deviens un adorable neko',
+        type: ApplicationCommandOptionType.Subcommand,
+      },
+      {
+        name: 'waifu',
+        description: 'Complimente quelqu\'un en le qualifiant de waifu',
+        type: ApplicationCommandOptionType.Subcommand,
+      },
+      {
+        name: 'bite',
+        description: 'Mord un utilisateur',
+        type: ApplicationCommandOptionType.Subcommand,
+        options: [
+          {
+            name: 'user',
+            description: 'Choisissez un utilisateur à mordre',
+            type: ApplicationCommandOptionType.User,
+            required: true,
+          },
+        ],
+      },
+      {
+        name: 'cuddle',
+        description: 'Câline un utilisateur',
+        type: ApplicationCommandOptionType.Subcommand,
+        options: [
+          {
+            name: 'user',
+            description: 'Choisissez un utilisateur à câliner',
+            type: ApplicationCommandOptionType.User,
+            required: true,
+          },
+        ],
+      },
+      {
+        name: 'feed',
+        description: 'Donne à manger à un utilisateur',
+        type: ApplicationCommandOptionType.Subcommand,
+        options: [
+          {
+            name: 'user',
+            description: 'Choisissez un utilisateur à nourrir',
+            type: ApplicationCommandOptionType.User,
+            required: true,
+          },
+        ],
+      },
+      {
+        name: 'handshake',
+        description: 'Serrez la main à quelqu\'un',
+        type: ApplicationCommandOptionType.Subcommand,
+        options: [
+          {
+            name: 'user',
+            description: 'Choisissez un utilisateur avec qui serrer la main',
+            type: ApplicationCommandOptionType.User,
+            required: true,
+          },
+        ],
+      },
+      {
+        name: 'kick',
+        description: 'Donnez un coup de pied à un utilisateur',
+        type: ApplicationCommandOptionType.Subcommand,
+        options: [
+          {
+            name: 'user',
+            description: 'Choisissez un utilisateur à frapper avec un coup de pied',
+            type: ApplicationCommandOptionType.User,
+            required: true,
+          },
+        ],
+      },
+      {
+        name: 'pat',
+        description: 'Tapote affectueusement un utilisateur sur la tête',
+        type: ApplicationCommandOptionType.Subcommand,
+        options: [
+          {
+            name: 'user',
+            description: 'Choisissez un utilisateur à tapoter',
+            type: ApplicationCommandOptionType.User,
+            required: true,
+          },
+        ],
+      },
+      {
+        name: 'punch',
+        description: 'Donnez un coup de poing à un utilisateur',
+        type: ApplicationCommandOptionType.Subcommand,
+        options: [
+          {
+            name: 'user',
+            description: 'Choisissez un utilisateur à frapper avec un coup de poing',
+            type: ApplicationCommandOptionType.User,
+            required: true,
+          },
+        ],
+      },
+      {
+        name: 'slap',
+        description: 'Giflez un utilisateur',
+        type: ApplicationCommandOptionType.Subcommand,
+        options: [
+          {
+            name: 'user',
+            description: 'Choisissez un utilisateur à gifler',
+            type: ApplicationCommandOptionType.User,
+            required: true,
+          },
+        ],
+      },
+      {
+        name: 'tickle',
+        description: 'Chatouillez un utilisateur',
+        type: ApplicationCommandOptionType.Subcommand,
+        options: [
+          {
+            name: 'user',
+            description: 'Choisissez un utilisateur à chatouiller',
+            type: ApplicationCommandOptionType.User,
+            required: true,
+          },
+        ],
+      },
+      {
+        name: 'blush',
+        description: 'Rougis d\'embarras ou de timidité',
+        type: ApplicationCommandOptionType.Subcommand,
+      },
+      {
+        name: 'dance',
+        description: 'Fais une petite danse',
+        type: ApplicationCommandOptionType.Subcommand,
+      },
+      {
+        name: 'smile',
+        description: 'Souris de manière radieuse',
+        type: ApplicationCommandOptionType.Subcommand,
+      },
+      {
+        name: 'wave',
+        description: 'Fais un signe de la main',
+        type: ApplicationCommandOptionType.Subcommand,
       },
     ],
     dmPermission: false,
@@ -27,35 +184,49 @@ const hugCommand = new ChatInput(
   async (interaction) => {
     if (!interaction.inCachedGuild()) return;
 
-    const user = interaction.options.getMember('utilisateur');
+    const subCommand = interaction.options.getSubcommand();
+    let targetUser = interaction.options.getUser('user'); // Pour certaines sous-commandes
+    let responseMessage = '';
+    let gifData: ApiResponse | undefined = undefined;  // Initialisation de gifData
 
-    if (!user)
-      return interaction.reply({ content: '`❌` Utilisateur introuvable.', ephemeral: true });
-
-    // Utilisation de cross-fetch pour récupérer les données
     try {
-      const response = await fetch('https://nekos.best/api/v2/hug');
-      const responseData = await response.json();
+      // Sous-commandes nécessitant un autre utilisateur (ex: hug, slap, kiss, etc.)
+      if (targetUser) {
+        if (['hug', 'slap', 'kiss', 'bite', 'cuddle', 'feed', 'handshake', 'kick', 'pat', 'punch', 'tickle'].includes(subCommand)) {
+          responseMessage = `${interaction.user.toString()} a ${subCommand} ${targetUser.toString()} !`;
+          gifData = await fetchInteractionGif(subCommand);
+        }
+      } else {
+        // Interactions solitaires ou aléatoires
+        responseMessage = `${interaction.user.toString()} a effectué l'action : ${subCommand}.`;
+        gifData = await fetchInteractionGif(subCommand);
+      }
 
-      // Typage de responseData avec l'interface ApiResponse
-      const data: ApiResponse = responseData;
+      // Vérification que gifData a bien été assigné avant de l'utiliser
+      if (gifData) {
+        // Envoyer la réponse avec un embed contenant l'image, visible à tous
+        await interaction.reply({
+          embeds: [
+            new EmbedBuilder()
+              .setTitle('Titre de l\'anime :')
+              .setDescription(gifData.results[0].anime_name)
+              .setImage(gifData.results[0].url)
+              .setColor('#F4C1B3'),
+          ],
+          ephemeral: false, // L'embed sera visible par tous
+        });
 
-      interaction.reply({
-        content: `*${interaction.user.toString()} câline ${user.toString()}*`,
-        embeds: [
-          new EmbedBuilder()
-          .setTitle('Titre de l\'anime :')
-          .setDescription(data.results[0].anime_name)
-          .setImage(data.results[0].url)
-            .setColor('#F4C1B3'),
-        ],
-        ephemeral: false,
-      });
+        // Envoyer un message de confirmation éphémère pour l'utilisateur qui a utilisé la commande
+        await interaction.followUp({
+          content: `Interaction ${subCommand} effectuée avec succès !`,
+          ephemeral: true, // Seulement visible par l'utilisateur qui a déclenché l'action
+        });
+      }
     } catch (error) {
-      console.error('Erreur lors de la récupération de l\'image de câlin :', error);
-      interaction.reply({ content: '`❌` Une erreur est survenue lors de l\'envoi du câlin.', ephemeral: true });
+      console.error(`Erreur lors de la récupération du gif pour ${subCommand} :`, error);
+      interaction.reply({ content: '`❌` Une erreur est survenue lors de l\'interaction.', ephemeral: true });
     }
   },
 );
 
-export default hugCommand;
+export default interactionCommand;

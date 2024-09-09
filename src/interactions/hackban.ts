@@ -1,29 +1,6 @@
 import { ApplicationCommandOptionType, codeBlock, Colors, EmbedBuilder, PermissionFlagsBits, GuildMember } from 'discord.js';
 import { ChatInput } from '@akki256/discord-interaction';
 
-// Identifiant SKU requis pour utiliser la commande hackban
-const REQUIRED_SKU_ID = '1167500444092866570';  // Remplace par l'ID SKU réel
-
-// Fonction pour vérifier si un utilisateur possède un abonnement lié au SKU
-async function hasValidSubscription(member: GuildMember, skuId: string): Promise<boolean> {
-  // Ici, vous ajouteriez la logique réelle pour vérifier l'abonnement de l'utilisateur via le SKU.
-  // Par exemple, cela peut être une requête à une base de données ou une API externe.
-  // Exemple : récupérer les abonnements de l'utilisateur et vérifier s'il possède ce SKU.
-
-  // Simulation de récupération des abonnements de l'utilisateur
-  const userSubscriptions = await getUserSubscriptions(member.id);
-
-  // Vérifie si l'utilisateur possède l'abonnement avec le SKU requis
-  return userSubscriptions.includes(skuId);
-}
-
-// Fonction simulée pour obtenir les abonnements de l'utilisateur (à remplacer par la vraie logique)
-async function getUserSubscriptions(userId: string): Promise<string[]> {
-  // Simuler une liste d'abonnements de l'utilisateur
-  // Remplace cette partie par la vraie logique pour récupérer les abonnements de l'utilisateur via API ou base de données
-  return ['1167500444092866570']; // Simuler que l'utilisateur possède cet abonnement
-}
-
 const hackbanCommand = new ChatInput(
   {
     name: 'hackban',
@@ -41,30 +18,27 @@ const hackbanCommand = new ChatInput(
         type: ApplicationCommandOptionType.String,
       },
     ],
-    defaultMemberPermissions: PermissionFlagsBits.BanMembers,
-    dmPermission: false,
+    defaultMemberPermissions: PermissionFlagsBits.BanMembers,  // Permission pour bannir
+    dmPermission: false,  // Désactiver l'utilisation de la commande en message privé
   },
-  { coolTime: 5000 },
+  { coolTime: 5000 },  // Temps de cooldown pour éviter le spam
   async (interaction) => {
-  
     if (!interaction.inCachedGuild()) return;
 
     const member = interaction.member as GuildMember;
 
-    // Vérification d'abonnement via SKU
-    const isSubscribed = await hasValidSubscription(member, REQUIRED_SKU_ID);
-
-    if (!isSubscribed) {
+    // Vérification si l'utilisateur a la permission de bannir
+    if (!member.permissions.has(PermissionFlagsBits.BanMembers)) {
       return interaction.reply({
-        content: '❌ Vous devez être abonné au service premium pour utiliser cette commande.',
+        content: '❌ Vous n\'avez pas la permission de bannir des membres.',
         ephemeral: true,
       });
     }
-  
+
     const ids = interaction.options.getString('ids')?.split(' ') || [];
     const reason = interaction.options.getString('raison') ?? 'Aucune raison fournie';
     const results = [];
-  
+
     for (const id of ids) {
       try {
         await interaction.guild.members.ban(id, { reason });
@@ -74,7 +48,7 @@ const hackbanCommand = new ChatInput(
         results.push(`\`❌\` Échec du ban de l'utilisateur avec l'ID \`${id}\`.\n${codeBlock(errorMessage)}`);
       }
     }
-  
+
     interaction.reply({
       embeds: [
         new EmbedBuilder()
@@ -83,7 +57,6 @@ const hackbanCommand = new ChatInput(
       ],
       ephemeral: true,
     });
-  
   },
 );
 
