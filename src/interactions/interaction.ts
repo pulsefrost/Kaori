@@ -125,6 +125,19 @@ const interactionCommand = new ChatInput(
         ],
       },
       {
+        name: 'kiss',
+        description: 'Embrasse quelqu\'un affectueusement',
+        type: ApplicationCommandOptionType.Subcommand,
+        options: [
+          {
+            name: 'user',
+            description: 'Choisissez un utilisateur à embrasser',
+            type: ApplicationCommandOptionType.User,
+            required: true,
+          },
+        ],
+      },
+      {
         name: 'kick',
         description: 'Donnez un coup de pied à un utilisateur',
         type: ApplicationCommandOptionType.Subcommand,
@@ -246,8 +259,6 @@ const interactionCommand = new ChatInput(
           content: responseMessage,
           embeds: [
             new EmbedBuilder()
-              .setTitle('Titre de l\'anime :')
-              .setDescription(gifData.results[0].anime_name)
               .setImage(gifData.results[0].url)
               .setColor('#F4C1B3'),
           ],
