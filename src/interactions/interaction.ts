@@ -15,6 +15,25 @@ async function fetchInteractionGif(endpoint: string): Promise<ApiResponse> {
   return await response.json();
 }
 
+// Dictionnaire pour traduire les actions en français
+const actionTranslations: { [key: string]: string } = {
+  hug: "câline",
+  slap: "gifle",
+  kiss: "embrasse",
+  bite: "mord",
+  cuddle: "câline",
+  feed: "nourrit",
+  handshake: "serre la main de",
+  kick: "donne un coup de pied à",
+  pat: "tapote",
+  punch: "donne un coup de poing à",
+  tickle: "chatouille",
+  blush: "rougit",
+  dance: "danse",
+  smile: "sourit",
+  wave: "fait un signe de la main",
+};
+
 const interactionCommand = new ChatInput(
   {
     name: 'interaction',
@@ -198,41 +217,41 @@ const interactionCommand = new ChatInput(
     if (!interaction.inCachedGuild()) return;
 
     const subCommand = interaction.options.getSubcommand();
-    let targetUser = interaction.options.getUser('user'); // Pour certaines sous-commandes
+    const targetUser = interaction.options.getUser('user'); // Pour certaines sous-commandes
     let responseMessage = '';
     let gifData: ApiResponse | undefined = undefined;  // Initialisation de gifData
 
     try {
       // Sous-commandes nécessitant un autre utilisateur (ex: hug, slap, kiss, etc.)
       if (targetUser) {
-        if (['hug', 'slap', 'kiss', 'bite', 'cuddle', 'feed', 'handshake', 'kick', 'pat', 'punch', 'tickle'].includes(subCommand)) {
-          responseMessage = `${interaction.user.toString()} a ${subCommand} ${targetUser.toString()} !`;
-          gifData = await fetchInteractionGif(subCommand);
-        }
+        const translatedAction = actionTranslations[subCommand] || subCommand;
+        responseMessage = `${interaction.user.toString()} ${translatedAction} ${targetUser.toString()} !`;
+        gifData = await fetchInteractionGif(subCommand);
       } else {
         // Interactions solitaires ou aléatoires
         responseMessage = `${interaction.user.toString()} a effectué l'action : ${subCommand}.`;
         gifData = await fetchInteractionGif(subCommand);
       }
 
-      // Envoyer un message de confirmation éphémère pour l'utilisateur qui a utilisé la commande
+      // Envoyer un message éphémère de confirmation (qui ne sera pas visible par les autres)
       await interaction.reply({
-        content: `Interaction ${subCommand} effectuée avec succès !`,
-        ephemeral: true, // Seulement visible par l'utilisateur qui a déclenché l'action
+        content: 'Interaction effectuée avec succès !',
+        ephemeral: true,
       });
 
       // Vérification que gifData a bien été assigné avant de l'utiliser
       if (gifData) {
-        // Envoyer la réponse avec un embed contenant l'image, visible à tous
+        // Envoyer l'embed et le contenu dans un message visible à tous
         await interaction.followUp({
+          content: responseMessage,
           embeds: [
             new EmbedBuilder()
               .setTitle('Titre de l\'anime :')
-              .setDescription(`${interaction.user.toString()} a ${subCommand} ${targetUser?.toString() || ''}`)
+              .setDescription(gifData.results[0].anime_name)
               .setImage(gifData.results[0].url)
               .setColor('#F4C1B3'),
           ],
-          ephemeral: false, // L'embed sera visible par tous
+          ephemeral: false, // L'embed et le contenu seront visibles par tous
         });
       }
     } catch (error) {
