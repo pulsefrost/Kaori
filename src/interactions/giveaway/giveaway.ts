@@ -74,7 +74,7 @@ const giveawayCommand = new ChatInput(
 
       if (prize && duration && channel && channel instanceof TextChannel) {
         await startGiveaway(interaction, duration, prize, channel);
-        await interaction.reply({ content: 'Le giveaway a été lancé avec succès !', ephemeral: true });
+        await interaction.reply({ content: 'Le giveaway a été lancé avec succès.', ephemeral: true });
       } else {
         await interaction.reply({ content: "Veuillez spécifier un salon textuel valide.", ephemeral: true });
       }
@@ -117,8 +117,8 @@ const giveawayCommand = new ChatInput(
           const newWinner = await interaction.guild?.members.fetch(newWinnerId);
 
           const embed = new EmbedBuilder()
-            .setTitle('🎉 Nouveau Gagnant ! 🎉')
-            .setDescription(`Le nouveau gagnant est ${newWinner}! Félicitations !`)
+            .setTitle('Nouveau Gagnant.')
+            .setDescription(`Le nouveau gagnant est ${newWinner}. Félicitations.`)
             .setColor(0x7289da);
 
           await i.reply({ embeds: [embed], content: `Bravo ${newWinner}`, ephemeral: false });
@@ -138,9 +138,9 @@ const giveawayCommand = new ChatInput(
           const embed = new EmbedBuilder()
             .setTitle('Informations du Giveaway')
             .addFields(
-              { name: 'Prix', value: selectedGiveaway.prize, inline: true },
-              { name: 'Participants', value: `${selectedGiveaway.participants.length}`, inline: true },
-              { name: 'Date de fin', value: `${selectedGiveaway.endDate}`, inline: true }
+              { name: '- Prix', value: selectedGiveaway.prize, inline: true },
+              { name: '- Participants', value: `${selectedGiveaway.participants.length}`, inline: true },
+              { name: '- Date de fin', value: `${selectedGiveaway.endDate}`, inline: true }
             )
             .setColor(0x7289da);
 

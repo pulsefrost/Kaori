@@ -76,7 +76,7 @@ export async function startGiveaway(interaction: any, duration: string, prize: s
         if (giveaway && !giveaway.participants.includes(i.user.id)) { // Ajout de la vérification de null
             giveaway.participants.push(i.user.id);
             await giveaway.save();  // Sauvegarder la participation dans la base de données
-            i.reply({ content: 'Tu es inscrit au giveaway!', ephemeral: true });
+            i.reply({ content: 'Tu es inscrit au giveaway.', ephemeral: true });
         } else if (giveaway) {
             i.reply({ content: 'Tu es déjà inscrit au giveaway.', ephemeral: true });
         } else {
@@ -156,8 +156,8 @@ export async function rerollGiveaway(interaction: any, message: any, prize: stri
     const newWinner = await interaction.guild?.members.fetch(newWinnerId);
 
     const embed = new EmbedBuilder()
-        .setTitle("Giveaway rerollé !")
-        .setDescription(`- Le nouveau gagnant de **${prize}** est <@${newWinnerId}> ! Félicitations !`)
+        .setTitle("Giveaway rerollé")
+        .setDescription(`- Le nouveau gagnant de la loterrie**${prize}** est <@${newWinnerId}>. Félicitations.`)
         .setColor(0x2f3136); // Couleur de fond des embeds Discord
 
     await message.edit({ embeds: [embed] });
@@ -190,8 +190,8 @@ export async function endGiveaway(interaction: any, message: any, prize: string,
     const winner = await interaction.guild?.members.fetch(winnerId);
 
     const embed = new EmbedBuilder()
-        .setTitle("Giveaway terminé !")
-        .setDescription(`- Le gagnant de **${prize}** est <@${winnerId}> ! Félicitations !\n- Organisé par : <@${giveaway.startedBy}>`)
+        .setTitle("Giveaway terminé.")
+        .setDescription(`- Le gagnant de la lotterie **${prize}** est <@${winnerId}>. Félicitations.\n- Organisé par : <@${giveaway.startedBy}>`)
         .setColor(0x2f3136); // Couleur de fond des embeds Discord
 
     const disabledRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
@@ -202,18 +202,18 @@ export async function endGiveaway(interaction: any, message: any, prize: string,
             .setDisabled(true)  // Désactiver le bouton
     );
 
-    await message.edit({ content: "Le giveaway est terminé !", embeds: [embed], components: [disabledRow, selectMenuRow] });
+    await message.edit({ content: "Le giveaway est terminé.", embeds: [embed], components: [disabledRow, selectMenuRow] });
 
     // Répondre à l'interaction avec le gagnant
-    await interaction.followUp({ content: `Félicitations <@${winnerId}> ! Tu as gagné **${prize}** !` });
+    await interaction.followUp({ content: `Félicitations <@${winnerId}>. Tu as gagné la lotterie **${prize}**.` });
 
     // Envoi d'un MP au gagnant
     try {
         await winner.send({
-            content: `Félicitations ${winner.user.tag} ! Tu as gagné la lotterie **${prize}** dans le giveaway organisé sur ${interaction.guild.name} !`,
+            content: `Félicitations ${winner.user.tag} ! Tu as gagné la lotterie **${prize}** dans le giveaway organisé sur ${interaction.guild.name}.`,
             embeds: [
                 new EmbedBuilder()
-                    .setTitle("Bravo !")
+                    .setTitle("Bravo")
                     .setDescription(`Nous te contacterons bientôt pour te remettre le prix **${prize}**.\nMerci d'avoir participé au giveaway organisé par <@${giveaway.startedBy}>.`)
                     .setColor(0x2f3136)
             ]
