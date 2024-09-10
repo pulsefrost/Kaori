@@ -28,23 +28,25 @@ export async function startGiveaway(interaction: any, duration: string, prize: s
                     label: 'Voir les participants',
                     value: 'view_participants',
                     description: 'Afficher la liste des participants',
+                    emoji: '<:participants:1282880025116278844>',
                 },
                 {
                     label: 'Quitter le giveaway',
                     value: 'leave_giveaway',
                     description: 'Se désinscrire du giveaway',
+                    emoji: '<:leave:1282880017533108235>',
                 },
                 {
                     label: 'Reroll le giveaway',
                     value: 'reroll_giveaway',
                     description: 'Reroll le giveaway pour choisir un nouveau gagnant',
-                    emoji: '🔄',
+                    emoji: '<:reroll:1282880031793610763>',
                 },
                 {
                     label: 'Supprimer le giveaway',
                     value: 'delete_giveaway',
                     description: 'Supprimer le giveaway définitivement',
-                    emoji: '🗑️',
+                    emoji: '<:delete:1282880442332352602>',
                 },
             ])
     );
@@ -154,7 +156,7 @@ export async function rerollGiveaway(interaction: any, message: any, prize: stri
     const newWinner = await interaction.guild?.members.fetch(newWinnerId);
 
     const embed = new EmbedBuilder()
-        .setTitle("🎉 Giveaway rerollé !")
+        .setTitle("<:gift:1282878733157531669> Giveaway rerollé !")
         .setDescription(`Le nouveau gagnant de **${prize}** est <@${newWinnerId}> ! Félicitations !`)
         .setColor(0x2f3136); // Couleur de fond des embeds Discord
 
@@ -188,7 +190,7 @@ export async function endGiveaway(interaction: any, message: any, prize: string,
     const winner = await interaction.guild?.members.fetch(winnerId);
 
     const embed = new EmbedBuilder()
-        .setTitle("🎉 Giveaway terminé !")
+        .setTitle("<:gift:1282878733157531669> Giveaway terminé !")
         .setDescription(`Le gagnant de **${prize}** est <@${winnerId}> ! Félicitations !\nOrganisé par : <@${giveaway.startedBy}>`)
         .setColor(0x2f3136); // Couleur de fond des embeds Discord
 
@@ -200,19 +202,19 @@ export async function endGiveaway(interaction: any, message: any, prize: string,
             .setDisabled(true)  // Désactiver le bouton
     );
 
-    await message.edit({ content: "🎉 Le giveaway est terminé ! 🎉", embeds: [embed], components: [disabledRow] });
+    await message.edit({ content: "<:gift:1282878733157531669> Le giveaway est terminé ! 🎉", embeds: [embed], components: [disabledRow] });
 
     // Répondre à l'interaction avec le gagnant
-    await interaction.followUp({ content: `🎉 Félicitations <@${winnerId}> ! Tu as gagné **${prize}** ! 🎉` });
+    await interaction.followUp({ content: `<:gift:1282878733157531669> Félicitations <@${winnerId}> ! Tu as gagné **${prize}** !` });
 
     // Envoi d'un MP au gagnant
     try {
         await winner.send({
-            content: `🎉 Félicitations ${winner.user.tag} ! Tu as gagné **${prize}** dans le giveaway organisé sur ${interaction.guild.name} ! 🎁`,
+            content: `<:gift:1282878733157531669> Félicitations ${winner.user.tag} ! Tu as gagné la lotterie **${prize}** dans le giveaway organisé sur ${interaction.guild.name} !`,
             embeds: [
                 new EmbedBuilder()
-                    .setTitle("🎉 Bravo !")
-                    .setDescription(`Nous te contacterons bientôt pour te remettre **${prize}**.\nMerci d'avoir participé au giveaway organisé par <@${giveaway.startedBy}> !`)
+                    .setTitle("<:gift:1282878733157531669> Bravo !")
+                    .setDescription(`Nous te contacterons bientôt pour te remettre le prix **${prize}**.\nMerci d'avoir participé au giveaway organisé par <@${giveaway.startedBy}> !`)
                     .setColor(0x2f3136)
             ]
         });

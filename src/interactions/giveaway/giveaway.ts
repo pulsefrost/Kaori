@@ -1,5 +1,5 @@
 import { ChatInput } from '@akki256/discord-interaction';
-import { ApplicationCommandOptionType, ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, TextChannel, GuildChannel, CacheType, Interaction, StringSelectMenuInteraction } from 'discord.js';
+import { ApplicationCommandOptionType, ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, TextChannel, GuildChannel, CacheType, Interaction, StringSelectMenuInteraction, PermissionsBitField } from 'discord.js';
 import Giveaway from '../../schemas/giveaway.schema';
 import { startGiveaway, endGiveaway } from '../../module/giveaway';
 
@@ -59,10 +59,13 @@ const giveawayCommand = new ChatInput(
         description: 'Annuler un giveaway',
       },
     ],
+    defaultMemberPermissions: PermissionsBitField.Flags.ManageMessages, // Permet uniquement à ceux qui ont la permission de gérer les messages d'exécuter ces commandes
   },
   async (interaction) => {
     const Subcommand = interaction.options.getSubcommand();
-    const giveaways = await Giveaway.find();
+
+    // Filtrer les giveaways uniquement pour le serveur actuel
+    const giveaways = await Giveaway.find({ guildId: interaction.guildId });
 
     if (Subcommand === 'start') {
       const prize = interaction.options.getString('prize');
@@ -71,7 +74,7 @@ const giveawayCommand = new ChatInput(
 
       if (prize && duration && channel && channel instanceof TextChannel) {
         await startGiveaway(interaction, duration, prize, channel);
-        await interaction.reply({ content: '🎉 Le giveaway a été lancé avec succès !', ephemeral: true });
+        await interaction.reply({ content: '<:gift:1282878733157531669> Le giveaway a été lancé avec succès !', ephemeral: true });
       } else {
         await interaction.reply({ content: "Veuillez spécifier un salon textuel valide.", ephemeral: true });
       }
@@ -114,7 +117,7 @@ const giveawayCommand = new ChatInput(
           const newWinner = await interaction.guild?.members.fetch(newWinnerId);
 
           const embed = new EmbedBuilder()
-            .setTitle('🎉 Nouveau Gagnant ! 🎉')
+            .setTitle('<:gift:1282878733157531669> Nouveau Gagnant')
             .setDescription(`Le nouveau gagnant est ${newWinner}! Félicitations !`)
             .setColor(0x7289da);
 
@@ -125,7 +128,7 @@ const giveawayCommand = new ChatInput(
           } else {
             const participants = selectedGiveaway.participants.map((id: string) => `<@${id}>`).join('\n');
             const embed = new EmbedBuilder()
-              .setTitle('🎉 Participants du Giveaway 🎉')
+              .setTitle('Participants du Giveaway')
               .setDescription(participants)
               .setColor(0x7289da);
 
@@ -133,11 +136,11 @@ const giveawayCommand = new ChatInput(
           }
         } else if (Subcommand === 'info') {
           const embed = new EmbedBuilder()
-            .setTitle('🎉 Informations du Giveaway 🎉')
+            .setTitle('Informations du Giveaway')
             .addFields(
-              { name: 'Prix', value: selectedGiveaway.prize, inline: true },
-              { name: 'Participants', value: `${selectedGiveaway.participants.length}`, inline: true },
-              { name: 'Date de fin', value: `${selectedGiveaway.endDate}`, inline: true }
+              { name: '- Prix', value: selectedGiveaway.prize, inline: true },
+              { name: '- Participants', value: `${selectedGiveaway.participants.length}`, inline: true },
+              { name: '- Date de fin', value: `${selectedGiveaway.endDate}`, inline: true }
             )
             .setColor(0x7289da);
 
