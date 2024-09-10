@@ -7,6 +7,9 @@ const giveawaySchema = new Schema({
   prize: { type: String, required: true },     // Prix du giveaway
   participants: { type: [String], default: [] }, // Liste des participants
   endDate: { type: Date, required: true },     // Date de fin du giveaway
+  startedBy: { type: String, required: true }, // ID de l'utilisateur qui a créé le giveaway (organisateur)
+  createdAt: { type: Date, default: Date.now }, // Date de création du giveaway
+  status: { type: String, enum: ['active', 'ended'], default: 'active' }, // État du giveaway
 });
 
 export default model('Giveaway', giveawaySchema);
