@@ -145,18 +145,20 @@ const giveawayCommand = new ChatInput(
             .setColor(0x7289da);
 
           await i.reply({ embeds: [embed], ephemeral: true });
-        } else if (Subcommand === 'end') {
-          await endGiveaway(interaction, interaction.channel?.messages.cache.get(selectedGiveaway.messageId), selectedGiveaway.prize, selectedGiveaway._id.toString(), row);
-          await selectedGiveaway.delete();
-          await i.reply({ content: 'Le giveaway a été terminé.', ephemeral: true });
-        } else if (Subcommand === 'cancel') {
-          const message = await interaction.channel?.messages.fetch(selectedGiveaway.messageId);
-          if (message) {
-            await message.delete();
-          }
-          await selectedGiveaway.delete();
-          await i.reply({ content: 'Le giveaway a été annulé et supprimé avec succès.', ephemeral: true });
         }
+
+        // Réinitialiser le menu après l'interaction
+        const newSelectMenu = new StringSelectMenuBuilder()
+          .setCustomId(`select_giveaway_${Subcommand}`)
+          .setPlaceholder('Choisissez un autre giveaway')
+          .addOptions(menuOptions);
+
+        const newRow = new ActionRowBuilder<StringSelectMenuBuilder>().addComponents(newSelectMenu);
+        
+        await interaction.editReply({
+          content: 'Choisissez un giveaway dans la liste :',
+          components: [newRow],
+        });
       });
 
       collector?.on('end', collected => {
