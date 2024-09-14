@@ -139,7 +139,8 @@ mainClient.on(Events.InteractionCreate, interaction => {
 const specificChannelIds = [
     '1256703625980543139', '1256705442176962653', 
     '1256706229326319668', '1256705892913512468', 
-    '1265686084075913298', '1265686531193049168'
+    '1265686084075913298', '1265686531193049168',
+    '1267927352436981791', '1265693180725039285',
 ]; // IDs des salons spécifiques
 
 mainClient.on('messageCreate', async message => {
