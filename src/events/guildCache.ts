@@ -12,15 +12,15 @@ async function sendGuildInfo(guild: Guild) {
 
   const owner = await guild.fetchOwner();
   const embed = new EmbedBuilder()
-    .setTitle('Nouveau Serveur!')
-    .setDescription(`Le bot a été ajouté au serveur ${guild.name}.`)
+    .setTitle('Kaori a gagné un serveur')
+    .setDescription(`[Kaori](https://discord.com/oauth2/authorize?client_id=855107430693077033) a été ajouté au serveur ${guild.name}.`)
     .addFields(
       { name: 'ID du Serveur', value: `${guild.id}`, inline: true },
       { name: 'Nombre de Membres', value: `${guild.memberCount}`, inline: true },
       { name: 'Nombre de Boosts', value: `${guild.premiumSubscriptionCount || 0}`, inline: true },
       { name: 'Créateur', value: `${owner.user.tag}`, inline: true }
     )
-    .setColor('#00FF00');
+    .setColor('#2b2d31');
 
   if (guild.bannerURL()) {
     embed.setImage(guild.bannerURL());
@@ -35,12 +35,12 @@ async function sendGuildRemovalInfo(guild: Guild) {
   if (!channel || !channel.isTextBased()) return;
 
   const embed = new EmbedBuilder()
-    .setTitle('Bot Retiré!')
-    .setDescription(`Le bot a été retiré du serveur ${guild.name}.`)
+    .setTitle('Kaori a perdu un serveur')
+    .setDescription(`[Kaori](https://discord.com/oauth2/authorize?client_id=855107430693077033) a été retiré du serveur ${guild.name}.`)
     .addFields(
       { name: 'ID du Serveur', value: `${guild.id}`, inline: true }
     )
-    .setColor('#FF0000');
+    .setColor('#2b2d31');
 
   channel.send({ embeds: [embed] });
 }
