@@ -1,6 +1,5 @@
 import { ApplicationCommandOptionType, EmbedBuilder, Colors, PermissionFlagsBits } from 'discord.js';
 import { ChatInput } from '@akki256/discord-interaction';
-import ms from 'ms'; // Utilitaire pour formater la durée en millisecondes
 
 const timeoutListCommand = new ChatInput(
   {
@@ -15,7 +14,10 @@ const timeoutListCommand = new ChatInput(
 
     const guild = interaction.guild;
     const members = await guild.members.fetch(); // Récupérer tous les membres du serveur
-    const timeoutMembers = members.filter(member => member.communicationDisabledUntilTimestamp);
+    const timeoutMembers = members.filter(member => {
+      const timeoutEnd = member.communicationDisabledUntilTimestamp;
+      return timeoutEnd && timeoutEnd > Date.now(); // Garder uniquement ceux dont le timeout est encore actif
+    });
 
     if (timeoutMembers.size === 0) {
       return interaction.reply({
@@ -26,9 +28,9 @@ const timeoutListCommand = new ChatInput(
 
     const timeoutInfo = timeoutMembers.map(member => {
       const timeoutEnd = member.communicationDisabledUntilTimestamp!;
-      const timeRemaining = timeoutEnd - Date.now();
+      const unixTimestamp = Math.floor(timeoutEnd / 1000); // Convertir en timestamp Unix
 
-      return `${member.user.tag} - Timeout restant : ${ms(timeRemaining)}`; // Suppression de l'option { long: true }
+      return `${member.user.tag} - Fin du timeout : <t:${unixTimestamp}:R>`; // Affiche la date relative en format Discord
     }).join('\n');
 
     const embed = new EmbedBuilder()
