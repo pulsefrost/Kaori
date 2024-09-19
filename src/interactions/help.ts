@@ -22,13 +22,47 @@ const helpCommand = new ChatInput(
           .setDescription([
             'Équipé de fonctionnalités utiles pour la gestion et la croissance des serveurs !',
             'Nous travaillons chaque jour pour développer un "BOT multifonction facile à utiliser et complètement gratuit".',
-            '## Modération\n</ban:1266326311396315157> Bannir une personne.\n</clear:1266326320489693215> Supprimer des messages.\n</kick:1266326436529176576> Expulser une personne.\n</verify:1266326626636005396> Panneau de verification.\n</ratelimit:1266326518599254094> Mettre un temps d\'attante d\'envoi de messages.\n</unban:1266326618268373118> Débannir une personne.\n</timeout:1266326614262808648> Mute une personne.\n</pauseinvite:1266326443764351071> Mettre les invitations en pause.\n</firstmessage:1266326342543347797> Premier message du salon.\n</setting:1266326521396592703> Paramètre du serveur',
-            '## Utilitaire\n</info serveur:1266326433186447411> Information sur le serveur.\n</info utilisateur:1266326433186447411> Information Utilisateur.\n</afk:1266326308388864161> Signaler que vous êtes AFK.',
-            '## Anime\n</hug:1266326429251932191> Câliner une personnne.\n</kiss:1266326439817646091> Embrasser une personne.\n</dance:1266326331214528555> Dancer.\n</pout:1266326515671498897> Bouder.'
           ].join('\n'))
           .setColor('#F4C1B3')
           .setImage('https://i.imgur.com/MsdEvPA.png')
-          .setFields({ name: 'Quelques fonctionnalités incluses', value: feature.map(v => inlineCode(v)).join(' ') }),
+          .addFields(
+            {
+              name: 'Modération',
+              value: [
+                'Bannir une personne',
+                'Supprimer des messages',
+                'Expulser une personne',
+                'Panneau de vérification',
+                'Limiter le débit des messages',
+                'Débannir une personne',
+                'Mute une personne',
+                'Suspendre les invitations',
+                'Afficher le premier message',
+                'Paramètres du serveur',
+              ].join('\n'),
+            },
+            {
+              name: 'Utilitaire',
+              value: [
+                'Information sur le serveur',
+                'Information utilisateur',
+                '</afk:1266326308388864161> Signaler que vous êtes AFK',
+              ].join('\n'),
+            },
+            {
+              name: 'Anime',
+              value: [
+                '</hug:1266326429251932191> Câliner une personne',
+                '</kiss:1266326439817646091> Embrasser une personne',
+                '</dance:1266326331214528555> Danser',
+                '</pout:1266326515671498897> Bouder',
+              ].join('\n'),
+            },
+            {
+              name: 'Quelques fonctionnalités incluses',
+              value: feature.map(v => inlineCode(v)).join(' '),
+            },
+          ),
       ],
       components: [
         new ActionRowBuilder<ButtonBuilder>().setComponents(
