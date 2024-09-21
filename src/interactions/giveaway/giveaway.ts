@@ -1,6 +1,6 @@
 import { ChatInput } from '@akki256/discord-interaction';
 import { ApplicationCommandOptionType, ActionRowBuilder, StringSelectMenuBuilder, EmbedBuilder, TextChannel, GuildChannel, CacheType, Interaction, StringSelectMenuInteraction, PermissionsBitField } from 'discord.js';
-import Giveaway from '../../schemas/giveaway.schema';
+import Giveaway from '../../schemas/giveaway';
 import { startGiveaway, endGiveaway } from '../../module/giveaway';
 
 const giveawayCommand = new ChatInput(

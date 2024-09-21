@@ -1,6 +1,6 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, TextChannel, StringSelectMenuBuilder, StringSelectMenuInteraction, PermissionsBitField } from 'discord.js';  // Discord.js v14+
 import { getTimeFromInput } from './functions'; // Fonction pour gérer la conversion de durée
-import Giveaway from '../schemas/giveaway.schema'; // Importer le schéma de la base de données
+import Giveaway from '../schemas/giveaway'; // Importer le schéma de la base de données
 
 // Fonction pour démarrer un giveaway
 export async function startGiveaway(interaction: any, duration: string, prize: string, channel: TextChannel) {

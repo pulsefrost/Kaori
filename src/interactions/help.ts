@@ -29,33 +29,30 @@ const helpCommand = new ChatInput(
             {
               name: 'Modération',
               value: [
-                'Bannir une personne',
-                'Supprimer des messages',
-                'Expulser une personne',
-                'Panneau de vérification',
-                'Limiter le débit des messages',
-                'Débannir une personne',
-                'Mute une personne',
-                'Suspendre les invitations',
-                'Afficher le premier message',
-                'Paramètres du serveur',
+                '</ban:1278628276688126003> Bannir une personne',
+                '</clear:1278628280836034602> Supprimer des messages',
+                '</kick:1278628401837641762> Expulser une personne',
+                '</unban:1278629115573829726> Débannir une personne banni',
+                '</ratelimit:1278629020673511464> Limiter le débit des messages',
+                '</timeout:1278629111685976175> Mute une personne',
+                '</pauseinvite:1278629012889010255> Suspendre les invitations',
+                '</firstmessage:1278628297244278908> Afficher le premier message',
+                '</setting:1278629024091869258> Paramètres du serveur',
               ].join('\n'),
             },
             {
               name: 'Utilitaire',
               value: [
-                'Information sur le serveur',
-                'Information utilisateur',
-                '</afk:1266326308388864161> Signaler que vous êtes AFK',
+                '</info serveur:1278628397253394566> Information sur le serveur',
+                '</info utilisateur:1278628397253394566> Information utilisateur',
+                '</afk:1278628271940046850> Signaler que vous êtes AFK',
+                '</profil:1284916095874105374> Voir la photo de profil ou la bannière',
               ].join('\n'),
             },
             {
               name: 'Anime',
               value: [
-                '</hug:1266326429251932191> Câliner une personne',
-                '</kiss:1266326439817646091> Embrasser une personne',
-                '</dance:1266326331214528555> Danser',
-                '</pout:1266326515671498897> Bouder',
+                '</interaction:1282751198239133807>  Intéragir avec les autres membres'
               ].join('\n'),
             },
             {
@@ -67,13 +64,13 @@ const helpCommand = new ChatInput(
       components: [
         new ActionRowBuilder<ButtonBuilder>().setComponents(
           new ButtonBuilder()
-            .setLabel('Serveur de support')
+            .setLabel('Communauté')
             .setStyle(ButtonStyle.Link)
-            .setURL('https://discord.gg/amies'),
+            .setURL('https://discord.gg/kim'),
           new ButtonBuilder()
-            .setLabel('Guide d\'utilisation')
+            .setLabel('Ajouter le bot')
             .setStyle(ButtonStyle.Link)
-            .setURL('https://kaoricafe.fr'),
+            .setURL('https://discord.com/oauth2/authorize?client_id=855107430693077033'),
         ),
       ],
       ephemeral: false,

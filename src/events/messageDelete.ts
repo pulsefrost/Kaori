@@ -1,5 +1,5 @@
 import { Client, Message } from 'discord.js';
-import Giveaway from '../schemas/giveaway.schema'; // Importer le schéma de la base de données
+import Giveaway from '../schemas/giveaway'; // Importer le schéma de la base de données
 
 module.exports = {
   name: 'messageDelete',
