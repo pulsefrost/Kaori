@@ -4,7 +4,7 @@ import BumpReminder from '../schemas/BumpReminder'; // Assurez-vous que le sché
 import { setTimeout } from 'timers/promises';
 
 // L'ID du bot Disboard
-const DISBOARD_BOT_ID = '302050872383242240'; // Remplace par l'ID réel du bot Disboard
+const DISBOARD_BOT_ID = '302050872383242240'; // ID du bot Disboard
 
 const bumpReminderHandler = new DiscordEventBuilder({
   type: Events.MessageCreate, // Surveiller les messages
@@ -24,15 +24,23 @@ const bumpReminderHandler = new DiscordEventBuilder({
 
     if (!bumpChannel || !bumpRole || !bumpChannel.isTextBased()) return;
 
+    // Mentionner la personne qui a exécuté la commande bump
+    const bumpInitiator = message.interaction?.user || message.author;
+
+    // Confirmation après la commande bump
+    await bumpChannel.send({
+      content: `<@${bumpInitiator.id}> Je vous rappellerai dans 2 heures pour bump à nouveau.`,
+    });
+
     // Envoie un rappel après deux heures
     await setTimeout(2 * 60 * 60 * 1000); // 2 heures en millisecondes
 
-    // Envoie le message de rappel dans le salon configuré
+    // Envoie le message de rappel dans le salon configuré avec un embed
     bumpChannel.send({
       content: `${bumpRole}, il est temps de bump le serveur à nouveau !`,
       embeds: [
         new EmbedBuilder()
-          .setDescription(`\`⏰\` C'est l'heure de bump ! Utilisez la commande </bump:947088344167366698> de Disboard.`)
+          .setDescription(`\`⏰\` Utilisez la commande \`/bump\` de Disboard pour bump à nouveau.`)
           .setColor(Colors.Blue),
       ],
     });
