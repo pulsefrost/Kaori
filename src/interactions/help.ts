@@ -23,8 +23,7 @@ const helpCommand = new ChatInput(
             'Équipé de fonctionnalités utiles pour la gestion et la croissance des serveurs !',
             'Nous travaillons chaque jour pour développer un "BOT multifonction facile à utiliser et complètement gratuit".',
           ].join('\n'))
-          .setColor('#F4C1B3')
-          .setImage('https://i.imgur.com/MsdEvPA.png')
+          .setColor('#2b2d31')
           .addFields(
             {
               name: 'Modération',
@@ -52,7 +51,21 @@ const helpCommand = new ChatInput(
             {
               name: 'Anime',
               value: [
-                '</interaction:1282751198239133807>  Intéragir avec les autres membres'
+                '</interaction hug:1282751198239133807>  Faire un câlin',
+                '</interaction kiss:1282751198239133807> Emebrasser une personne',
+                '</interaction slap:1282751198239133807> Giflé une personne',
+                '</interaction feed:1282751198239133807> Nourrir',
+                '</interaction bite:1282751198239133807> Mordre',
+                '</interaction handshake:1282751198239133807> Serrer la main',
+                '</interaction blush:1282751198239133807> Rougir',
+                '</interaction smile:1282751198239133807> Sourir',
+                '</interaction wave:1282751198239133807> Saluer',
+                '</interaction dance:1282751198239133807> Dancer',
+                '</interaction tickle:1282751198239133807> Chatouiller',
+                '</interaction punch:1282751198239133807> Poing',
+                '</interaction pat:1282751198239133807> tapoter',
+                '</interaction cuddle:1282751198239133807> Des petits câlins',
+                '</interaction kick:1282751198239133807> Dégage',
               ].join('\n'),
             },
             {
