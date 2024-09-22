@@ -31,7 +31,6 @@ app.listen(PORT, () => {
 
 // Type étendu pour les options du client
 type ExtendedSelfbotClientOptions = SelfbotClientOptions & {
-    // Ajouter des propriétés supplémentaires si nécessaire
     customProperty?: string;
 };
 
@@ -43,7 +42,6 @@ function createClient(options: ExtendedSelfbotClientOptions): SelfbotClient {
 // Tableau des paires de client et de jeton
 const clients: { client: SelfbotClient; token: string | undefined }[] = [
     { client: createClient({}), token: process.env.Camelia },
-    //{ client: createClient({}), token: process.env.Masha },
     { client: createClient({}), token: process.env.Minji },
     { client: createClient({}), token: process.env.Cassidy },
     { client: createClient({}), token: process.env.Keii },
