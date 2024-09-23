@@ -36,6 +36,19 @@ const bumpReminderHandler = new DiscordEventBuilder({
 
       if (!bumpChannel || !bumpRole || !bumpChannel.isTextBased()) return;
 
+      // Vérification du dernier rappel pour éviter les rappels trop fréquents
+      const lastBump = await BumpReminder.findOne({ serverId: guild.id });
+      
+      // Conversion du `reminderTime` en nombre si c'est un objet `Date`
+      const lastBumpReminderTime = (lastBump?.reminderTime instanceof Date)
+        ? lastBump.reminderTime.getTime()
+        : lastBump?.reminderTime;
+
+      if (lastBump && lastBumpReminderTime && Date.now() < lastBumpReminderTime) {
+        // Il est trop tôt pour un autre rappel
+        return;
+      }
+
       // Enregistre le rappel dans la base de données avec la mise à jour du temps de rappel
       const reminderEntry = await BumpReminder.findOneAndUpdate(
         { serverId: guild.id },
@@ -66,29 +79,19 @@ const bumpReminderHandler = new DiscordEventBuilder({
 
         // Comparaison avec `Date.now()`
         if (reminderTime <= Date.now()) {
-          return; // Si le temps de rappel est déjà écoulé
+          // Si le temps de rappel est écoulé, on envoie le rappel
+          await bumpChannel.send({
+            content: `${bumpRole}, il est temps de bump le serveur à nouveau !`,
+            embeds: [
+              new EmbedBuilder()
+                .setDescription(`\`⏰\` Utilisez la commande \`/bump\` de Disboard pour bump à nouveau.`)
+                .setColor(Colors.Blue),
+            ],
+          });
+
+          // Supprimer le rappel de la base de données après exécution
+          await BumpReminder.deleteOne({ serverId: guild.id });
         }
-
-        // Vérifie de nouveau si le salon et le rôle existent avant d'envoyer le rappel
-        const validBumpChannel = guild.channels.cache.get(bumpSettings.bumpChannel);
-        const validBumpRole = guild.roles.cache.get(bumpSettings.bumpRole);
-
-        if (!validBumpChannel || !validBumpRole || !validBumpChannel.isTextBased()) {
-          return;
-        }
-
-        // Envoie le message de rappel dans le salon configuré avec un embed
-        await validBumpChannel.send({
-          content: `${validBumpRole}, il est temps de bump le serveur à nouveau !`,
-          embeds: [
-            new EmbedBuilder()
-              .setDescription(`\`⏰\` Utilisez la commande \`/bump\` de Disboard pour bump à nouveau.`)
-              .setColor(Colors.Blue),
-          ],
-        });
-
-        // Supprimer le rappel de la base de données après exécution
-        await BumpReminder.deleteOne({ serverId: guild.id });
 
       } catch (error) {
         console.error('Erreur lors du rappel de bump :', error);
