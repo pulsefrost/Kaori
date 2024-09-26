@@ -89,8 +89,6 @@ const bumpReminderHandler = new DiscordEventBuilder({
             ],
           });
 
-          // Supprimer le rappel de la base de données après exécution
-          await BumpReminder.deleteOne({ serverId: guild.id });
         }
 
       } catch (error) {

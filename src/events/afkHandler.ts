@@ -22,7 +22,7 @@ const afkHandler = new DiscordEventBuilder({
       const replyMessage = await message.channel.send({
         embeds: [
           new EmbedBuilder()
-            .setDescription(`\`✅\` Bienvenue de retour <@${userId}>. Votre statut AFK a été retiré.`)
+            .setDescription(`\`✅\` Bon retour <@${userId}>. Votre statut AFK a été retiré.`)
             .setColor(Colors.Green),
         ],
       });
