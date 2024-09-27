@@ -84,8 +84,9 @@ const bumpReminderHandler = new DiscordEventBuilder({
             content: `${bumpRole}, il est temps de bump le serveur à nouveau !`,
             embeds: [
               new EmbedBuilder()
-                .setDescription(`\`⏰\` Utilisez la commande \`/bump\` de Disboard pour bump à nouveau.`)
-                .setColor(Colors.Blue),
+                .setDescription(`\`⏰\` Utilisez la commande </bump:947088344167366698> de Disboard pour bump à nouveau.`)
+                .setImage('https://i.imgur.com/zQaqB1E.png')
+                .setColor('#edd0cc'),
             ],
           });
 

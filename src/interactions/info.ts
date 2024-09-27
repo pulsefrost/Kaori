@@ -88,7 +88,7 @@ const Command = new ChatInput(
               `🛑 Niveau de sécurité : ${securityLevel}`
             ].join('\n'))
             .setColor('#2b2d31')
-            .setImage('https://i.imgur.com/OFUq9qc.png')
+            .setImage('https://i.imgur.com/UwgK8CP.png')
             .setFields(
               { name: 'Statut', value: guild.features.map(v => featureTexts.get(v)).filter(Boolean).join('\n') || 'Aucun' }
             ),
@@ -130,7 +130,7 @@ async function createUserInfoEmbed(interaction: Interaction, user: User) {
       .setTitle('Cet utilisateur n\'est pas sur ce serveur')
       .setDescription(`${formatEmoji(Emojis.White.id)} ID de l'utilisateur: ${inlineCode(user.id)}`)
       .setColor('#2b2d31')
-      .setImage('https://i.imgur.com/wmeS8fp.png')
+      .setImage('https://i.imgur.com/cLTmNpo.png')
       .setFields(
         { name: 'Date de création du compte', value: time(user.createdAt, 'D') },
         { name: 'Badge', value: badgeText },
@@ -149,7 +149,7 @@ async function createUserInfoEmbed(interaction: Interaction, user: User) {
       `${formatEmoji(Emojis.White.id)} ID de l'utilisateur ${inlineCode(user.id)}`,
     ].join('\n'))
     .setColor('#2b2d31')
-    .setImage('https://i.imgur.com/wmeS8fp.png')
+    .setImage('https://i.imgur.com/cLTmNpo.png')
     .setFields(
       { name: 'Date de création du compte', value: time(user.createdAt, 'D') },
       { name: 'Date d\'arrivée sur le serveur', value: joinTime },
