@@ -1,20 +1,20 @@
-import { ApplicationCommandOptionType, bold, Colors, EmbedBuilder, formatEmoji, GuildFeature, GuildMember, inlineCode, Interaction, PermissionFlagsBits, time, User } from 'discord.js';
+import { ApplicationCommandOptionType, bold, Colors, EmbedBuilder, formatEmoji, GuildFeature, GuildMember, inlineCode, Interaction, PermissionFlagsBits, time, User, Collection } from 'discord.js';
 import { ChatInput, UserContext } from '@akki256/discord-interaction';
 import { Emojis } from '../module/constant';
 
 const flagEmojis = new Map([
-  ['Staff', '1251322333856010260'],
-  ['Partner', '1251322713205772299'],
-  ['CertifiedModerator', '1251322251702304808'],
-  ['Hypesquad', '1251322395596292137'],
-  ['HypeSquadOnlineHouse1', '1251322481390653541'],
-  ['HypeSquadOnlineHouse2', '1251322506938290207'],
-  ['HypeSquadOnlineHouse3', '1251322492228862085'],
-  ['BugHunterLevel1', '1251321662872485929'],
-  ['BugHunterLevel2', '1251321756350943385'],
-  ['ActiveDeveloper', '1251321904657207338'],
-  ['VerifiedDeveloper', '1251322246257971301'],
-  ['PremiumEarlySupporter', '1251323760636854323'],
+  ['Staff', { emoji: '1251322333856010260', name: 'Staff' }],
+  ['Partner', { emoji: '1251322713205772299', name: 'Partner' }],
+  ['CertifiedModerator', { emoji: '1251322251702304808', name: 'Certified Moderator' }],
+  ['Hypesquad', { emoji: '1251322395596292137', name: 'Hypesquad' }],
+  ['HypeSquadOnlineHouse1', { emoji: '1251322481390653541', name: 'House Bravery' }],
+  ['HypeSquadOnlineHouse2', { emoji: '1251322506938290207', name: 'House Brilliance' }],
+  ['HypeSquadOnlineHouse3', { emoji: '1251322492228862085', name: 'House Balance' }],
+  ['BugHunterLevel1', { emoji: '1251321662872485929', name: 'Bug Hunter Level 1' }],
+  ['BugHunterLevel2', { emoji: '1251321756350943385', name: 'Bug Hunter Level 2' }],
+  ['ActiveDeveloper', { emoji: '1251321904657207338', name: 'Active Developer' }],
+  ['VerifiedDeveloper', { emoji: '1251322246257971301', name: 'Verified Developer' }],
+  ['PremiumEarlySupporter', { emoji: '1251323760636854323', name: 'Early Supporter' }],
 ]);
 
 const featureTexts = new Map<string, string>([
@@ -54,29 +54,48 @@ const Command = new ChatInput(
     const subCommand = interaction.options.getSubcommand();
 
     if (subCommand === 'utilisateur')
-      return interaction.reply({ embeds: [await createUserInfoEmbed(interaction, interaction.options.getUser('utilisateur', true))], ephemeral: true });
+      return interaction.reply({ embeds: [await createUserInfoEmbed(interaction, interaction.options.getUser('utilisateur', true))], ephemeral: false });
 
-    if (subCommand === 'serveur')
+    if (subCommand === 'serveur') {
+      const guild = interaction.guild;
+      const bans = await guild.bans.fetch().catch(() => []);
+      const banCount = bans instanceof Collection ? bans.size : 0;
+      const onlineMembers = guild.members.cache.filter(member => member.presence?.status === 'online').size;
+      const offlineMembers = guild.members.cache.filter(member => !member.presence || member.presence.status === 'offline').size;
+      const voiceMembers = guild.channels.cache.filter(channel => channel.isVoiceBased()).reduce((acc, channel) => acc + (channel.members.size || 0), 0);
+      const botCount = guild.members.cache.filter(member => member.user.bot).size;
+      const boosterList = guild.members.cache.filter(member => member.premiumSince).map(member => member.user.tag).join(', ') || 'Aucun booster';
+      const securityLevel = guild.verificationLevel;
+
       return interaction.reply({
         embeds: [
           new EmbedBuilder()
-            .setTitle(interaction.guild.name)
+            .setTitle(guild.name)
             .setDescription([
-              `${formatEmoji(Emojis.White.id)} ID du serveur: \`${interaction.guildId}\``,
-              `${formatEmoji(Emojis.White.nickName)} Propriétaire: ${await interaction.guild.fetchOwner()}`,
-              `${formatEmoji(Emojis.White.nickName)} Nombre de membres: \`${interaction.guild.memberCount}\` personnes`,
-              `${formatEmoji(Emojis.White.channel)} Nombre de canaux: \`${interaction.guild.channels.channelCountWithoutThreads}\``,
-              `${formatEmoji(Emojis.White.schedule)} Date de création: ${time(interaction.guild.createdAt, 'D')}`,
-              `${formatEmoji(Emojis.White.boost)} Nombre de boosts: \`${interaction.guild.premiumSubscriptionCount}\``,
+              `${formatEmoji(Emojis.White.id)} ID du serveur: \`${guild.id}\``,
+              `${formatEmoji(Emojis.White.nickName)} Propriétaire: ${await guild.fetchOwner()}`,
+              `${formatEmoji(Emojis.White.nickName)} Nombre de membres: \`${guild.memberCount}\` personnes`,
+              `${formatEmoji(Emojis.White.channel)} Nombre de canaux: \`${guild.channels.channelCountWithoutThreads}\``,
+              `${formatEmoji(Emojis.White.schedule)} Date de création: ${time(guild.createdAt, 'D')}`,
+              `${formatEmoji(Emojis.White.boost)} Nombre de boosts: \`${guild.premiumSubscriptionCount}\``,
+              `${formatEmoji(Emojis.White.boost)} Boosters: ${boosterList}`,
+              `${formatEmoji(Emojis.White.nickName)} Membres maximum : ${guild.maximumMembers ?? 'Inconnu'}`,
+              `${formatEmoji(Emojis.White.nickName)} Membres en ligne : ${onlineMembers}`,
+              `${formatEmoji(Emojis.White.nickName)} Membres hors ligne : ${offlineMembers}`,
+              `${formatEmoji(Emojis.White.nickName)} Membres en vocal : ${voiceMembers}`,
+              `${formatEmoji(Emojis.White.nickName)} Nombre de bots : ${botCount}`,
+              `${formatEmoji(Emojis.White.nickName)} Membres bannis : ${banCount}`,
+              `🛑 Niveau de sécurité : ${securityLevel}`
             ].join('\n'))
-            .setColor(Colors.White)
+            .setColor('#2b2d31')
             .setImage('https://i.imgur.com/tjiIwzV.png')
             .setFields(
-              { name: 'Statut', value: interaction.guild.features.map(v => featureTexts.get(v)).filter(Boolean).join('\n') || 'Aucun' },
+              { name: 'Statut', value: guild.features.map(v => featureTexts.get(v)).filter(Boolean).join('\n') || 'Aucun' },
             ),
         ],
-        ephemeral: true,
+        ephemeral: false,
       });
+    }
   },
 );
 
@@ -88,26 +107,37 @@ const Context = new UserContext(
   async (interaction) => {
     if (!interaction.inCachedGuild()) return;
 
-    return interaction.reply({ embeds: [await createUserInfoEmbed(interaction, interaction.targetUser)], ephemeral: true });
+    return interaction.reply({ embeds: [await createUserInfoEmbed(interaction, interaction.targetUser)], ephemeral: false });
   },
 );
 
 async function createUserInfoEmbed(interaction: Interaction, user: User) {
   const member = await interaction.guild?.members.fetch(user.id).catch(() => undefined);
-
   const userFlags = user.flags?.toArray();
   const userFlagsEmojis = userFlags?.map(v => flagEmojis.get(v)).filter(Boolean);
+
+  const badgeText = userFlagsEmojis ? userFlagsEmojis.map(v => v?.emoji ? `${formatEmoji(v.emoji)} ${v.name}` : '').join(', ') : 'Aucun';
+
+  const nitroSince = member?.premiumSince ? `Depuis ${time(member.premiumSince, 'D')} (${time(member.premiumSince, 'R')})` : 'Aucun';
+  const permissions = member?.permissions?.toArray().join(', ') || 'Aucune permission';
+  const oldTag = user.discriminator !== '0' ? `Ancien tag: ${user.username}#${user.discriminator}` : 'Pas d’ancien tag';
+  
+  // Example: Add logic to fetch message count for the user in the server, assuming message counts are tracked
+  const messageCount = 'Inconnu'; // Placeholder, needs custom message tracking implementation
 
   if (!(member instanceof GuildMember))
     return new EmbedBuilder()
       .setAuthor({ name: (!user.bot && user.discriminator === '0') ? `@${user.username}` : `${user.tag}` })
       .setTitle('Cet utilisateur n\'est pas sur ce serveur')
       .setDescription(`${formatEmoji(Emojis.White.id)} ID de l'utilisateur: ${inlineCode(user.id)}`)
-      .setColor(Colors.DarkerGrey)
+      .setColor('#2b2d31')
       .setImage('https://i.imgur.com/tjiIwzV.png')
       .setFields(
         { name: 'Date de création du compte', value: time(user.createdAt, 'D'), inline: true },
-        { name: 'Badge', value: userFlagsEmojis ? userFlagsEmojis.map(v => formatEmoji(v || '0')).join('') : 'Aucun', inline: true },
+        { name: 'Badge', value: badgeText, inline: true },
+        { name: 'Abonnement Nitro', value: nitroSince, inline: true },
+        { name: 'Ancien Tag', value: oldTag, inline: true },
+        { name: 'Nombre de messages', value: messageCount, inline: true }
       );
 
   const nickName = member.nickname ?? 'Aucun';
@@ -119,12 +149,16 @@ async function createUserInfoEmbed(interaction: Interaction, user: User) {
       `${formatEmoji(Emojis.White.nickName)} Pseudo ${bold(nickName)}`,
       `${formatEmoji(Emojis.White.id)} ID de l'utilisateur ${inlineCode(user.id)}`,
     ].join('\n'))
-    .setColor(member.roles.highest.color || Colors.White)
+    .setColor('#2b2d31')
     .setImage('https://i.imgur.com/tjiIwzV.png')
     .setFields(
       { name: 'Date de création du compte', value: time(user.createdAt, 'D'), inline: true },
       { name: 'Date d\'arrivée sur le serveur', value: joinTime, inline: true },
-      { name: 'Badge', value: userFlagsEmojis?.length ? userFlagsEmojis.map(v => formatEmoji(v || '0')).join('') : 'Aucun', inline: true },
+      { name: 'Badge', value: badgeText, inline: true },
+      { name: 'Abonnement Nitro', value: nitroSince, inline: true },
+      { name: 'Permissions', value: permissions, inline: true },
+      { name: 'Ancien Tag', value: oldTag, inline: true },
+      { name: 'Nombre de messages', value: messageCount, inline: true },
     );
 
   if (member.premiumSince)
@@ -138,11 +172,6 @@ async function createUserInfoEmbed(interaction: Interaction, user: User) {
       name: `${formatEmoji(Emojis.White.timeOut)} Heure de levée du timeout`,
       value: `${time(member.communicationDisabledUntil, 'D')} (${time(member.communicationDisabledUntil, 'R')})`,
     });
-
-  if (user.displayAvatarURL() !== user.displayAvatarURL()) {
-    embed.setAuthor({ name: user.tag, iconURL: user.displayAvatarURL() });
-    embed.setImage('https://i.imgur.com/tjiIwzV.png')
-  }
 
   return embed;
 }

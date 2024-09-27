@@ -5,7 +5,7 @@ import { setTimeout } from 'timers/promises';
 
 const bumpCommand = new ChatInput(
   {
-    name: 'bump',
+    name: 'bumpreminder',
     description: 'Configure le rappel pour bump le bot Disboard toutes les deux heures',
     options: [
       {
