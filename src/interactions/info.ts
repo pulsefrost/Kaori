@@ -31,15 +31,8 @@ const Command = new ChatInput(
       {
         name: 'utilisateur',
         description: 'Afficher les informations d\'un utilisateur',
-        options: [
-          {
-            name: 'utilisateur',
-            description: 'Utilisateur',
-            type: ApplicationCommandOptionType.User,
-            required: false,
-          },
-        ],
-        type: ApplicationCommandOptionType.Subcommand,
+        type: ApplicationCommandOptionType.User,
+        required: false, // Changer en false pour rendre optionnel
       },
       {
         name: 'serveur',
@@ -53,8 +46,10 @@ const Command = new ChatInput(
     if (!interaction.inCachedGuild()) return;
     const subCommand = interaction.options.getSubcommand();
 
-    if (subCommand === 'utilisateur')
-      return interaction.reply({ embeds: [await createUserInfoEmbed(interaction, interaction.options.getUser('utilisateur', true))], ephemeral: false });
+    if (subCommand === 'utilisateur') {
+      const user = interaction.options.getUser('utilisateur') || interaction.user; // Utilise l'utilisateur qui exécute la commande si aucun n'est spécifié
+      return interaction.reply({ embeds: [await createUserInfoEmbed(interaction, user)], ephemeral: false });
+    }
 
     if (subCommand === 'serveur') {
       const guild = interaction.guild;
