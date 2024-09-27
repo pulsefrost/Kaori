@@ -88,9 +88,9 @@ const Command = new ChatInput(
               `🛑 Niveau de sécurité : ${securityLevel}`
             ].join('\n'))
             .setColor('#2b2d31')
-            .setImage('https://i.imgur.com/tjiIwzV.png')
+            .setImage('https://i.imgur.com/OFUq9qc.png')
             .setFields(
-              { name: 'Statut', value: guild.features.map(v => featureTexts.get(v)).filter(Boolean).join('\n') || 'Aucun' },
+              { name: 'Statut', value: guild.features.map(v => featureTexts.get(v)).filter(Boolean).join('\n') || 'Aucun' }
             ),
         ],
         ephemeral: false,
@@ -122,7 +122,6 @@ async function createUserInfoEmbed(interaction: Interaction, user: User) {
   const permissions = member?.permissions?.toArray().join(', ') || 'Aucune permission';
   const oldTag = user.discriminator !== '0' ? `Ancien tag: ${user.username}#${user.discriminator}` : 'Pas d’ancien tag';
   
-  // Example: Add logic to fetch message count for the user in the server, assuming message counts are tracked
   const messageCount = 'Inconnu'; // Placeholder, needs custom message tracking implementation
 
   if (!(member instanceof GuildMember))
@@ -131,13 +130,13 @@ async function createUserInfoEmbed(interaction: Interaction, user: User) {
       .setTitle('Cet utilisateur n\'est pas sur ce serveur')
       .setDescription(`${formatEmoji(Emojis.White.id)} ID de l'utilisateur: ${inlineCode(user.id)}`)
       .setColor('#2b2d31')
-      .setImage('https://i.imgur.com/tjiIwzV.png')
+      .setImage('https://i.imgur.com/wmeS8fp.png')
       .setFields(
-        { name: 'Date de création du compte', value: time(user.createdAt, 'D'), inline: true },
-        { name: 'Badge', value: badgeText, inline: true },
-        { name: 'Abonnement Nitro', value: nitroSince, inline: true },
-        { name: 'Ancien Tag', value: oldTag, inline: true },
-        { name: 'Nombre de messages', value: messageCount, inline: true }
+        { name: 'Date de création du compte', value: time(user.createdAt, 'D') },
+        { name: 'Badge', value: badgeText },
+        { name: 'Abonnement Nitro', value: nitroSince },
+        { name: 'Ancien Tag', value: oldTag },
+        { name: 'Nombre de messages', value: messageCount }
       );
 
   const nickName = member.nickname ?? 'Aucun';
@@ -150,15 +149,15 @@ async function createUserInfoEmbed(interaction: Interaction, user: User) {
       `${formatEmoji(Emojis.White.id)} ID de l'utilisateur ${inlineCode(user.id)}`,
     ].join('\n'))
     .setColor('#2b2d31')
-    .setImage('https://i.imgur.com/tjiIwzV.png')
+    .setImage('https://i.imgur.com/wmeS8fp.png')
     .setFields(
-      { name: 'Date de création du compte', value: time(user.createdAt, 'D'), inline: true },
-      { name: 'Date d\'arrivée sur le serveur', value: joinTime, inline: true },
-      { name: 'Badge', value: badgeText, inline: true },
-      { name: 'Abonnement Nitro', value: nitroSince, inline: true },
-      { name: 'Permissions', value: permissions, inline: true },
-      { name: 'Ancien Tag', value: oldTag, inline: true },
-      { name: 'Nombre de messages', value: messageCount, inline: true },
+      { name: 'Date de création du compte', value: time(user.createdAt, 'D') },
+      { name: 'Date d\'arrivée sur le serveur', value: joinTime },
+      { name: 'Badge', value: badgeText },
+      { name: 'Abonnement Nitro', value: nitroSince },
+      { name: 'Permissions', value: permissions },
+      { name: 'Ancien Tag', value: oldTag },
+      { name: 'Nombre de messages', value: messageCount }
     );
 
   if (member.premiumSince)
