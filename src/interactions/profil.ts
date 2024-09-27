@@ -84,7 +84,7 @@ const profileCommand = new ChatInput(
     if (embed) {
       interaction.reply({ embeds: [embed], ephemeral: false });
     } else {
-      interaction.reply({ content: 'Impossible d\'afficher les informations demandées.', ephemeral: true });
+      interaction.reply({ content: 'Impossible d\'afficher les informations demandées.', ephemeral: false });
     }
   },
 );

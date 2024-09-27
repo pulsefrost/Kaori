@@ -27,6 +27,7 @@ const banCommand = new ChatInput(
     if (!interaction.inCachedGuild()) return;
 
     const member = interaction.options.getMember('utilisateur');
+    const reason = interaction.options.getString('raison') ?? 'Aucune raison fournie';
 
     if (!(member instanceof GuildMember))
       return interaction.reply({ content: '`❌` Cet utilisateur n\'est pas présent sur le serveur.', ephemeral: true });
@@ -38,11 +39,23 @@ const banCommand = new ChatInput(
       return interaction.reply({ content: '`❌` Vous n\'avez pas les permissions nécessaires pour bannir cet utilisateur.', ephemeral: true });
 
     try {
-      await member.ban({ reason: interaction.options.getString('raison') ?? 'Aucune raison fournie' });
+      // Envoi d'un message privé à l'utilisateur avec la raison avant de le bannir
+      await member.send({
+        embeds: [
+          new EmbedBuilder()
+            .setTitle('Avertissement de bannissement')
+            .setDescription(`Vous avez été banni du serveur **${interaction.guild.name}**.\nRaison : ${reason}`)
+            .setColor(Colors.Red),
+        ],
+      }).catch(err => console.log("Impossible d'envoyer un MP : ", err));
+
+      // Bannir l'utilisateur avec la raison
+      await member.ban({ reason });
+
       interaction.reply({
         embeds: [
           new EmbedBuilder()
-            .setDescription(`\`✅\` ${member} a été banni du serveur.`)
+            .setDescription(`\`✅\` ${member} a été banni du serveur pour la raison suivante : ${reason}`)
             .setColor(Colors.Green),
         ],
         ephemeral: true,

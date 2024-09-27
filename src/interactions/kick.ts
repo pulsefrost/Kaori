@@ -26,6 +26,7 @@ const kickCommand = new ChatInput(
     if (!interaction.inCachedGuild()) return;
 
     const member = interaction.options.getMember('utilisateur');
+    const reason = interaction.options.getString('raison') || 'Aucune raison fournie';
 
     if (!(member instanceof GuildMember))
       return interaction.reply({ content: '`❌` Cet utilisateur n\'est pas présent sur le serveur.', ephemeral: true });
@@ -37,12 +38,23 @@ const kickCommand = new ChatInput(
       return interaction.reply({ content: '`❌` Échec de l\'expulsion en raison de permissions insuffisantes.', ephemeral: true });
 
     try {
-      await member.kick(interaction.options.getString('raison') || 'Aucune raison fournie');
+      // Envoi d'un message privé à l'utilisateur avec la raison avant de l'expulser
+      await member.send({
+        embeds: [
+          new EmbedBuilder()
+            .setTitle('Avertissement d\'expulsion')
+            .setDescription(`Vous avez été expulsé du serveur **${interaction.guild.name}**.\nRaison : ${reason}`)
+            .setColor(Colors.Orange),
+        ],
+      }).catch(err => console.log("Impossible d'envoyer un MP : ", err));
+
+      // Expulser l'utilisateur avec la raison
+      await member.kick(reason);
 
       interaction.reply({
         embeds: [
           new EmbedBuilder()
-            .setDescription(`\`✅\` ${member.user.tag} a été expulsé du serveur.`)
+            .setDescription(`\`✅\` ${member.user.tag} a été expulsé du serveur pour la raison suivante : ${reason}`)
             .setColor('#F4C1B3'),
         ],
         ephemeral: true,

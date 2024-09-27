@@ -36,7 +36,7 @@ const Command = new ChatInput(
             name: 'utilisateur',
             description: 'Utilisateur',
             type: ApplicationCommandOptionType.User,
-            required: true,
+            required: false,
           },
         ],
         type: ApplicationCommandOptionType.Subcommand,

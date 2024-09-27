@@ -260,7 +260,7 @@ const interactionCommand = new ChatInput(
           embeds: [
             new EmbedBuilder()
               .setImage(gifData.results[0].url)
-              .setColor('#F4C1B3'),
+              .setColor('#2b2d31'),
           ],
         });
       }

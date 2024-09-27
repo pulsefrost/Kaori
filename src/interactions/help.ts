@@ -31,6 +31,7 @@ const helpCommand = new ChatInput(
         '- </setting:1278629024091869258> Paramètres du serveur\n' +
         '- </timeoutlist:1284916102823940096> Lister les personnes timeout (Ils ne sont pas innocent)'
             )
+      .setImage('https://i.imgur.com/UQcjFWi.png')
       .setColor('#2b2d31');
 
     const utilityEmbed = new EmbedBuilder()
@@ -41,6 +42,7 @@ const helpCommand = new ChatInput(
         '- </afk:1278628271940046850> Signaler que vous êtes AFK\n' +
         '- </profil:1284916095874105374> Voir la photo de profil ou la bannière'
       )
+      .setImage('https://i.imgur.com/UQcjFWi.png')
       .setColor('#2b2d31');
 
     const animeEmbed = new EmbedBuilder()
@@ -54,6 +56,7 @@ const helpCommand = new ChatInput(
         '- </interaction handshake:1282751198239133807> Serrer la main\n' +
         '- </interaction blush:1282751198239133807> Rougir'
       )
+      .setImage('https://i.imgur.com/UQcjFWi.png')
       .setColor('#2b2d31');
 
     const animeEmbed2 = new EmbedBuilder()
@@ -68,6 +71,7 @@ const helpCommand = new ChatInput(
         '- </interaction cuddle:1282751198239133807> Des petits câlins\n' +
         '- </interaction kick:1282751198239133807> Dégager'
       )
+      .setImage('https://i.imgur.com/UQcjFWi.png')
       .setColor('#2b2d31');
 
     const featureEmbed = new EmbedBuilder()

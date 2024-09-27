@@ -38,8 +38,7 @@ const timeoutCommand = new ChatInput(
     dmPermission: false,
   },
   { coolTime: 5000 },
-  (interaction) => {
-
+  async (interaction) => {
     if (!interaction.inCachedGuild()) return;
 
     const member = interaction.options.getMember('utilisateur');
@@ -62,28 +61,41 @@ const timeoutCommand = new ChatInput(
     if (!interaction.member.permissions.has(PermissionFlagsBits.Administrator) && interaction.member.roles.highest.position < member.roles.highest.position)
       return interaction.reply({ content: '`❌` Vous n\'avez pas les permissions nécessaires pour mettre cet utilisateur en timeout.', ephemeral: true });
 
-    member.timeout(duration, `${interaction.options.getString('reason') ?? 'Aucune raison fournie'} - ${interaction.user.tag}`)
-      .then(() => {
-        interaction.reply({
-          embeds: [
-            new EmbedBuilder()
-              .setDescription(Duration.format(duration, `\`✅\` ${member} a été mis en timeout pendant **%{d}** jours **%{h}** heures et **%{m}** minutes`))
-              .setColor(Colors.Green),
-          ],
-          ephemeral: true,
-        });
-      })
-      .catch((err) => {
-        interaction.reply({
-          embeds: [
-            new EmbedBuilder()
-              .setDescription(`\`❌\` Échec du timeout.\n${codeBlock(err)}`)
-              .setColor(Colors.Red),
-          ],
-          ephemeral: true,
-        });
-      });
+    const reason = interaction.options.getString('raison') ?? 'Aucune raison fournie';
 
+    try {
+      // Envoi d'un message privé à l'utilisateur avec la raison avant de le mettre en timeout
+      await member.send({
+        embeds: [
+          new EmbedBuilder()
+            .setTitle('Avertissement de timeout')
+            .setDescription(`Vous avez été mis en timeout sur le serveur **${interaction.guild.name}**.\nRaison : ${reason}\nDurée : ${Duration.format(duration, `**%{d}** jours, **%{h}** heures, **%{m}** minutes`)}`)
+            .setColor(Colors.Orange),
+        ],
+      }).catch(err => console.log("Impossible d'envoyer un MP : ", err));
+
+      // Mettre l'utilisateur en timeout
+      await member.timeout(duration, `${reason} - ${interaction.user.tag}`);
+
+      interaction.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setDescription(Duration.format(duration, `\`✅\` ${member} a été mis en timeout pendant **%{d}** jours, **%{h}** heures et **%{m}** minutes`))
+            .setColor(Colors.Green),
+        ],
+        ephemeral: true,
+      });
+    } catch (err) {
+      const errorMessage = (err instanceof Error) ? err.message : String(err);
+      interaction.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setDescription(`\`❌\` Échec du timeout.\n${codeBlock(errorMessage)}`)
+            .setColor(Colors.Red),
+        ],
+        ephemeral: true,
+      });
+    }
   },
 );
 
