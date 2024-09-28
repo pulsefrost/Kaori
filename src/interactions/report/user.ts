@@ -38,7 +38,7 @@ const reportContext = new UserContext(
           new TextInputBuilder()
             .setCustomId('reportDetails') // Utilisez un ID personnalisé pour le TextInput
             .setLabel('Détails')
-            .setPlaceholder('Les rapports soumis seront visibles uniquement par les administrateurs du serveur et ne seront pas signalés à Discord Trust & Safety.')
+            .setPlaceholder('Les rapports soumis seront visibles uniquement par les administrateurs.')
             .setMaxLength(1500)
             .setStyle(TextInputStyle.Paragraph),
         ),
