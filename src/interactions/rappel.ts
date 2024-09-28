@@ -32,7 +32,7 @@ const reminderCommand = new ChatInput(
   },
   { coolTime: 5000 },
   async (interaction) => {
-    const user = interaction.options.getUser('utilisateur') || interaction.user;
+    const user = interaction.options.getUser('utilisateur') || interaction.user; // Utiliser l'utilisateur courant si aucun utilisateur n'est spécifié
     const message = interaction.options.getString('message');
     const timeInMinutes = interaction.options.getInteger('temps');
 
