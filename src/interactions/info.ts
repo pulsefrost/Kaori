@@ -36,8 +36,15 @@ const Command = new ChatInput(
       {
         name: 'utilisateur',
         description: 'Afficher les informations d\'un utilisateur',
-        type: ApplicationCommandOptionType.User,
-        required: false, // Option non requise
+        type: ApplicationCommandOptionType.Subcommand,
+        options: [
+          {
+            name: 'target',
+            description: 'Utilisateur à afficher',
+            type: ApplicationCommandOptionType.User,
+            required: false, // Option non requise
+          },
+        ],
       },
     ],
     dmPermission: false,
@@ -47,7 +54,7 @@ const Command = new ChatInput(
     const subCommand = interaction.options.getSubcommand();
 
     if (subCommand === 'utilisateur') {
-      const user = interaction.options.getUser('utilisateur') || interaction.user; // Utilise l'utilisateur qui exécute la commande si aucun n'est spécifié
+      const user = interaction.options.getUser('target') || interaction.user; // Utilise l'utilisateur qui exécute la commande si aucun n'est spécifié
       return interaction.reply({ embeds: [await createUserInfoEmbed(interaction, user)], ephemeral: false });
     }
 
