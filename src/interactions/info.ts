@@ -29,15 +29,15 @@ const Command = new ChatInput(
     description: 'Afficher les informations d\'un utilisateur/serveur',
     options: [
       {
-        name: 'utilisateur',
-        description: 'Afficher les informations d\'un utilisateur',
-        type: ApplicationCommandOptionType.User,
-        required: false, // Changer en false pour rendre optionnel
-      },
-      {
         name: 'serveur',
         description: 'Afficher les informations du serveur',
         type: ApplicationCommandOptionType.Subcommand,
+      },
+      {
+        name: 'utilisateur',
+        description: 'Afficher les informations d\'un utilisateur',
+        type: ApplicationCommandOptionType.User,
+        required: false, // Option non requise
       },
     ],
     dmPermission: false,
