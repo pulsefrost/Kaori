@@ -86,7 +86,7 @@ const bumpReminderHandler = new DiscordEventBuilder({
               new EmbedBuilder()
                 .setDescription(`\`⏰\` Utilisez la commande </bump:947088344167366698> de Disboard pour bump à nouveau.`)
                 .setImage('https://i.imgur.com/zQaqB1E.png')
-                .setColor('#edd0cc'),
+                .setColor('#2b2d31'),
             ],
           });
 

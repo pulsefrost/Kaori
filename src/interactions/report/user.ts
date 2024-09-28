@@ -14,32 +14,37 @@ const reportContext = new UserContext(
     const setting = await getServerSetting(interaction.guildId, 'report');
     const user = interaction.targetUser;
 
-    if (!setting?.channel)
-      if (interaction.member.permissions.has(PermissionFlagsBits.ManageGuild))
+    if (!setting?.channel) {
+      if (interaction.member.permissions.has(PermissionFlagsBits.ManageGuild)) {
         return interaction.reply({ content: '`❌` Cette fonctionnalité nécessite une configuration supplémentaire. Veuillez définir le canal pour recevoir les rapports avec `/setting`. ', ephemeral: true });
-      else
+      } else {
         return interaction.reply({ content: '`❌` Cette fonctionnalité n\'est pas actuellement disponible. Veuillez contacter l\'administrateur du serveur. ', ephemeral: true });
+      }
+    }
 
-    if (user.system || user.id === interaction.client.user.id)
+    if (user.system || user.id === interaction.client.user.id) {
       return interaction.reply({ content: '`❌` Vous ne pouvez pas signaler cet utilisateur. ', ephemeral: true });
-    if (user.id === interaction.user.id)
+    }
+    if (user.id === interaction.user.id) {
       return interaction.reply({ content: '`❌` Vous essayez de vous signaler vous-même. ', ephemeral: true });
+    }
 
-    interaction.showModal(
-      new ModalBuilder()
-        .setCustomId('kaori:userReportModal')
-        .setTitle('Signaler l\'utilisateur')
-        .setComponents(
-          new ActionRowBuilder<TextInputBuilder>().setComponents(
-            new TextInputBuilder()
-              .setCustomId(interaction.targetId)
-              .setLabel('Détails')
-              .setPlaceholder('Les rapports soumis seront visibles uniquement par les administrateurs du serveur et ne seront pas signalés à Discord Trust & Safety.')
-              .setMaxLength(1500)
-              .setStyle(TextInputStyle.Paragraph),
-          ),
+    // Affichage du modal
+    const modal = new ModalBuilder()
+      .setCustomId('kaori:userReportModal')
+      .setTitle('Signaler l\'utilisateur')
+      .addComponents(
+        new ActionRowBuilder<TextInputBuilder>().addComponents(
+          new TextInputBuilder()
+            .setCustomId('reportDetails') // Utilisez un ID personnalisé pour le TextInput
+            .setLabel('Détails')
+            .setPlaceholder('Les rapports soumis seront visibles uniquement par les administrateurs du serveur et ne seront pas signalés à Discord Trust & Safety.')
+            .setMaxLength(1500)
+            .setStyle(TextInputStyle.Paragraph),
         ),
-    );
+      );
+
+    await interaction.showModal(modal); // Ouvrir le modal
   },
 );
 
@@ -54,8 +59,9 @@ const reportContextModal = new Modal(
     const user = await interaction.client.users.fetch(interaction.components[0].components[0].customId).catch(() => undefined);
     const channel = await interaction.guild.channels.fetch(setting.channel).catch(() => undefined);
 
-    if (!(user instanceof User) || !channel?.isTextBased())
+    if (!(user instanceof User) || !channel?.isTextBased()) {
       return interaction.reply({ content: '`❌` Une erreur s\'est produite lors de l\'envoi du rapport. ', ephemeral: true });
+    }
 
     channel
       .send({
@@ -76,7 +82,7 @@ const reportContextModal = new Modal(
             ),
         ],
         components: [
-          new ActionRowBuilder<ButtonBuilder>().setComponents(
+          new ActionRowBuilder<ButtonBuilder>().addComponents(
             new ButtonBuilder()
               .setCustomId('kaori:report-consider')
               .setLabel('Traiter')
