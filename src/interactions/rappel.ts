@@ -9,22 +9,22 @@ const reminderCommand = new ChatInput(
     description: 'Configurer un rappel pour vous ou un autre utilisateur',
     options: [
       {
-        name: 'utilisateur',
-        description: 'Utilisateur à qui envoyer le rappel',
-        type: ApplicationCommandOptionType.User,
-        required: false, // Si non défini, c'est l'utilisateur courant
-      },
-      {
         name: 'message',
         description: 'Message du rappel',
         type: ApplicationCommandOptionType.String,
-        required: true,
+        required: true, // Cette option est requise
       },
       {
         name: 'temps',
         description: 'Temps en minutes avant l\'envoi du rappel',
         type: ApplicationCommandOptionType.Integer,
-        required: true,
+        required: true, // Cette option est également requise
+      },
+      {
+        name: 'utilisateur',
+        description: 'Utilisateur à qui envoyer le rappel',
+        type: ApplicationCommandOptionType.User,
+        required: false, // Option non requise
       },
     ],
     defaultMemberPermissions: null, // Tout le monde peut utiliser cette commande
@@ -32,11 +32,12 @@ const reminderCommand = new ChatInput(
   },
   { coolTime: 5000 },
   async (interaction) => {
-    const user = interaction.options.getUser('utilisateur') || interaction.user; // Utiliser l'utilisateur courant si aucun utilisateur n'est spécifié
+    // Obtenir les valeurs des options
+    const user = interaction.options.getUser('utilisateur') || interaction.user; // Si aucun utilisateur spécifié, utiliser l'utilisateur courant
     const message = interaction.options.getString('message');
     const timeInMinutes = interaction.options.getInteger('temps');
 
-    // Vérifier si timeInMinutes est null et gérer le cas
+    // Vérifier si timeInMinutes est valide
     if (timeInMinutes === null || timeInMinutes < 1) {
       return interaction.reply({
         content: '`❌` Le temps doit être supérieur à 0 minute.',
